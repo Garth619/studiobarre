@@ -62,6 +62,28 @@ jQuery(document).ready(function() {
            jQuery('.hide').show();
         });
 </script>
+<script>
+
+jQuery(document).on('mouseenter', '.wrapper', function() {
+
+    
+        jQuery(this).find('.front').addClass('flipped_front');
+        jQuery(this).find('.back').addClass('flipped_back');
+  
+
+});
+
+
+jQuery(document).on('mouseleave', '.wrapper', function() {
+
+    
+        jQuery(this).find('.front').removeClass('flipped_front');
+        jQuery(this).find('.back').removeClass('flipped_back');
+  
+
+});
+
+</script>
 <?php the_field('google_analytics', 'options'); ?>
 </head>
 

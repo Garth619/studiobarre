@@ -1452,6 +1452,7 @@ h3#reply-title {
 .footer_email {
 	float:left;
 	margin-top:15px;
+	width: 430px;
 }
 
 div#gform_wrapper_1 {
@@ -1517,13 +1518,16 @@ li#field_1_1.gfield div.gfield_description {
 #gform_ajax_spinner_1 {
 	display:none !important;
 }
+/*
 
 div#gforms_confirmation_message.gform_confirmation_message_1 {
 	float:left;
 	margin:3px 25px 0 25px;
 	font-size:15px;
 	text-transform: lowercase;
+	width:100%;
 }
+*/
 
 #copyright {
 	float:left;
@@ -1804,5 +1808,76 @@ h1.fran_inner {
 */
 
 
+div#footer div.gform_wrapper label.gfield_label {
+	display:none;
+}
+
+/* Press Page */
+
+.press_wrapper {
+	width:100%;
+	height:500px;
+}
+
+.wrapper {
+  margin: 78px 0 40px 15px;
+  perspective: 300px;
+  -webkit-perspective: 300px; /* Chrome, Safari, Opera */
+  position: relative;
+  height: 106px;
+  width: 250px;
+  
+  }
+    
+  .front, .back {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -webkit-transition: 1s;
+    -moz-transition: 1s;
+    -ms-transition: 1s;
+    -o-transition: 1s;
+    transition: 1s;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
 
 
+ .front p, .back p {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 40px;
+      color: cyan;
+      color: red;
+      
+    }
+
+
+  .front {
+    -moz-transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+
+    background-color: red;
+    background: url(http://lukashansen.com/static/images/front-dollar.jpg);
+    background-size: 250px 106px;
+    }
+  .back {
+    -moz-transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+           
+    background-color: blue;
+    background: url(http://lukashansen.com/static/images/Untitled-3.jpg);
+    background-size: 250px 106px;
+  }
+  .flipped_front {
+    -moz-transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+  }
+  .flipped_back {
+    -moz-transform: rotateY(360deg);
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }

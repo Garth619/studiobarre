@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying all pages.
+ * Template Name: Press
  *
  * This is the template that displays all pages by default.
  * Please note that this is the WordPress construct of pages
@@ -14,19 +14,51 @@
 
 get_header(); ?>
 
-		<div id="container">
-			<div id="content" role="main">
-
-			<?php
-			/* Run the loop to output the page.
-			 * If you want to overload this in a child theme then include a file
-			 * called loop-page.php and that will be used instead.
-			 */
-			get_template_part( 'loop', 'page' );
-			?>
-
-			</div><!-- #content -->
-		</div><!-- #container -->
-
-<?php // get_sidebar(); ?>
+		
+		<div class="press_wrapper">
+			
+			
+			<div class="wrapper">
+			
+			<div class="front">
+			
+				<p>click to flip </p>
+  
+  		</div><!-- front -->
+ 
+			<div class="back">
+   
+				<p>click to flip </p>
+  
+  		</div><!-- back -->
+  		
+			</div><!-- wrapper -->
+			
+			<div class="wrapper">
+			
+			<div class="front">
+			
+				<p>click to flip </p>
+  
+  		</div><!-- front -->
+ 
+			<div class="back">
+   
+				<p>click to flip </p>
+  
+  		</div><!-- back -->
+  		
+			</div><!-- wrapper -->
+  
+  	
+			
+			
+			
+		
+		
+		</div><!-- press_wrapper -->
+		
+		http://codepen.io/anon/pen/vGwXyN
+		
+		
 <?php get_footer(); ?>

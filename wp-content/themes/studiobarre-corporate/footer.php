@@ -32,7 +32,7 @@
 		</div><!-- footer right -->
 	</div><!-- #footer -->
 	<div id="copyright">
-		<span>&copy; 2015  Studio Barre, LLC</span>
+		<span>&copy; 2016  Studio Barre, LLC</span>
 	</div>
 <div style="clear:both;"></div>
 </div><!-- #wrapper -->
