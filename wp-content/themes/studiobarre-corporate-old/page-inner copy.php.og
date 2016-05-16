@@ -1,0 +1,92 @@
+<?php
+/**
+ * Template Name: Inner
+ *
+ * This is the template that displays all pages by default.
+ * Please note that this is the WordPress construct of pages
+ * and that other 'pages' on your WordPress site will use a
+ * different template.
+ *
+ * @package WordPress
+ * @subpackage Twenty_Ten
+ * @since Twenty Ten 1.0
+ */
+
+get_header(); ?>
+		
+		<div id="sidebar">
+			<?php if(get_field('sidebar_content')): ?>
+				<?php the_field('sidebar_content'); ?>
+			<?php endif; ?>
+		</div><!-- sidebar -->
+		<div id="container">
+			<div id="content" role="main">
+			<?php if (is_page( 10 )): ?><!-- faqs page -->
+				<?php if(get_field('faqs_intro')): ?>
+					<h1 class="faq"><?php the_field('faqs_intro'); ?></h1>
+					<?php endif; ?>
+					<?php if(get_field('questions_answers')): ?>
+						<?php while(has_sub_field('questions_answers')): ?>
+							<p class="question"><?php the_sub_field('questions'); ?></p>
+							<p class="answer"><?php the_sub_field('answers'); ?></p>
+						<?php endwhile; ?>
+					<?php endif; ?> <!-- questions and answers -->
+			<?php endif; ?><! -- faqs page -->
+				<?php if (is_page( array( 8,12 ))): ?><!-- about us page -->
+					<?php if(get_field('slideshow')): ?>
+				<div class="inner_slideshow">
+				<div class="cycle-slideshow"  data-cycle-slides="> ul" data-cycle-pause-on-hover="true">
+					<?php while(has_sub_field('slideshow')): ?>
+						<?php if(get_sub_field('slide_link')) : ?>
+        			<?php if(get_sub_field('externally')) : ?>
+            		<?php if(get_sub_field('grey_border')) : ?>
+										<?php $main_slide = wp_get_attachment_image_src(get_sub_field('slide'), 'about-slides'); ?>
+										<ul class="myslides">
+            					<li><a href="<?php the_sub_field('externally'); ?>" target="_blank"><img  class="hide" src="<?php echo $main_slide[0]; ?>"/></a></li>
+										</ul>
+								<?php else: ?><!-- no grey border -->
+										<?php $main_slide2 = wp_get_attachment_image_src(get_sub_field('slide'), 'about-slides'); ?>
+										<ul class="myslides">
+											<li><a href="<?php the_sub_field('externally'); ?>" target="_blank"><img class="hide" style="border:none;padding:10px;" src="<?php echo $main_slide2[0]; ?>"/></a></li>
+										</ul>
+								<?php endif; ?> <!-- end of grey border on externally -->
+							<?php else : ?><!--  no externally but internally -->
+								<?php $main_slide3 = wp_get_attachment_image_src(get_sub_field('slide'), 'about-slides'); ?>
+									<?php if(get_sub_field('grey_border')) : ?><!-- internal grey box -->
+									<ul class="myslides">
+            				<li><a href="<?php the_sub_field('internally'); ?>"><img class="hide" src="<?php echo $main_slide3[0]; ?>"/></a></li>
+										</ul>
+									<?php else : ?><! no grey border -->
+										<?php $main_slide4 = wp_get_attachment_image_src(get_sub_field('slide'), 'about-slides'); ?>
+										<ul class="myslides">
+            				<li><a href="<?php the_sub_field('internally'); ?>"><img style="border:none;padding:10px;" class="hide" src="<?php echo $main_slide4[0]; ?>"/></a></li>
+										</ul>
+									<?php endif; ?><!-- end of grey border if -->
+								<?php endif; ?><!-- end of if externally -->
+							<?php else : ?><!-- slide show link else no links -->
+								<?php if(get_sub_field('grey_border')) : ?>
+								
+								<!-- Hi Jason, start here true ganjaman -->
+									<?php $main_slide5 = wp_get_attachment_image_src(get_sub_field('slide'), 'about-slides'); ?>
+									<?php $main_slide7 = wp_get_attachment_image_src(get_sub_field('slide_hover'), 'about-slides'); ?>
+
+									<ul class="myslides">
+										<li><img id="myhover" onmouseover="document.getElementById('myhover').src='<?php echo $main_slide7[0]; ?>'" onmouseleave="document.getElementById('myhover').src='<?php echo $main_slide5[0]; ?>'" class="hide" src="<?php echo $main_slide5[0]; ?>"/></li>
+									</ul>
+								<?php else : ?><!-- no grey border on no link slides -->
+									<?php $main_slide6 = wp_get_attachment_image_src(get_sub_field('slide'), 'about-slides'); ?>
+									<ul class="myslides">
+										<li><img style="border:none;padding:10px;" class="hide" src="<?php echo $main_slide6[0]; ?>"/></li>
+									</ul>
+								<?php endif; ?><!-- end of grey border -->
+							<?php endif; ?><!-- end of slide link if -->
+					<?php endwhile; ?><!-- end of slideshow while -->
+				</div><!-- cycle slideshow -->
+				</div><!-- slideshow -->
+			<?php endif; ?><!-- slideshow -->
+				<?php endif; ?>
+				</div><!-- #content -->
+		</div><!-- #container -->
+
+<?php // get_sidebar(); ?>
+<?php get_footer(); ?>
