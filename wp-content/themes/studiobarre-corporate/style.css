@@ -1819,7 +1819,7 @@ div#footer div.gform_wrapper label.gfield_label {
 	height:500px;
 }
 
-.wrapper {
+.single_press_wrapper {
   margin: 78px 0 40px 15px;
   perspective: 300px;
   -webkit-perspective: 300px; /* Chrome, Safari, Opera */

@@ -18,7 +18,7 @@ get_header(); ?>
 		<div class="press_wrapper">
 			
 			
-			<div class="wrapper">
+			<div class="single_press_wrapper">
 			
 			<div class="front">
 			
@@ -34,7 +34,7 @@ get_header(); ?>
   		
 			</div><!-- wrapper -->
 			
-			<div class="wrapper">
+			<div class="single_press_wrapper">
 			
 			<div class="front">
 			

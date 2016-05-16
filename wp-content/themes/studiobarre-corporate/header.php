@@ -64,7 +64,7 @@ jQuery(document).ready(function() {
 </script>
 <script>
 
-jQuery(document).on('mouseenter', '.wrapper', function() {
+jQuery(document).on('mouseenter', '.single_press_wrapper', function() {
 
     
         jQuery(this).find('.front').addClass('flipped_front');
@@ -74,7 +74,7 @@ jQuery(document).on('mouseenter', '.wrapper', function() {
 });
 
 
-jQuery(document).on('mouseleave', '.wrapper', function() {
+jQuery(document).on('mouseleave', '.single_press_wrapper', function() {
 
     
         jQuery(this).find('.front').removeClass('flipped_front');
