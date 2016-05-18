@@ -1,10 +1,10 @@
 === HealCode MINDBODY Widget ===
-Contributors: healcode_wordpress 
+Contributors: healcode_wordpress
 Donate link: http://healcode.com/
 Tags: HealCode, MINDBODY, add HealCode, insert Widget, insert Widgets, add Widget, add Widgets, add HealCode Widget, add HealCode Widgets, MINDBODY Widgets, shortcode, shortcodes, calendar, pear, schedule, soap, yoga, pilates, crossfit, mindbody website integration, mindbody api, sidebar, footer, header, mindbody website integration
 Requires at least: 3.0
 Tested up to: 4.5
-Stable tag: 1.1.0
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Add HealCode Widgets, which display your MINDBODY information, to your WordPress
 
 == Description ==
 
-**Now developers and non-developers alike can add HealCode Widgets to WordPress websites using shortcodes!** 
+**Now developers and non-developers alike can add HealCode Widgets to WordPress websites using shortcodes!**
 
 This plugin lets you generate shortcodes for your HealCode Widgets. The shortcodes can be used in your pages, posts, and WordPress widgets to display your MINDBODY information.
 
@@ -29,13 +29,13 @@ HealCode syncs with your MINDBODY account and can display MINDBODY information i
 * Support for Widget shortcodes in WordPress Widgets
 * Dropdown menu in TinyMCE editor to select Widget shortcodes easily
 
-= Widget Features = 
+= Widget Features =
 
 ([see this page for a description of our Buy Now links and Login | Register link](https://healcode.zendesk.com/hc/en-us/articles/202867484--What-are-Service-Links-i-e-Buy-Now-links-My-Account-links-and-Cart-links-))
 
 
 = Schedule Widget =
-* Clients can quickly see the latest schedule and sign up or pay for a class without ever leaving your website. 
+* Clients can quickly see the latest schedule and sign up or pay for a class without ever leaving your website.
 * Calendar or list view options
 * Shows single or multi-locations
 * Automatically switches to mobile view when viewed from iPhone or Android phone
@@ -128,7 +128,7 @@ HealCode syncs with your MINDBODY account and can display MINDBODY information i
 1. Upload all the files and folders in the `healcode-mindbody-widget` folder to the `/wp-content/plugins/` directory
 2. In the admin panel under "Plugins" activate HealCode MINDBODY Widget
 
-= Using the Plugin = 
+= Using the Plugin =
 
 [See our FAQ here.](https://healcode.zendesk.com/hc/en-us/articles/203647654)
 [vimeo http://vimeo.com/117301143]
@@ -154,7 +154,7 @@ See our [HealCode MINDBODY Widget Plugin FAQ](https://healcode.zendesk.com/hc/en
 
 = Where do I find my HealCode Widget code ? =
 
-You can find the code for each Widget in each Widget's control panel in the HealCode Manager. You can login [here](https://manager.healcode.com/users/sign_in "here"). 
+You can find the code for each Widget in each Widget's control panel in the HealCode Manager. You can login [here](https://manager.healcode.com/users/sign_in "here").
 
 = What if I make changes to the Widget, will I need to reinstall the shortcode or copy the Widget code again ? =
 
@@ -162,7 +162,7 @@ No, you will only need to create the Widget shortcode once. The exceptions to th
 
 = My Widgets are already installed, do I need this plugin ? =
 
-You do not **need** the plugin, but we recommend that you use it. The plugin makes it easier for you to manage pages on which Widgets are installed. 
+You do not **need** the plugin, but we recommend that you use it. The plugin makes it easier for you to manage pages on which Widgets are installed.
 
 Want to switch to the plugin? Install a Widget using the plugin on a test page before you delete anything, if you prefer the plugin, you will need to delete your previous Widgets from your website and replace them with the plugin shortcodes.
 
@@ -178,7 +178,7 @@ Yes, see our FAQ [here](https://healcode.zendesk.com/hc/en-us/articles/202985730
 
 = Does this plugin work with the Fusion Builder plugin? =
 
-Yes. You can use it within a text box. 
+Yes. You can use it within a text box.
 
 = HealCode MINDOBDY Widget is not working properly. =
 
@@ -211,7 +211,7 @@ More questions ? [Contact HealCode Support.](http://www.healcode.com/tech_suppor
 
 * WordPress 3.0+
 * PHP 5+
-* [Activated HealCode account](http://www.healcode.com/ "Activated HealCode account") 
+* [Activated HealCode account](http://www.healcode.com/ "Activated HealCode account")
 * [Activated MINDBODY account](https://www.mindbodyonline.com/ "Activated MINDBODY account")
 
 
@@ -254,9 +254,9 @@ More questions ? [Contact HealCode Support.](http://www.healcode.com/tech_suppor
 
 == Upgrade Notice ==
 
-= 1.0.1 = 
+= 1.0.1 =
 * Styling changes
-= 1.0.2 = 
+= 1.0.2 =
 * Image change
 = 1.0.3 =
 * Bug fix

@@ -1,9 +1,9 @@
-<?php 
+<?php
 /*
 Plugin Name: HealCode MINDBODY Widget
 Plugin URI: https://wordpress.org/plugins/healcode-mb-widget/
-Description: Add HealCode Widgets to your WordPress website. This plugin lets you generate a shortcode for a widget. The shortcodes can be used in your pages, posts and widgets.     
-Version: 1.1.0
+Description: Add HealCode Widgets to your WordPress website. This plugin lets you generate a shortcode for a widget. The shortcodes can be used in your pages, posts and widgets.
+Version: 1.1.4
 Author: HealCode
 Author URI: http://www.healcode.com/
 Text Domain: healcode-mb-widget

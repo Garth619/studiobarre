@@ -140,6 +140,36 @@ function my_jquery_enqueue() {
    wp_enqueue_script('jquery');
 }
 
+
+
+   	 
+    	// number one
+    	add_action('init', 'press');    
+   	 
+	function press() {    
+    	$args = array(    
+        	'label' => __('Press'),    
+        	'singular_label' => __('Press'),    
+        	'public' => true,    
+        	'show_ui' => true,
+        	'has_archive' => true,	 
+        	'capability_type' => 'post',    
+        	'hierarchical' => false,    
+        	'rewrite' => true,    
+        	'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )    
+       	);    
+   	 
+    	register_post_type( 'press' , $args );    
+	}   
+
+
+
+
+
+
+
+
+
 	// We'll be using post thumbnails for custom header images on posts and pages.
 	// We want them to be 940 pixels wide by 198 pixels tall.
 	// Larger images will be auto-cropped to fit, smaller ones will be ignored. See header.php.
