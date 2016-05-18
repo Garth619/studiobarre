@@ -20,33 +20,167 @@ get_header(); ?>
 			
 			<div class="single_press_wrapper">
 			
-			<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
 			
-				
-  
-  		</div><!-- front -->
+				</div><!-- front -->
  
-			<div class="back">
+				<div class="back">
    
-				<h1><a href="">Discover San Diego</a></h1>
-				<p><a href="">Top barre studios in San Diego</a></p>
-				<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
   
-  		</div><!-- back -->
+  			</div><!-- back -->
   		
-			</div><!-- wrapper -->
+			</div><!-- single_press_wrapper -->
 			
-		
+			<div class="single_press_wrapper">
+			
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
+			
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
   
-  	
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
 			
+			<div class="single_press_wrapper">
 			
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
 			
-		
-		
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+  
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
+			
+			<div class="single_press_wrapper">
+			
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
+			
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+  
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
+			
+			<div class="single_press_wrapper">
+			
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
+			
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+  
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
+			
+			<div class="single_press_wrapper">
+			
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
+			
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+  
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
+			
+			<div class="single_press_wrapper">
+			
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
+			
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+  
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
+			
+			<div class="single_press_wrapper">
+			
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
+			
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+  
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
+			
+			<div class="single_press_wrapper">
+			
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
+			
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+  
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
+			
+			<div class="single_press_wrapper">
+			
+				<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
+			
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="">Discover San Diego</a></h1>
+					<p><a href="">Top barre studios in San Diego</a></p>
+					<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+  
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
+			
 		</div><!-- press_wrapper -->
 		
-		http://codepen.io/anon/pen/vGwXyN
+		
 		
 		
 <?php get_footer(); ?>

@@ -1816,20 +1816,25 @@ div#footer div.gform_wrapper label.gfield_label {
 
 .press_wrapper {
 	width:100%;
-	height:500px;
+	
 	padding-top:45px;
 }
 
 .single_press_wrapper {
-  
+  float:left;
   perspective: 300px;
   -webkit-perspective: 300px; /* Chrome, Safari, Opera */
   position: relative;
   height: 186px;
   width: 191px;
-  
-  
-  }
+  margin:0 41px 55px 0;
+ }
+ 
+ 
+ .single_press_wrapper:nth-of-type(4n + 4) {
+	 margin-right:0;
+ }
+ 
     
   .front, .back {
     backface-visibility: hidden;
@@ -1907,6 +1912,6 @@ div#footer div.gform_wrapper label.gfield_label {
 	  width:40px;
 	 
 	  position: absolute;
-	  bottom:10px;
+	  bottom:15px;
 	  left:70px;
   }
