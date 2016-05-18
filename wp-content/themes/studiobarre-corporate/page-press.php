@@ -20,35 +20,23 @@ get_header(); ?>
 			
 			<div class="single_press_wrapper">
 			
-			<div class="front">
+			<div class="front" style="background: url(<?php bloginfo('template_directory');?>/images/pic.jpg);">
 			
-				<p>click to flip </p>
+				
   
   		</div><!-- front -->
  
 			<div class="back">
    
-				<p>click to flip </p>
+				<h1><a href="">Discover San Diego</a></h1>
+				<p><a href="">Top barre studios in San Diego</a></p>
+				<a href=""><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
   
   		</div><!-- back -->
   		
 			</div><!-- wrapper -->
 			
-			<div class="single_press_wrapper">
-			
-			<div class="front">
-			
-				<p>click to flip </p>
-  
-  		</div><!-- front -->
- 
-			<div class="back">
-   
-				<p>click to flip </p>
-  
-  		</div><!-- back -->
-  		
-			</div><!-- wrapper -->
+		
   
   	
 			
