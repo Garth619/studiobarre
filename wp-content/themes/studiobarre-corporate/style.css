@@ -1814,6 +1814,11 @@ div#footer div.gform_wrapper label.gfield_label {
 
 /* Press Page */
 
+
+body.page-template-page-press #main {
+	margin-bottom:0;	
+}
+
 .press_wrapper {
 	width:100%;
 	
@@ -1834,6 +1839,9 @@ div#footer div.gform_wrapper label.gfield_label {
  .single_press_wrapper:nth-of-type(4n + 4) {
 	 margin-right:0;
  }
+ 
+ 
+
  
     
   .front, .back {
@@ -1914,4 +1922,9 @@ div#footer div.gform_wrapper label.gfield_label {
 	  position: absolute;
 	  bottom:15px;
 	  left:70px;
+  }
+  
+  
+  #load-more {
+	  display: none !important;
   }

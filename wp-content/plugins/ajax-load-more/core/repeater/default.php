@@ -1,9 +1,15 @@
-<li<?php if (! has_post_thumbnail() ) { echo ' class="no-img"'; } ?>>
-   <?php if ( has_post_thumbnail() ) { the_post_thumbnail(array(150,150));
-   }?>
-   <h3><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h3>
-   <p class="entry-meta">
-       <?php the_time("F d, Y"); ?>
-   </p>
-   <?php the_excerpt(); ?>
-</li>
+<div class="single_press_wrapper">
+			<?php $press_image = wp_get_attachment_image_src(get_field('press_image'), 'press'); ?>
+				<div class="front" style="background: url(<?php echo $press_image[0]; ?>);">
+			
+				</div><!-- front -->
+ 
+				<div class="back">
+   
+					<h1><a href="<?php the_field('press_link');?>" target="_blank"><?php the_title();?></a></h1>
+					<p><a href="<?php the_field('press_link');?>" target="_blank"><?php the_field('sub_titledescription');?></a></p>
+					<a href="<?php the_field('press_link');?>" target="_blank"><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
+  
+  			</div><!-- back -->
+  		
+			</div><!-- single_press_wrapper -->
