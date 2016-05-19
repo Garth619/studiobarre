@@ -11,5 +11,5 @@
 					<a href="<?php the_field('press_link');?>" target="_blank"><img class="chain" src="<?php bloginfo('template_directory');?>/images/chain.png"/></a>
   
   			</div><!-- back -->
-  		
+  		<div style="margin-top:200px"><?php edit_post_link( __( 'Edit', 'twentyten' ), '<span class="edit-link">', '</span>' ); ?></div>
 			</div><!-- single_press_wrapper -->
