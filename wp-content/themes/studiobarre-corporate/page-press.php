@@ -17,53 +17,15 @@ get_header(); ?>
 		
 		<div class="press_wrapper">
 
+		<?php
 
-			
-			
+		$ids = get_field('new_press_post_order'); // Get field value from ACF
+		$featured_posts = implode(', ', $ids); // implode the IDs array
+		echo do_shortcode('[ajax_load_more post_type="press" post__in="'.$featured_posts.'" posts_per_page="999" orderby="post__in"]');
 
-<?php if(get_field('press_post_order')): ?>
- 
+		?>
 
- 
-	<?php while(has_sub_field('press_post_order')): ?>
- 
-    	
-    	
-<?php
-
-$post_object = get_sub_field('press_title');
-
-if( $post_object ): 
-
-	// override $post
-	$post = $post_object;
-	setup_postdata( $post ); 
-
-	?>
-   
-   
-       	<?php $examplePost = get_post();
-
-echo $examplePost->ID; ?>
-   
-   
-   
-    <?php wp_reset_postdata(); // IMPORTANT - reset the $post object so the rest of the page works correctly ?>
-<?php endif; ?>
-    
- 
-	<?php endwhile; ?>
- 
-	
- 
-<?php endif; ?>
-
-
-			
-			<?php echo do_shortcode('[ajax_load_more post_type="press" posts_per_page="999"]'); ?>
-			
-			
-		</div><!-- press_wrapper -->
+	</div><!-- press_wrapper -->
 		
 	
 		
