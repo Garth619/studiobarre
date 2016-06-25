@@ -9,7 +9,7 @@
  * a supporting function "_export_this_item" and the "mla_end_mapping" action.
  *
  * @package MLA Mapping Hooks Example
- * @version 1.02
+ * @version 1.03
  */
 
 /*
@@ -17,7 +17,7 @@ Plugin Name: MLA Mapping Hooks Example
 Plugin URI: http://fairtradejudaica.org/media-library-assistant-a-wordpress-plugin/
 Description: Provides an example of the filters provided by the IPTC/EXIF and Custom Field mapping features
 Author: David Lingren
-Version: 1.01
+Version: 1.03
 Author URI: http://fairtradejudaica.org/our-story/staff/
 
 Copyright 2014 David Lingren
@@ -71,26 +71,26 @@ class MLAMappingHooksExample {
 		 *
 		 * Comment out the filters you don't need; save them for future use
 		 */
-		add_filter( 'mla_upload_prefilter', 'MLAMappingHooksExample::mla_upload_prefilter_filter', 10, 2 );
-		add_filter( 'mla_upload_filter', 'MLAMappingHooksExample::mla_upload_filter_filter', 10, 2 );
+		add_filter( 'mla_upload_prefilter', 'MLAMappingHooksExample::mla_upload_prefilter', 10, 2 );
+		add_filter( 'mla_upload_filter', 'MLAMappingHooksExample::mla_upload_filter', 10, 2 );
 
-		add_action( 'mla_add_attachment', 'MLAMappingHooksExample::mla_add_attachment_action', 10, 1 );
+		add_action( 'mla_add_attachment', 'MLAMappingHooksExample::mla_add_attachment', 10, 1 );
 
-		add_filter( 'mla_update_attachment_metadata_options', 'MLAMappingHooksExample::mla_update_attachment_metadata_options_filter', 10, 3 );
-		add_filter( 'mla_update_attachment_metadata_prefilter', 'MLAMappingHooksExample::mla_update_attachment_metadata_prefilter_filter', 10, 3 );
-		add_filter( 'mla_update_attachment_metadata_postfilter', 'MLAMappingHooksExample::mla_update_attachment_metadata_postfilter_filter', 10, 3 );
+		add_filter( 'mla_update_attachment_metadata_options', 'MLAMappingHooksExample::mla_update_attachment_metadata_options', 10, 3 );
+		add_filter( 'mla_update_attachment_metadata_prefilter', 'MLAMappingHooksExample::mla_update_attachment_metadata_prefilter', 10, 3 );
+		add_filter( 'mla_update_attachment_metadata_postfilter', 'MLAMappingHooksExample::mla_update_attachment_metadata_postfilter', 10, 3 );
 
-		add_action( 'mla_begin_mapping', 'MLAMappingHooksExample::mla_begin_mapping_action', 10, 2 );
-		add_filter( 'mla_mapping_settings', 'MLAMappingHooksExample::mla_mapping_settings_filter', 10, 4 );
-		add_filter( 'mla_mapping_rule', 'MLAMappingHooksExample::mla_mapping_rule_filter', 10, 4 );
-		add_filter( 'mla_mapping_custom_value', 'MLAMappingHooksExample::mla_mapping_custom_value_filter', 10, 5 );
-		add_filter( 'mla_mapping_iptc_value', 'MLAMappingHooksExample::mla_mapping_iptc_value_filter', 10, 5 );
-		add_filter( 'mla_mapping_exif_value', 'MLAMappingHooksExample::mla_mapping_exif_value_filter', 10, 5 );
-		add_filter( 'mla_mapping_new_text', 'MLAMappingHooksExample::mla_mapping_new_text_filter', 10, 5 );
-		add_filter( 'mla_mapping_updates', 'MLAMappingHooksExample::mla_mapping_updates_filter', 10, 5 );
-		add_action( 'mla_end_mapping', 'MLAMappingHooksExample::mla_end_mapping_action', 10, 0 );
+		add_action( 'mla_begin_mapping', 'MLAMappingHooksExample::mla_begin_mapping', 10, 2 );
+		add_filter( 'mla_mapping_settings', 'MLAMappingHooksExample::mla_mapping_settings', 10, 4 );
+		add_filter( 'mla_mapping_rule', 'MLAMappingHooksExample::mla_mapping_rule', 10, 4 );
+		add_filter( 'mla_mapping_custom_value', 'MLAMappingHooksExample::mla_mapping_custom_value', 10, 5 );
+		add_filter( 'mla_mapping_iptc_value', 'MLAMappingHooksExample::mla_mapping_iptc_value', 10, 5 );
+		add_filter( 'mla_mapping_exif_value', 'MLAMappingHooksExample::mla_mapping_exif_value', 10, 5 );
+		add_filter( 'mla_mapping_new_text', 'MLAMappingHooksExample::mla_mapping_new_text', 10, 5 );
+		add_filter( 'mla_mapping_updates', 'MLAMappingHooksExample::mla_mapping_updates', 10, 5 );
+		add_action( 'mla_end_mapping', 'MLAMappingHooksExample::mla_end_mapping', 10, 0 );
 
-		add_filter( 'mla_get_options_tablist', 'MLAMappingHooksExample::mla_get_options_tablist_filter', 10, 3 );
+		add_filter( 'mla_get_options_tablist', 'MLAMappingHooksExample::mla_get_options_tablist', 10, 3 );
 	}
 
 	/**
@@ -125,12 +125,12 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated file name and other information
 	 */
-	public static function mla_upload_prefilter_filter( $file, $image_metadata ) {
+	public static function mla_upload_prefilter( $file, $image_metadata ) {
 		/*
 		 * Uncomment the error_log statements in any of the filters to see what's passed in
 		 */
-		//error_log( 'MLAMappingHooksExample::mla_upload_prefilter_filter $file = ' . var_export( $file, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_upload_prefilter_filter $image_metadata = ' . var_export( $image_metadata, true ), 0 );
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_upload_prefilter_filter $file = ' . var_export( $file, true ), 0 );
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_upload_prefilter_filter $image_metadata = ' . var_export( $image_metadata, true ), 0 );
 
 		/*
 		 * Save the information for use in the later filters
@@ -157,9 +157,9 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated file name, type and location
 	 */
-	public static function mla_upload_filter_filter( $file, $id3_data ) {
-		//error_log( 'MLAMappingHooksExample::mla_upload_filter_filter $file = ' . var_export( $file, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_upload_filter_filter $id3_data = ' . var_export( $id3_data, true ), 0 );
+	public static function mla_upload_filter( $file, $id3_data ) {
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_upload_filter_filter $file = ' . var_export( $file, true ), 0 );
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_upload_filter_filter $id3_data = ' . var_export( $id3_data, true ), 0 );
 
 		/*
 		 * Save the information for use in the later filters
@@ -185,8 +185,8 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	void
 	 */
-	public static function mla_add_attachment_action( $post_id ) {
-		//error_log( 'MLAMappingHooksExample::mla_add_attachment_action $post_id = ' . var_export( $post_id, true ), 0 );
+	public static function mla_add_attachment( $post_id ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_add_attachment_action( {$post_id} )", 0 );
 
 		/*
 		 * Save the information for use in the later filters
@@ -215,10 +215,9 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated processing options
 	 */
-	public static function mla_update_attachment_metadata_options_filter( $options, $data, $post_id ) {
-		//error_log( 'MLAMappingHooksExample::mla_update_attachment_metadata_options_filter $options = ' . var_export( $options, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_update_attachment_metadata_options_filter $data = ' . var_export( $data, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_update_attachment_metadata_options_filter $post_id = ' . var_export( $post_id, true ), 0 );
+	public static function mla_update_attachment_metadata_options( $options, $data, $post_id ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_update_attachment_metadata_options_filter( {$post_id} ) options = " . var_export( $options, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_update_attachment_metadata_options_filter( {$post_id} ) data = " . var_export( $data, true ), 0 );
 
 		return $options;
 	} // mla_update_attachment_metadata_options_filter
@@ -242,10 +241,9 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated attachment metadata
 	 */
-	public static function mla_update_attachment_metadata_prefilter_filter( $data, $post_id, $options ) {
-		//error_log( 'MLAMappingHooksExample::mla_update_attachment_metadata_prefilter_filter $data = ' . var_export( $data, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_update_attachment_metadata_prefilter_filter $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_update_attachment_metadata_prefilter_filter $options = ' . var_export( $options, true ), 0 );
+	public static function mla_update_attachment_metadata_prefilter( $data, $post_id, $options ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_update_attachment_metadata_prefilter_filter( {$post_id} ) data = " . var_export( $data, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_update_attachment_metadata_prefilter_filter( {$post_id} ) options = " . var_export( $options, true ), 0 );
 
 		return $data;
 	} // mla_update_attachment_metadata_prefilter_filter
@@ -265,10 +263,9 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated attachment metadata
 	 */
-	public static function mla_update_attachment_metadata_postfilter_filter( $data, $post_id, $options ) {
-		//error_log( 'MLAMappingHooksExample::mla_update_attachment_metadata_postfilter_filter $data = ' . var_export( $data, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_update_attachment_metadata_postfilter_filter $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_update_attachment_metadata_postfilter_filter $options = ' . var_export( $options, true ), 0 );
+	public static function mla_update_attachment_metadata_postfilter( $data, $post_id, $options ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_update_attachment_metadata_postfilter_filter( {$post_id} ) data = " . var_export( $data, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_update_attachment_metadata_postfilter_filter( {$post_id} ) options = " . var_export( $options, true ), 0 );
 
 		return $data;
 	} // mla_update_attachment_metadata_postfilter_filter
@@ -289,9 +286,8 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	void	updated mapping rules
 	 */
-	public static function mla_begin_mapping_action( $source, $post_id = NULL ) {
-		//error_log( 'MLAMappingHooksExample::mla_begin_mapping_action $source = ' . var_export( $source, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_begin_mapping_action $post_id = ' . var_export( $post_id, true ), 0 );
+	public static function mla_begin_mapping( $source, $post_id = NULL ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_begin_mapping_action( {$source}, {$post_id} )\n", 0 );
 	} // mla_begin_mapping_action
 
 	/**
@@ -309,11 +305,9 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated mapping rules
 	 */
-	public static function mla_mapping_settings_filter( $settings, $post_id, $category, $attachment_metadata ) {
-		//error_log( 'MLAMappingHooksExample::mla_mapping_settings_filter $settings = ' . var_export( $settings, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_settings_filter $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_settings_filter $category = ' . var_export( $category, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_settings_filter $attachment_metadata = ' . var_export( $attachment_metadata, true ), 0 );
+	public static function mla_mapping_settings( $settings, $post_id, $category, $attachment_metadata ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_settings_filter( {$post_id}, {$category} ) settings = " . var_export( $settings, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_settings_filter( {$post_id}, {$category} ) attachment_metadata = " . var_export( $attachment_metadata, true ), 0 );
 
 		/*
 		 * $category gives the context in which the rule is applied:
@@ -391,11 +385,9 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated custom_field_mapping rule
 	 */
-	public static function mla_mapping_rule_filter( $setting_value, $post_id, $category, $attachment_metadata ) {
-		//error_log( 'MLAMappingHooksExample::mla_mapping_rule_filter $setting_value = ' . var_export( $setting_value, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_rule_filter $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_rule_filter $category = ' . var_export( $category, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_rule_filter $attachment_metadata = ' . var_export( $attachment_metadata, true ), 0 );
+	public static function mla_mapping_rule( $setting_value, $post_id, $category, $attachment_metadata ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_rule_filter( {$post_id}, {$category} ) setting_value = " . var_export( $setting_value, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_rule_filter( {$post_id}, {$category} ) attachment_metadata = " . var_export( $attachment_metadata, true ), 0 );
 
 		/*
 		 * $setting_value is an array containing a mapping rule; see above
@@ -420,23 +412,21 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated rule value
 	 */
-	public static function mla_mapping_custom_value_filter( $new_text, $setting_value, $post_id, $category, $attachment_metadata ) {
-		//error_log( 'MLAMappingHooksExample::mla_mapping_custom_value_filter $new_text = ' . var_export( $new_text, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_custom_value_filter $setting_value = ' . var_export( $setting_value, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_custom_value_filter $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_custom_value_filter $category = ' . var_export( $category, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_custom_value_filter $attachment_metadata = ' . var_export( $attachment_metadata, true ), 0 );
+	public static function mla_mapping_custom_value( $new_text, $setting_value, $post_id, $category, $attachment_metadata ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_custom_value_filter( {$post_id}, {$category} ) new_text = " . var_export( $new_text, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_custom_value_filter( {$post_id}, {$category} ) setting_value = " . var_export( $setting_value, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_custom_value_filter( {$post_id}, {$category} ) attachment_metadata = " . var_export( $attachment_metadata, true ), 0 );
 
 		/*
 		 * You can use MLAOptions::mla_get_data_source() to get anything available;
 		 * for example:
-		 */
+		 * /
 		$my_setting = array(
 			'data_source' => 'size_names',
 			'option' => 'array'
-		);
+		); // */
 		//$size_names = MLAOptions::mla_get_data_source($post_id, $category, $my_setting, $attachment_metadata);
-		//error_log( 'MLAMappingHooksExample::mla_mapping_custom_value_filter $size_names = ' . var_export( $size_names, true ), 0 );
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_mapping_custom_value_filter $size_names = ' . var_export( $size_names, true ), 0 );
 
 		/*
 		 * For "empty" values, return ' '.
@@ -461,24 +451,22 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated rule IPTC value
 	 */
-	public static function mla_mapping_iptc_value_filter( $iptc_value, $setting_value, $post_id, $category, $attachment_metadata ) {
-		//error_log( 'MLAMappingHooksExample::mla_mapping_iptc_value_filter $iptc_value = ' . var_export( $iptc_value, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_iptc_value_filter $setting_value = ' . var_export( $setting_value, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_iptc_value_filter $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_iptc_value_filter $category = ' . var_export( $category, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_iptc_value_filter $attachment_metadata = ' . var_export( $attachment_metadata, true ), 0 );
+	public static function mla_mapping_iptc_value( $iptc_value, $setting_value, $post_id, $category, $attachment_metadata ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_iptc_value_filter( {$post_id}, {$category} ) iptc_value = " . var_export( $iptc_value, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_iptc_value_filter( {$post_id}, {$category} ) setting_value = " . var_export( $setting_value, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_iptc_value_filter( {$post_id}, {$category} ) attachment_metadata = " . var_export( $attachment_metadata, true ), 0 );
 
 		/*
 		 * You can use MLAOptions::mla_get_data_source() to get anything available;
 		 * for example:
-		 */
+		 * /
 		$my_setting = array(
 			'data_source' => 'template',
 			'meta_name' => '([+iptc:keywords+])',
 			'option' => 'array'
-		);
+		); // */
 		//$keywords = MLAOptions::mla_get_data_source($post_id, $category, $my_setting, $attachment_metadata);
-		//error_log( 'MLAMappingHooksExample::mla_mapping_iptc_value_filter $keywords = ' . var_export( $keywords, true ), 0 );
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_mapping_iptc_value_filter $keywords = ' . var_export( $keywords, true ), 0 );
 
 		/*
 		 * For "empty" values, return ''.
@@ -503,24 +491,22 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated rule EXIF/Template value
 	 */
-	public static function mla_mapping_exif_value_filter( $exif_value, $setting_value, $post_id, $category, $attachment_metadata ) {
-		//error_log( 'MLAMappingHooksExample::mla_mapping_exif_value_filter $exif_value = ' . var_export( $exif_value, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_exif_value_filter $setting_value = ' . var_export( $setting_value, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_exif_value_filter $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_exif_value_filter $category = ' . var_export( $category, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_exif_value_filter $attachment_metadata = ' . var_export( $attachment_metadata, true ), 0 );
+	public static function mla_mapping_exif_value( $exif_value, $setting_value, $post_id, $category, $attachment_metadata ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_exif_value_filter( {$post_id}, {$category} ) exif_value = " . var_export( $exif_value, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_exif_value_filter( {$post_id}, {$category} ) setting_value = " . var_export( $setting_value, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_exif_value_filter( {$post_id}, {$category} ) attachment_metadata = " . var_export( $attachment_metadata, true ), 0 );
 
 		/*
 		 * You can use MLAOptions::mla_get_data_source() to get anything available;
 		 * for example:
-		 */
+		 * /
 		$my_setting = array(
 			'data_source' => 'template',
 			'meta_name' => '([+exif:Copyright+])',
 			'option' => 'array'
-		);
+		); // */
 		//$copyright = MLAOptions::mla_get_data_source($post_id, $category, $my_setting, $attachment_metadata);
-		//error_log( 'MLAMappingHooksExample::mla_mapping_exif_value_filter $copyright = ' . var_export( $copyright, true ), 0 );
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_mapping_exif_value_filter $copyright = ' . var_export( $copyright, true ), 0 );
 
 		/*
 		 * For "empty" 'text' values, return ''.
@@ -546,12 +532,10 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated rule EXIF/Template value
 	 */
-	public static function mla_mapping_new_text_filter( $new_text, $setting_value, $post_id, $category, $attachment_metadata ) {
-		//error_log( 'MLAMappingHooksExample::mla_mapping_new_text_filter $exif_value = ' . var_export( $exif_value, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_new_text_filter $setting_value = ' . var_export( $setting_value, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_new_text_filter $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_new_text_filter $category = ' . var_export( $category, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_new_text_filter $attachment_metadata = ' . var_export( $attachment_metadata, true ), 0 );
+	public static function mla_mapping_new_text( $new_text, $setting_value, $post_id, $category, $attachment_metadata ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_new_text_filter( {$post_id}, {$category} ) new_text = " . var_export( $new_text, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_new_text_filter( {$post_id}, {$category} ) setting_value = " . var_export( $setting_value, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_new_text_filter( {$post_id}, {$category} ) attachment_metadata = " . var_export( $attachment_metadata, true ), 0 );
 
 		return  $new_text;
 	} // mla_mapping_new_text_filter
@@ -573,12 +557,10 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated attachment's updates
 	 */
-	public static function mla_mapping_updates_filter( $updates, $post_id, $category, $settings, $attachment_metadata ) {
-		//error_log( 'MLAMappingHooksExample::mla_mapping_updates_filter $updates = ' . var_export( $updates, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_updates_filter $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_updates_filter $category = ' . var_export( $category, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_updates_filter $settings = ' . var_export( $settings, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_mapping_updates_filter $attachment_metadata = ' . var_export( $attachment_metadata, true ), 0 );
+	public static function mla_mapping_updates( $updates, $post_id, $category, $settings, $attachment_metadata ) {
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_updates_filter( {$post_id}, {$category} ) updates = " . var_export( $updates, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_updates_filter( {$post_id}, {$category} ) settings = " . var_export( $settings, true ), 0 );
+		//error_log( __LINE__ . " MLAMappingHooksExample::mla_mapping_updates_filter( {$post_id}, {$category} ) attachment_metadata = " . var_export( $attachment_metadata, true ), 0 );
 
 		/*
 		 * Look for the "file export" rule; call the export function if there's a match.
@@ -745,15 +727,15 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	void
 	 */
-	public static function mla_end_mapping_action() {
-		//error_log( 'MLAMappingHooksExample::mla_end_mapping_action', 0 );
+	public static function mla_end_mapping() {
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_end_mapping_action', 0 );
 
 		// If the Export file is open, write the trailer and close it
 		if ( NULL !== self::$file_handle ) {
 			@fwrite( self::$file_handle, "</items>\n" );
 			@fclose( self::$file_handle );
 			self::$file_handle = NULL;
-			//error_log( 'MLAMappingHooksExample::mla_end_mapping_action Export file closed', 0 );
+			error_log( __LINE__ . ' MLAMappingHooksExample::mla_end_mapping_action Export file closed', 0 );
 		}
 	} // mla_end_mapping_action
 
@@ -771,10 +753,10 @@ class MLAMappingHooksExample {
 	 *
 	 * @return	array	updated tablist
 	 */
-	public static function mla_get_options_tablist_filter( $results, $mla_tablist, $tab ) {
-		//error_log( 'MLAMappingHooksExample::mla_get_options_tablist_filter $results = ' . var_export( $results, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_get_options_tablist_filter $mla_tablist = ' . var_export( $mla_tablist, true ), 0 );
-		//error_log( 'MLAMappingHooksExample::mla_get_options_tablist_filter $tab = ' . var_export( $tab, true ), 0 );
+	public static function mla_get_options_tablist( $results, $mla_tablist, $tab ) {
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_get_options_tablist_filter $results = ' . var_export( $results, true ), 0 );
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_get_options_tablist_filter $mla_tablist = ' . var_export( $mla_tablist, true ), 0 );
+		//error_log( __LINE__ . ' MLAMappingHooksExample::mla_get_options_tablist_filter $tab = ' . var_export( $tab, true ), 0 );
 
 		/*
 		 * Return an updated $mla_tablist ( $tab = NULL ), an updated single element or false

@@ -4,19 +4,19 @@ Donate link: https://connekthq.com/donate/
 Tags: infinite scroll, scroll, infinite, lazy load, lazy loading, pagination, ajax pagination, ajax, ajax posts, ajax load posts, loop, query, dynamic, shortcode builder, wp_query, search, tags, category, post types, taxonomy, meta_query, archives, date, infinite scrolling, woocommerce
 Requires at least: 3.6
 Tested up to: 4.5.2
-Stable tag: 2.10.1
+Stable tag: 2.11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A powerful solution to add infinite scroll functionality to your website
+The ultimate solution to add infinite scroll functionality to your website
 
 == Description ==
 
-Ajax Load More is the ultimate solution for infinite scrolling and lazy loading posts, custom post types, single posts, pages and comments with Ajax powered queries.
+Ajax Load More is a powerful solution for infinite scrolling and lazy loading posts, custom post types, single posts, pages and comments with Ajax powered queries.
 
 Build complex custom WordPress queries using the Ajax Load More shortcode builder then add the generated shortcode to your page via the content editor or directly into your template files. 
 
-Ajax Load More is fully compatible with popular ecommerce plugins such as WooCommerce, Easy Digital Downloads and JigoShop.
+Ajax Load More is fully compatible with popular ecommerce plugins such as WooCommerce and Easy Digital Downloads.
 
 **[Get More Information](https://connekthq.com/plugins/ajax-load-more/)**
 
@@ -169,6 +169,10 @@ Ajax Load More accepts a number of parameters that are passed to the WordPress q
 > #### Previous Post
 > The **[Previous Post](https://connekthq.com/plugins/ajax-load-more/previous-post/)** add-on will allow you to navigate single posts with Ajax Load More.<br />
 > [Get More Information](https://connekthq.com/plugins/ajax-load-more/previous-post/)
+> 
+> #### REST API
+> The **[REST API](https://connekthq.com/plugins/ajax-load-more/rest-api/)** add-on will enable compatibility between Ajax Load More and the WP REST API plugin.<br />
+> [Get More Information](https://connekthq.com/plugins/ajax-load-more/rest-api/)
 > 
 > #### Search Engine Optimization
 > The **[SEO](https://connekthq.com/plugins/ajax-load-more/seo/)** add-on will optimize your ajax loaded content for search engines and site visitors by generating standard WordPress paging URLs with each Ajax Load More query.<br />
@@ -325,6 +329,19 @@ How to install Ajax Load More.
 
 
 == Changelog ==
+
+= 2.11.1 - May 30, 2016 =
+* SECURITY - Security fix for posts_status parameter. posts_status is now only available for logged in (admin) users. Non logged in users will only have access to view content in a 'publish' state.
+* UPDATE - Added support for preloading comments with the Comments and Preloaded add-ons.
+* Shortcode Builder UI improvments
+
+
+= 2.11.0 - May 25, 2016 =
+* NEW - Adding required functionality for the new REST API add-on.
+* FIX - Fixed url parsing issue with the ALM base URL and Blog page url. This was affecting SEO add-on users.
+* UPDATE - WP_Query Performance improvements.
+* UPDATE - Various UI updates/tweaks.
+
 
 = 2.10.1 - May 8, 2016 =
 * NEW - Users can now load a custom version of ajax-load-more.css from {/alm} folder in current theme directory.
@@ -659,7 +676,7 @@ How to install Ajax Load More.
 = 2.0.2 =
 * Fixed issue with tinymce conflict
 
-= 2.0.1 =
+= 2.0.1 - June 20, 2014 =
 * Ajax Load More
 
 == Upgrade Notice ==

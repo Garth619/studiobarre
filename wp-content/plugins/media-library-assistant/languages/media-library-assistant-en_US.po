@@ -1,9 +1,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Media Library Assistant\n"
-"POT-Creation-Date: 2016-04-08 20:54-0700\n"
-"PO-Revision-Date: 2016-04-08 20:55-0700\n"
+"POT-Creation-Date: 2016-06-05 18:54-0700\n"
+"PO-Revision-Date: 2016-06-05 18:55-0700\n"
+"Last-Translator: David Lingren <david@fairtradejudaica.org>\n"
 "Language-Team: David Lingren <david@fairtradejudaica.org>\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,8 +15,6 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c;_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"Last-Translator: David Lingren <david@fairtradejudaica.org>\n"
-"Language: en_US\n"
 "X-Poedit-SearchPath-0: includes\n"
 "X-Poedit-SearchPath-1: tests\n"
 "X-Poedit-SearchPath-2: index.php\n"
@@ -1966,9 +1966,6 @@ msgstr ""
 msgid "tpls/mla-option-templates.tpl not found"
 msgstr ""
 
-msgid "no templates exist"
-msgstr ""
-
 #. translators: 1: ERROR tag 2: option name 3: action, e.g., update, delete, reset
 #, php-format
 msgid "%1$s: Custom %2$s unknown action \"%3$s\""
@@ -2463,6 +2460,9 @@ msgctxt "error_log"
 msgid "%1$s: %2$s unknown type = \"%3$s\""
 msgstr ""
 
+msgid "Go to Bottom"
+msgstr ""
+
 msgid "General"
 msgstr ""
 
@@ -2472,7 +2472,7 @@ msgstr ""
 msgid "Uploads"
 msgstr ""
 
-msgid "MLA Gallery"
+msgid "Shortcodes"
 msgstr ""
 
 msgid "Custom Fields"
@@ -2530,6 +2530,14 @@ msgid "enhanced version of the WordPress [gallery] shortcode."
 msgstr ""
 
 msgid "enhanced version of the WordPress Tag Cloud."
+msgstr ""
+
+msgid ""
+"provides flat or hierarchical lists, dropdown controls and checkbox lists of "
+"taxonomy terms."
+msgstr ""
+
+msgid "wait a bit longer"
 msgstr ""
 
 msgid "Shortcodes made available by this plugin"
@@ -2734,13 +2742,16 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-msgid "MLA Gallery Options"
+msgid "Go to"
 msgstr ""
 
-msgid "Go to Style Templates"
+msgid "Style Templates"
 msgstr ""
 
-msgid "Go to Markup Templates"
+msgid "Markup Templates"
+msgstr ""
+
+msgid "MLA Shortcode Options"
 msgstr ""
 
 msgid ""
@@ -2750,12 +2761,6 @@ msgid ""
 "<code>[mla_gallery]</code> shortcodes. <strong>NOTE:</strong> template "
 "additions and changes will not be made permanent until you click \"Save "
 "Changes\" at the bottom of this page."
-msgstr ""
-
-msgid "Style Templates"
-msgstr ""
-
-msgid "Markup Templates"
 msgstr ""
 
 msgid "Theme"
@@ -2778,13 +2783,6 @@ msgid ""
 "styles."
 msgstr ""
 
-msgid "Styles"
-msgstr ""
-
-msgid ""
-"List of substitution parameters, e.g., [+selector+], on Documentation tab."
-msgstr ""
-
 msgid "Delete this template"
 msgstr ""
 
@@ -2799,50 +2797,6 @@ msgstr ""
 msgid ""
 "This default template cannot be altered or deleted, but you can copy the "
 "markup."
-msgstr ""
-
-msgid "Arguments"
-msgstr ""
-
-msgid "Default shortcode parameter values."
-msgstr ""
-
-msgid "Open"
-msgstr ""
-
-msgid ""
-"Markup for the beginning of the gallery. List of parameters, e.g., [+selector"
-"+], on Documentation tab."
-msgstr ""
-
-msgid "Row"
-msgstr ""
-
-msgid "Markup for the beginning of each row in the gallery."
-msgstr ""
-
-msgid "Item"
-msgstr ""
-
-msgid "Markup for each item/cell of the gallery."
-msgstr ""
-
-msgid "Close"
-msgstr ""
-
-msgid "Markup for the end of each row in the gallery."
-msgstr ""
-
-msgid "Markup for the end of the gallery."
-msgstr ""
-
-msgid "Markup for the beginning of each row."
-msgstr ""
-
-msgid "Markup for each item/cell."
-msgstr ""
-
-msgid "Markup for the end of each row."
 msgstr ""
 
 msgid "Fill in a name and markup to add a new template."
@@ -2867,6 +2821,9 @@ msgid "Progress"
 msgstr ""
 
 msgid "Resume"
+msgstr ""
+
+msgid "Close"
 msgstr ""
 
 msgid "Custom Field and Attachment Metadata Processing Options"
@@ -3023,6 +2980,11 @@ msgstr ""
 msgid "%1$s: Duplicate new %2$s \"%3$s\", reverting to \"%4$s\"."
 msgstr ""
 
+#. translators: 1: ERROR tag 2: element name 3: new value 4: old value
+#, php-format
+msgid "%1$s: Reserved %2$s \"%3$s\", reverting to \"%4$s\"."
+msgstr ""
+
 #. translators: 1: element name 2: old_value 3: new_value
 #, php-format
 msgctxt "message_list"
@@ -3043,40 +3005,10 @@ msgstr ""
 msgid "markup template name"
 msgstr ""
 
-#. translators: 1: template name
+#. translators: 1: section name, 2: template name
 #, php-format
 msgctxt "message_list"
-msgid "Updating arguments markup for \"%1$s\"."
-msgstr ""
-
-#. translators: 1: template name
-#, php-format
-msgctxt "message_list"
-msgid "Updating open markup for \"%1$s\"."
-msgstr ""
-
-#. translators: 1: template name
-#, php-format
-msgctxt "message_list"
-msgid "Updating row open markup for \"%1$s\"."
-msgstr ""
-
-#. translators: 1: template name
-#, php-format
-msgctxt "message_list"
-msgid "Updating item markup for \"%1$s\"."
-msgstr ""
-
-#. translators: 1: template name
-#, php-format
-msgctxt "message_list"
-msgid "Updating row close markup for \"%1$s\"."
-msgstr ""
-
-#. translators: 1: template name
-#, php-format
-msgctxt "message_list"
-msgid "Updating close markup for \"%1$s\"."
+msgid "Updating %1$s markup for \"%2$s\"."
 msgstr ""
 
 #. translators: 1: field type
@@ -3220,9 +3152,6 @@ msgstr ""
 msgid "Settings imported; %1$s updated, %2$s unchanged."
 msgstr ""
 
-msgid "not found"
-msgstr ""
-
 msgid "Previous"
 msgstr ""
 
@@ -3250,6 +3179,9 @@ msgid "mla_debug empty cloud"
 msgstr ""
 
 msgid "mla_debug empty list"
+msgstr ""
+
+msgid "no-terms"
 msgstr ""
 
 msgid "Invalid mla_gallery"
@@ -3301,6 +3233,98 @@ msgid "mla_debug num_rows"
 msgstr ""
 
 msgid "mla_debug found_rows"
+msgstr ""
+
+msgid "Styles"
+msgstr ""
+
+msgid ""
+"List of substitution parameters, e.g., [+selector+], on Documentation tab."
+msgstr ""
+
+msgid "Arguments"
+msgstr ""
+
+msgid "Default shortcode parameter values."
+msgstr ""
+
+msgid "Row"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Markup for the beginning of each row in the gallery."
+msgstr ""
+
+msgid ""
+"Markup for the beginning of the gallery. List of parameters, e.g., [+selector"
+"+], on Documentation tab."
+msgstr ""
+
+msgid "Item"
+msgstr ""
+
+msgid "Markup for each item/cell of the gallery."
+msgstr ""
+
+msgid "Markup for the end of each row in the gallery."
+msgstr ""
+
+msgid "Markup for the end of the gallery."
+msgstr ""
+
+msgid "Markup for the beginning of each row in the cloud; grid format only."
+msgstr ""
+
+msgid ""
+"Markup for the beginning of the cloud. List of parameters, e.g., [+selector"
+"+], on Documentation tab."
+msgstr ""
+
+msgid "Markup for each item/cell of the cloud."
+msgstr ""
+
+msgid "Markup for the end of each row in the cloud; grid format only."
+msgstr ""
+
+msgid "Markup for the end of the cloud."
+msgstr ""
+
+msgid "Child"
+msgstr ""
+
+msgid ""
+"Markup for the beginning of each level in the hierarchy; list format only."
+msgstr ""
+
+msgid "Markup for each lower-level item in the hierarchy; list format only."
+msgstr ""
+
+msgid "Markup for the end of each level in the hierarchy; list format only."
+msgstr ""
+
+msgid ""
+"Markup for the beginning of the list. List of parameters, e.g., [+selector"
+"+], on Documentation tab."
+msgstr ""
+
+msgid "Markup for each item/cell in the list."
+msgstr ""
+
+msgid "Markup for the end of the list."
+msgstr ""
+
+msgid "error loading tpls/mla-custom-templates.tpl"
+msgstr ""
+
+msgid "tpls/mla-custom-templates.tpl not found"
+msgstr ""
+
+msgid "no templates exist"
+msgstr ""
+
+msgid "not found"
 msgstr ""
 
 msgid "Error while saving the thumbnails."

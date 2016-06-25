@@ -15,6 +15,24 @@ defined( 'ABSPATH' ) or die();
  */
 class MLACore {
 	/**
+	 * Current version number (moved from class-mla-main.php)
+	 *
+	 * @since 2.30
+	 *
+	 * @var	string
+	 */
+	const CURRENT_MLA_VERSION = '2.31';
+
+	/**
+	 * Slug for registering and enqueueing plugin style sheets (moved from class-mla-main.php)
+	 *
+	 * @since 2.30
+	 *
+	 * @var	string
+	 */
+	const STYLESHEET_SLUG = 'mla-style';
+
+	/**
 	 * Original PHP error_log path and file
 	 *
 	 * @since 2.20
@@ -286,8 +304,63 @@ class MLACore {
 					}
 				}
 			}
+		} // MLA_MEDIA_MODAL_APPLY_DISPLAY_SETTINGS
+		
+		/*
+		 * Hook wp_enqueue_media() so we can add MLA enhancements, if requested
+		 */
+		if ( 'checked' == MLACore::mla_get_option( MLACoreOptions::MLA_MEDIA_MODAL_TOOLBAR ) ) {
+			add_filter( 'media_view_settings', 'MLACore::mla_media_view_settings_filter', 10, 2 );
 		}
 	}
+
+	/**
+	 * Ensures that MLA media manager enhancements are present when required.
+	 * Declared public because it is a filter.
+	 *
+	 * @since 2.30
+	 *
+	 * @param	array	associative array with setting => value pairs
+	 * @param	object || NULL	current post object, if available
+	 */
+	public static function mla_media_view_settings_filter( $settings, $post ) {
+		if ( class_exists( 'MLAModal' ) ) {
+			return $settings;
+		}
+
+		/*
+		 * Media Manager (Modal window) additions
+		 */
+		require_once( MLA_PLUGIN_PATH . 'includes/class-mla-list-table.php' );
+
+		require_once( MLA_PLUGIN_PATH . 'includes/class-mla-view-list-table.php' );
+		MLA_View_List_Table::mla_localize_default_columns_array();
+		
+		require_once( MLA_PLUGIN_PATH . 'includes/class-mla-media-modal.php' );
+		MLAModal::initialize();
+
+		add_action( 'wp_enqueue_media', 'MLACore::mla_wp_enqueue_media_action', 10, 0 );
+
+		return MLAModal::mla_media_view_settings_filter( $settings, $post );
+	}
+
+	/**
+	 * Registers and enqueues the mla-beaver-builder-style.css file, when needed.
+	 * Declared public because it is an action.
+	 *
+	 * @since 2.30
+	 */
+	public static function mla_wp_enqueue_media_action( ) {
+		global $wp_locale;
+
+		if ( $wp_locale->is_rtl() ) {
+			wp_register_style( MLAModal::JAVASCRIPT_MEDIA_MODAL_STYLES . '-bb', MLA_PLUGIN_URL . 'css/mla-beaver-builder-style-rtl.css', false, MLACore::CURRENT_MLA_VERSION );
+		} else {
+			wp_register_style( MLAModal::JAVASCRIPT_MEDIA_MODAL_STYLES . '-bb', MLA_PLUGIN_URL . 'css/mla-beaver-builder-style.css', false, MLACore::CURRENT_MLA_VERSION );
+		}
+
+		wp_enqueue_style( MLAModal::JAVASCRIPT_MEDIA_MODAL_STYLES . '-bb' );
+	} // mla_wp_enqueue_media_action
 
 	/**
 	 * Load a plugin text domain and alternate debug file

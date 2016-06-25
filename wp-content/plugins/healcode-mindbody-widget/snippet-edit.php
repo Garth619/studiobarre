@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 global $wpdb;
 global $current_user;
 get_currentuserinfo();
@@ -13,35 +12,35 @@ if(isset($_POST) && isset($_POST['updateSubmit'])){
 // 		die("JJJ");
 	$_POST = stripslashes_deep($_POST);
 	$_POST = hc_trim_deep($_POST);
-	
+
 	$hc_hmw_snippetId = $_GET['snippetId'];
-	
+
 	$temp_hc_hmw_title = str_replace(' ', '', $_POST['snippetTitle']);
 	$temp_hc_hmw_title = str_replace('-', '', $temp_hc_hmw_title);
-	
+
 	$hc_hmw_title = str_replace(' ', '-', $_POST['snippetTitle']);
 	$hc_hmw_content = $_POST['snippetContent'];
 
 	if($hc_hmw_title != "" && $hc_hmw_content != ""){
-		
+
 		if(ctype_alnum($temp_hc_hmw_title))
 		{
 		$snippet_count = $wpdb->query($wpdb->prepare( 'SELECT * FROM '.$wpdb->prefix.'hc_hmw_short_code WHERE id!=%d AND title=%s LIMIT 0,1',$hc_hmw_snippetId,$hc_hmw_title)) ;
-		
+
 		if($snippet_count == 0){
 			$hc_shortCode = '[hc-hmw snippet="'.$hc_hmw_title.'"]';
-			
+
 			$wpdb->update($wpdb->prefix.'hc_hmw_short_code', array('title'=>$hc_hmw_title,'content'=>$hc_hmw_content,'short_code'=>$hc_shortCode,), array('id'=>$hc_hmw_snippetId));
-			
+
 			header("Location:".admin_url('admin.php?page=insert-html-short-manage&msg=5'));
-	
+
 		}else{
 			?>
 			<div class="system_notice_area_style0" id="system_notice_area">
 			Widget shortcode already exists. &nbsp;&nbsp;&nbsp;<span id="system_notice_area_dismiss">Dismiss</span>
 			</div>
-			<?php	
-	
+			<?php
+
 		}
 		}
 		else
@@ -51,16 +50,16 @@ if(isset($_POST) && isset($_POST['updateSubmit'])){
 		Widget title can have only alphabets,numbers or hyphen. &nbsp;&nbsp;&nbsp;<span id="system_notice_area_dismiss">Dismiss</span>
 		</div>
 		<?php
-		
+
 		}
-		
-	
+
+
 	}else{
-?>		
+?>
 		<div class="system_notice_area_style0" id="system_notice_area">
 			Fill all mandatory fields. &nbsp;&nbsp;&nbsp;<span id="system_notice_area_dismiss">Dismiss</span>
 		</div>
-<?php 
+<?php
 	}
 
 }
@@ -71,9 +70,7 @@ global $wpdb;
 
 $snippetDetails = $wpdb->get_results($wpdb->prepare( 'SELECT * FROM '.$wpdb->prefix.'hc_hmw_short_code WHERE id=%d LIMIT 0,1',$hc_hmw_snippetId )) ;
 $snippetDetails = $snippetDetails[0];
-
 ?>
-
 <div >
 	<fieldset
 		style="width: 99%; border: 0px solid #F7F7F7; padding: 10px 0px;">
@@ -102,7 +99,7 @@ $snippetDetails = $snippetDetails[0];
 						<td >
 							<textarea name="snippetContent" style="width:80%;height:150px;"><?php if(isset($_POST['snippetContent'])){ echo esc_textarea($_POST['snippetContent']);}else{ echo esc_textarea($snippetDetails->content); }?></textarea>
 						</td>
-					</tr>				
+					</tr>
 
 				<tr>
 				<td></td><td></td>

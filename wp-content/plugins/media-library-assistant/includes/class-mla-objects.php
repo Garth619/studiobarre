@@ -85,7 +85,6 @@ class MLAObjects {
 				  'hierarchical' => false,
 				  'labels' => $labels,
 				  'show_ui' => true,
-				  'update_count_callback' => '_update_post_term_count',
 				  'query_var' => true,
 				  'rewrite' => true,
 				  'update_count_callback' => '_update_generic_term_count'

@@ -35,6 +35,10 @@ Copyright 2015 David Lingren
 /**
  * Class Unattached Fixit implements a Tools submenu page with several image-fixing tools.
  *
+ * Created for support topic "Bulk delete Unattached images/media"
+ * opened on 11/24/2015 by "lododicesimo":
+ * https://wordpress.org/support/topic/bulk-delete-unattached-imagesmedia
+ *
  * @package Unattached Fixit
  * @since 1.00
  */

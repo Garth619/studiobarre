@@ -500,9 +500,8 @@ class MLAListTableHooksExample {
 	 * @param	array	$custom_field_map	[ slug => field_name ]
 	 */
 	public static function mla_list_table_bulk_action_initial_request( $request, $bulk_action, $custom_field_map ) {
-		//error_log( 'MLAListTableHooksExample::mla_list_table_bulk_action_initial_request $request = ' . var_export( $request, true ), 0 );
-		//error_log( 'MLAListTableHooksExample::mla_list_table_bulk_action_initial_request $bulk_action = ' . var_export( $bulk_action, true ), 0 );
-		//error_log( 'MLAListTableHooksExample::mla_list_table_bulk_action_initial_request $custom_field_map = ' . var_export( $custom_field_map, true ), 0 );
+		//error_log( "MLAListTableHooksExample::mla_list_table_bulk_action_initial_request( {$bulk_action} ) request = " . var_export( $request, true ), 0 );
+		//error_log( "MLAListTableHooksExample::mla_list_table_bulk_action_initial_request( {$bulk_action} ) custom_field_map = " . var_export( $custom_field_map, true ), 0 );
 		/*
 		 * $request['mla_bulk_action_do_cleanup'] is true on input if the parameters come from $_REQUEST.
 		 * If it is true on output the bulk action request parameters will be removed from $_REQUEST.
@@ -523,7 +522,7 @@ class MLAListTableHooksExample {
 	 * @param	string	$bulk_action	The requested action.
 	 */
 	public static function mla_list_table_begin_bulk_action( $item_content, $bulk_action ) {
-		//error_log( 'MLAListTableHooksExample::mla_list_table_begin_bulk_action $bulk_action = ' . var_export( $bulk_action, true ), 0 );
+		//error_log( "MLAListTableHooksExample::mla_list_table_begin_bulk_action( {$bulk_action} )", 0 );
 
 		/*
 		 * Return NULL if not handled here, otherwise
@@ -547,10 +546,8 @@ class MLAListTableHooksExample {
 	 * @param	array	$custom_field_map	[ slug => field_name ]
 	 */
 	public static function mla_list_table_bulk_action_item_request( $request, $bulk_action, $post_id, $custom_field_map ) {
-		//error_log( 'MLAListTableHooksExample::mla_list_table_bulk_action_item_request $request = ' . var_export( $request, true ), 0 );
-		//error_log( 'MLAListTableHooksExample::mla_list_table_bulk_action_item_request $bulk_action = ' . var_export( $bulk_action, true ), 0 );
-		//error_log( 'MLAListTableHooksExample::mla_list_table_bulk_action_item_request $post_id = ' . var_export( $post_id, true ), 0 );
-		//error_log( 'MLAListTableHooksExample::mla_list_table_bulk_action_item_request $custom_field_map = ' . var_export( $custom_field_map, true ), 0 );
+		//error_log( "MLAListTableHooksExample::mla_list_table_bulk_action_item_request( {$bulk_action}, {$post_id} ) request = " . var_export( $request, true ), 0 );
+		//error_log( "MLAListTableHooksExample::mla_list_table_bulk_action_item_request( {$bulk_action}, {$post_id} ) custom_field_map = " . var_export( $custom_field_map, true ), 0 );
 		return $request;
 	} // mla_list_table_bulk_action_item_request
 
@@ -568,8 +565,7 @@ class MLAListTableHooksExample {
 	 * @param	integer	$post_id		The affected attachment.
 	 */
 	public static function mla_list_table_bulk_action( $item_content, $bulk_action, $post_id ) {
-		//error_log( 'MLAListTableHooksExample::mla_list_table_bulk_action $bulk_action = ' . var_export( $bulk_action, true ), 0 );
-		//error_log( 'MLAListTableHooksExample::mla_list_table_bulk_action $post_id = ' . var_export( $post_id, true ), 0 );
+		//error_log( "MLAListTableHooksExample::mla_list_table_bulk_action( {$bulk_action}, {$post_id} )", 0 );
 
 		/*
 		 * Return NULL if not handled here, otherwise
@@ -593,8 +589,7 @@ class MLAListTableHooksExample {
 	 * @param	integer	$post_id		The affected attachment.
 	 */
 	public static function mla_list_table_custom_bulk_action( $item_content, $bulk_action, $post_id ) {
-		//error_log( 'MLAListTableHooksExample::mla_list_table_custom_bulk_action $bulk_action = ' . var_export( $bulk_action, true ), 0 );
-		//error_log( 'MLAListTableHooksExample::mla_list_table_custom_bulk_action $post_id = ' . var_export( $post_id, true ), 0 );
+		//error_log( "MLAListTableHooksExample::mla_list_table_custom_bulk_action( {$bulk_action}, {$post_id} )", 0 );
 
 		/*
 		 * Return NULL if not handled here, otherwise
@@ -617,7 +612,7 @@ class MLAListTableHooksExample {
 	 * @param	string	$bulk_action	The requested action.
 	 */
 	public static function mla_list_table_end_bulk_action( $item_content, $bulk_action ) {
-		//error_log( 'MLAListTableHooksExample::mla_list_table_end_bulk_action $bulk_action = ' . var_export( $bulk_action, true ), 0 );
+		//error_log( "MLAListTableHooksExample::mla_list_table_end_bulk_action( $bulk_action )", 0 );
 
 		/*
 		 * Return NULL if not handled here, otherwise

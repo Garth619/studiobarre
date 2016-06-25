@@ -22,14 +22,11 @@ if ( !function_exists( 'post_categories_meta_box' ) ) {
  */
 class MLA {
 
-	/**
-	 * Current version number
-	 *
+	/*
+	 * Current version number (moved to class-mla-core.php)
 	 * @since 0.1
-	 *
-	 * @var	string
 	 */
-	const CURRENT_MLA_VERSION = '2.25';
+	// const CURRENT_MLA_VERSION
 
 	/**
 	 * Current date for Development Version, empty for production versions
@@ -41,13 +38,10 @@ class MLA {
 	const MLA_DEVELOPMENT_VERSION = '';
 
 	/**
-	 * Slug for registering and enqueueing plugin style sheet
-	 *
+	 * Slug for registering and enqueueing plugin style sheets (moved to class-mla-core.php)
 	 * @since 0.1
-	 *
-	 * @var	string
 	 */
-	const STYLESHEET_SLUG = 'mla-style';
+	// const STYLESHEET_SLUG
 
 	/**
 	 * Object name for localizing JavaScript - MLA List Table
@@ -223,6 +217,9 @@ class MLA {
 	 * @return	void
 	 */
 	public static function mla_admin_init_action() {
+		static $count = 0;
+		//error_log( __LINE__ . ' DEBUG: MLA::mla_admin_init_action $count = ' . var_export( $count++, true ), 0 );
+		
 		//error_log( __LINE__ . ' DEBUG: MLA::mla_admin_init_action referer = ' . var_export( wp_get_referer(), true ), 0 );
 		//error_log( __LINE__ . ' DEBUG: MLA::mla_admin_init_action $_REQUEST = ' . var_export( $_REQUEST, true ), 0 );
 		/*
@@ -401,13 +398,13 @@ class MLA {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 
 		if ( 'checked' != MLACore::mla_get_option( MLACoreOptions::MLA_SCREEN_DISPLAY_LIBRARY ) ) {
-			wp_register_style( self::STYLESHEET_SLUG . '-nolibrary', MLA_PLUGIN_URL . 'css/mla-nolibrary.css', false, self::CURRENT_MLA_VERSION );
-			wp_enqueue_style( self::STYLESHEET_SLUG . '-nolibrary' );
+			wp_register_style( MLACore::STYLESHEET_SLUG . '-nolibrary', MLA_PLUGIN_URL . 'css/mla-nolibrary.css', false, MLACore::CURRENT_MLA_VERSION );
+			wp_enqueue_style( MLACore::STYLESHEET_SLUG . '-nolibrary' );
 		}
 
 		if ( 'edit-tags.php' == $page_hook ) {
-			wp_register_style( self::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-edit-tags-style.css', false, self::CURRENT_MLA_VERSION );
-			wp_enqueue_style( self::STYLESHEET_SLUG );
+			wp_register_style( MLACore::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-edit-tags-style.css', false, MLACore::CURRENT_MLA_VERSION );
+			wp_enqueue_style( MLACore::STYLESHEET_SLUG );
 			return;
 		}
 
@@ -421,21 +418,21 @@ class MLA {
 		add_action( 'admin_print_styles', 'MLA::mla_admin_print_styles_action' );
 
 		if ( $wp_locale->is_rtl() ) {
-			wp_register_style( self::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-style-rtl.css', false, self::CURRENT_MLA_VERSION );
+			wp_register_style( MLACore::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-style-rtl.css', false, MLACore::CURRENT_MLA_VERSION );
 		} else {
-			wp_register_style( self::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-style.css', false, self::CURRENT_MLA_VERSION );
+			wp_register_style( MLACore::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-style.css', false, MLACore::CURRENT_MLA_VERSION );
 		}
 
-		wp_enqueue_style( self::STYLESHEET_SLUG );
+		wp_enqueue_style( MLACore::STYLESHEET_SLUG );
 
-		wp_register_style( self::STYLESHEET_SLUG . '-set-parent', MLA_PLUGIN_URL . 'css/mla-style-set-parent.css', false, self::CURRENT_MLA_VERSION );
-		wp_enqueue_style( self::STYLESHEET_SLUG . '-set-parent' );
+		wp_register_style( MLACore::STYLESHEET_SLUG . '-set-parent', MLA_PLUGIN_URL . 'css/mla-style-set-parent.css', false, MLACore::CURRENT_MLA_VERSION );
+		wp_enqueue_style( MLACore::STYLESHEET_SLUG . '-set-parent' );
 
 		wp_enqueue_script( MLACore::JAVASCRIPT_INLINE_EDIT_SLUG, MLA_PLUGIN_URL . "js/mla-inline-edit-scripts{$suffix}.js", 
-			array( 'wp-lists', 'suggest', 'jquery' ), self::CURRENT_MLA_VERSION, false );
+			array( 'wp-lists', 'suggest', 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 		wp_enqueue_script( MLACore::JAVASCRIPT_INLINE_EDIT_SLUG . '-set-parent', MLA_PLUGIN_URL . "js/mla-set-parent-scripts{$suffix}.js", 
-			array( 'wp-lists', 'suggest', 'jquery', MLACore::JAVASCRIPT_INLINE_EDIT_SLUG ), self::CURRENT_MLA_VERSION, false );
+			array( 'wp-lists', 'suggest', 'jquery', MLACore::JAVASCRIPT_INLINE_EDIT_SLUG ), MLACore::CURRENT_MLA_VERSION, false );
 
 		MLAModal::mla_add_terms_search_scripts();
 
@@ -1289,6 +1286,7 @@ class MLA {
 			unset( $_REQUEST['action2'] );
 		}
 
+		MLACore::mla_debug_add( 'mla_process_bulk_action returning $page_content = ' . var_export( $page_content, true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
 		return $page_content;
 	}
 

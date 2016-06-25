@@ -26,6 +26,15 @@ class MLA_Polylang {
 	const MLA_PLL_QUICK_TRANSLATE = 'mla-polylang-quick-translate';
 
 	/**
+	 * Polylang version conditional to avoid deprecated functions in v1.8+
+	 *
+	 * @since 2.30
+	 *
+	 * @var	boolean
+	 */
+	private static $polylang_1dot8_plus = false;
+
+	/**
 	 * Initialization function, similar to __construct()
 	 *
 	 * @since 2.11
@@ -33,6 +42,8 @@ class MLA_Polylang {
 	 * @return	void
 	 */
 	public static function initialize() {
+		self::$polylang_1dot8_plus = version_compare( POLYLANG_VERSION, '1.7.99', '>' );
+
 		/*
 		 * The remaining filters are only useful for the admin section;
 		 * exit in the front-end posts/pages
@@ -220,8 +231,15 @@ class MLA_Polylang {
 		/*
 		 * Get the existing translations, if any
 		 */
-		$translations = $polylang->model->get_translations( 'post', $post_id );
-		if ( ! $translations && $lang = $polylang->model->get_post_language( $post_id ) ) {
+		if ( self::$polylang_1dot8_plus ) {
+			$lang = PLL()->model->post->get_language( $post_id );
+			$translations = PLL()->model->post->get_translations( $post_id );
+		} else {
+			$lang = $polylang->model->get_post_language( $post_id );
+			$translations = $polylang->model->get_translations( 'post', $post_id );
+		}
+
+		if ( ! $translations && $lang ) {
 			$translations[ $lang->slug ] = $post_id;
 		}
 
@@ -235,7 +253,13 @@ class MLA_Polylang {
 			 */
 			$post = get_post( $post_id );
 			$post->ID = NULL; // will force the creation
-			$post->post_parent = ( $post->post_parent && $tr_parent = $polylang->model->get_translation( 'post', $post->post_parent, $new_language ) ) ? $tr_parent : 0;
+			if ( self::$polylang_1dot8_plus ) {
+				$tr_parent = PLL()->model->post->get_translation( $post->post_parent, $new_language );
+			} else {
+				$tr_parent = $polylang->model->get_translation( 'post', $post->post_parent, $new_language );
+			}
+
+			$post->post_parent = ( $post->post_parent && $tr_parent ) ? $tr_parent : 0;
 			$new_id = wp_insert_attachment( $post );
 			add_post_meta( $new_id, '_wp_attachment_metadata', get_post_meta( $post_id, '_wp_attachment_metadata', true ) );
 			add_post_meta( $new_id, '_wp_attached_file', get_post_meta( $post_id, '_wp_attached_file', true ) );
@@ -257,12 +281,23 @@ class MLA_Polylang {
 
 			$polylang->model->set_post_language($new_id, $new_language);
 
-			$translations = $polylang->model->get_translations( 'post', $post_id );
-			if ( ! $translations && $lang = $polylang->model->get_post_language( $post_id ) )
+			if ( self::$polylang_1dot8_plus ) {
+				$lang = PLL()->model->post->get_language( $post_id );
+				$translations = PLL()->model->post->get_translations( $post_id );
+			} else {
+				$lang = $polylang->model->get_post_language( $post_id );
+				$translations = $polylang->model->get_translations( 'post', $post_id );
+			}
+	
+			if ( ! $translations && $lang )
 				$translations[ $lang->slug ] = $post_id;
 
 			$translations[ $new_language ] = $new_id;
-			$polylang->model->save_translations( 'post', $new_id, $translations );
+			if ( self::$polylang_1dot8_plus ) {
+				PLL()->model->post->save_translations( $new_id, $translations );
+			} else {
+				$polylang->model->save_translations( 'post', $new_id, $translations );
+			}
 		} // add new translation
 
 		return (integer) $new_id;
@@ -304,7 +339,11 @@ class MLA_Polylang {
 
 			// Language dropdown in Quick Edit area
 			if ( isset( $_REQUEST['inline_lang_choice'] ) ) {
-				$translations = $polylang->model->get_translations( 'post', $post_id );
+				if ( self::$polylang_1dot8_plus ) {
+					$translations = PLL()->model->post->get_translations( $post_id );
+				} else {
+					$translations = $polylang->model->get_translations( 'post', $post_id );
+				}
 
 				if ( ! array_key_exists( $_REQUEST['inline_lang_choice'], $translations ) ) {
 					$post = get_post( $post_id );
@@ -335,7 +374,11 @@ class MLA_Polylang {
 		}
 
 		//	Create an instance of our package class and echo the new HTML for all translations
-		$translations = $polylang->model->get_translations( 'post', $post_id );
+		if ( self::$polylang_1dot8_plus ) {
+			$translations = PLL()->model->post->get_translations( $post_id );
+		} else {
+			$translations = $polylang->model->get_translations( 'post', $post_id );
+		}
 
 		$MLAListTable = new MLA_List_Table();
 		$new_item = (object) MLAData::mla_get_attachment_by_id( $new_id );
@@ -370,11 +413,11 @@ class MLA_Polylang {
 			return;
 		}
 
-		wp_register_style( 'mla-polylang-support', MLA_PLUGIN_URL . 'css/mla-polylang-support.css', false, MLA::CURRENT_MLA_VERSION );
+		wp_register_style( 'mla-polylang-support', MLA_PLUGIN_URL . 'css/mla-polylang-support.css', false, MLACore::CURRENT_MLA_VERSION );
 		wp_enqueue_style( 'mla-polylang-support' );
 
 		wp_enqueue_script( 'mla-polylang-support-scripts', MLA_PLUGIN_URL . "js/mla-polylang-support-scripts{$suffix}.js", 
-			array( 'jquery' ), MLA::CURRENT_MLA_VERSION, false );
+			array( 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 		// For Quick and Bulk Translate
 		$fields = array( 'old_lang', 'inline_lang_choice', 'inline_translations' );
@@ -463,7 +506,6 @@ class MLA_Polylang {
 	 */
 	public static function mla_get_shortcode_attachments_final_terms( $arguments, $return_found_rows ) {
 		$arguments['lang'] = 'all';
-//error_log( __LINE__ . ' MLA_Polylang::mla_get_shortcode_attachments_final_terms $arguments = ' . var_export( $arguments, true ), 0 );
 		return $arguments;
 	}
 
@@ -480,7 +522,6 @@ class MLA_Polylang {
 	 * @param	mixed	Attachment ID or NULL, depending on scope
 	 */
 	public static function mla_begin_mapping( $source, $post_id = NULL ) {
-//error_log( __LINE__ . " mla_begin_mapping( {$source} ) ", 0 );
 		if ( in_array( $source, array( 'create_metadata', 'single_iptc_exif', 'iptc_exif_standard', 'iptc_exif_taxonomy', 'iptc_exif_custom', 'iptc_exif_custom_rule' ) ) ) {
 			add_filter( 'mla_get_shortcode_attachments_final_terms', 'MLA_Polylang::mla_get_shortcode_attachments_final_terms', 10, 2 );
 			add_filter( 'mla_mapping_rule', 'MLA_Polylang::mla_mapping_rule', 10, 4 );
@@ -533,22 +574,19 @@ class MLA_Polylang {
 		
 		if ( is_null( $replicate ) ) {
 			$replicate = ( 'checked' == MLACore::mla_get_option( 'term_mapping_replication', false, false, MLA_Polylang::$mla_language_option_definitions ) );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $replicate = ' . var_export( $replicate, true ), 0 );
 
 			if ( $polylang->curlang ) {
 				$current_language = $polylang->curlang->slug;
 			} else {
 				$current_language = pll_default_language();
 			}
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $current_language = ' . var_export( $current_language, true ), 0 );
+
 			$taxonomies = array();
 			foreach( $polylang->model->get_translated_taxonomies() as $taxonomy ) {
 				if ( MLACore::mla_taxonomy_support($taxonomy, 'support') ) {
 					$taxonomies[ $taxonomy ] = $taxonomy;
 				}
 			}
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $category = ' . var_export( $category, true ), 0 );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $taxonomies = ' . var_export( $taxonomies, true ), 0 );
 
 			$other_languages = array();
 			foreach( $polylang->model->get_languages_list() as $item_language ) {
@@ -556,18 +594,16 @@ class MLA_Polylang {
 					$other_languages[ $item_language->slug ] = $item_language;
 				}
 			}
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $other_languages = ' . var_export( $other_languages, true ), 0 );
 		}
 		
 		if ( ( ! empty( $new_text ) ) && in_array( $setting_key, $taxonomies ) ) {
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text mapping rule = ' . var_export( self::$current_mapping_rule, true ), 0 );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $new_text = ' . var_export( $new_text, true ), 0 );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $setting_key = ' . var_export( $setting_key, true ), 0 );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $post_id = ' . var_export( $post_id, true ), 0 );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $attachment_metadata = ' . var_export( $attachment_metadata, true ), 0 );
-			$language_details = $polylang->model->get_post_language( $post_id );
+			if ( self::$polylang_1dot8_plus ) {
+				$language_details = PLL()->model->post->get_language( $post_id );
+			} else {
+				$language_details = $polylang->model->get_post_language( $post_id );
+			}
+
 			$item_language = $language_details->slug;
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $language_details = ' . var_export( $language_details, true ), 0 );
 
 			/*
 			 * Find the parent term and its translations
@@ -580,12 +616,9 @@ class MLA_Polylang {
 				$parent_term = 0;
 			}
 			
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $parent_term = ' . var_export( $parent_term, true ), 0 );
-			
 			$new_terms = array();
 			foreach( $new_text as $new_name ) {
 				$relevant_term = self::_get_relevant_term( 'name', $new_name, $setting_key );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $relevant_term = ' . var_export( $relevant_term, true ), 0 );
 
 				if ( $relevant_term ) {
 					if ( isset( $relevant_term['translations'][ $item_language ] ) ) {
@@ -600,10 +633,8 @@ class MLA_Polylang {
 					} else {
 						$parent = 0;
 					}
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $parent = ' . var_export( $parent, true ), 0 );
 					
 					$res = wp_insert_term( $new_name, $setting_key, array( 'parent' => $parent ) );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $res = ' . var_export( $res, true ), 0 );
 					if ( ( ! is_wp_error( $res ) ) && isset( $res['term_id'] ) ) {
 						$polylang->model->set_term_language( $res['term_id'], $current_language );
 					}
@@ -620,14 +651,12 @@ class MLA_Polylang {
 							} else {
 								$parent = 0;
 							}
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $parent = ' . var_export( $parent, true ), 0 );
 					
 							// save_language() does a check_admin_referer() security test
 							$_REQUEST['_pll_nonce'] = wp_create_nonce( 'pll_language' );
 							$_POST['term_lang_choice'] = $language;
 							$_POST['action'] = 'mla';
 							$res = wp_insert_term( $new_name, $setting_key, array( 'parent' => $parent ) );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $res = ' . var_export( $res, true ), 0 );
 							if ( ( ! is_wp_error( $res ) ) && isset( $res['term_id'] ) ) {
 								$polylang->model->set_term_language( $res['term_id'], $language );
 								$translations[ $language ] = $res['term_id'];
@@ -638,7 +667,11 @@ class MLA_Polylang {
 						unset( $_POST['action'] );
 						
 						if ( ! empty( $translations ) ) {
-							$polylang->model->save_translations( 'term', $source_term, $translations);
+							if ( self::$polylang_1dot8_plus ) {
+								PLL()->model->term->save_translations( $source_term, $translations );
+							} else {
+								$polylang->model->save_translations( 'term', $source_term, $translations );
+							}
 						}
 					} // replicate
 
@@ -646,7 +679,6 @@ class MLA_Polylang {
 					 * Reload the term with all of its new translations
 					 */
 					$relevant_term = self::_get_relevant_term( 'name', $new_name, $setting_key );
-//error_log( __LINE__ . ' MLA_Polylang::mla_mapping_new_text $relevant_term = ' . var_export( $relevant_term, true ), 0 );
 					if ( isset( $relevant_term['translations'][ $item_language ] ) ) {
 						$new_terms[] = absint( $relevant_term['translations'][ $item_language ]->element_id );
 					}
@@ -701,8 +733,14 @@ class MLA_Polylang {
 
 		if ( ! array_key_exists( $term->term_taxonomy_id, self::$relevant_terms ) ) {
 			if ( empty( $translations ) ) {
+				if ( self::$polylang_1dot8_plus ) {
+					$term_translations = PLL()->model->term->get_translations( $term->term_id );
+				} else {
+					$term_translations = $polylang->model->get_translations( 'term', $term->term_id );
+				}
+
 				$translations = array();
-				foreach ( $polylang->model->get_translations( 'term', $term->term_id ) as $language_code => $translation ) {
+				foreach ( $term_translations as $language_code => $translation ) {
 					$translations[ $language_code ] = (object) array( 'element_id' => $translation );
 				}
 
@@ -836,8 +874,15 @@ class MLA_Polylang {
 			return;
 		}
 
-		$language_details = $polylang->model->get_post_language( $post_id );
-		MLACore::mla_debug_add( __LINE__ . " MLA_Polylang::_build_existing_terms( {$post_id} ) \$polylang->model->get_post_language = " . var_export( $language_details, true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
+		if ( self::$polylang_1dot8_plus ) {
+			$language_details = PLL()->model->post->get_language( $post_id );
+			$post_translations = PLL()->model->post->get_translations( $post_id );
+		} else {
+			$language_details = $polylang->model->get_post_language( $post_id );
+			$post_translations = $polylang->model->get_translations( 'post', $post_id );
+		}
+
+		MLACore::mla_debug_add( __LINE__ . " MLA_Polylang::_build_existing_terms( {$post_id} ) \$language_details = " . var_export( $language_details, true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
 
 		if ( is_object( $language_details ) ) {
 			$language_details = (array) $language_details;
@@ -847,9 +892,9 @@ class MLA_Polylang {
 			MLACore::mla_debug_add( __LINE__ . " MLA_Polylang::_build_existing_terms( {$post_id} ) \$polylang->model->get_language( pll_default_language() ) = " . var_export( $language_details, true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
 		}
 
-		MLACore::mla_debug_add( __LINE__ . " MLA_Polylang::_build_existing_terms( {$post_id} ) \$polylang->model->get_translations() = " . var_export( $polylang->model->get_translations( 'post', $post_id ), true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
+		MLACore::mla_debug_add( __LINE__ . " MLA_Polylang::_build_existing_terms( {$post_id} ) \$post_translations = " . var_export( $post_translations, true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
 		$translations = array();
-		foreach ( $polylang->model->get_translations( 'post', $post_id ) as $language_code => $translation ) {
+		foreach ( $post_translations as $language_code => $translation ) {
 			$translations[ $language_code ] = array( 'element_id' => $translation );
 		}
 
@@ -1126,7 +1171,12 @@ class MLA_Polylang {
 			if ( isset( self::$existing_terms['element_id'] ) && $post_id == self::$existing_terms['element_id'] ) {
 				$post_language = self::$existing_terms['slug'];
 			} else {
-				$post_language = $polylang->model->get_post_language( $post_id );
+				if ( self::$polylang_1dot8_plus ) {
+					$post_language = PLL()->model->post->get_language( $post_id );
+				} else {
+					$post_language = $polylang->model->get_post_language( $post_id );
+				}
+		
 				$post_language = $post_language->slug;
 			}
 		}
@@ -1550,7 +1600,11 @@ class MLA_Polylang {
 
 		// Language dropdown in Quick Edit area
 		if ( isset( $_REQUEST['inline_lang_choice'] ) ) {
-			$translations = $polylang->model->get_translations( 'post', $post_id );
+			if ( self::$polylang_1dot8_plus ) {
+				$translations = PLL()->model->post->get_translations( $post_id );
+			} else {
+				$translations = $polylang->model->get_translations( 'post', $post_id );
+			}
 
 			if ( ! array_key_exists( $_REQUEST['inline_lang_choice'], $translations ) ) {
 				$post = get_post( $post_id );
@@ -1788,6 +1842,7 @@ class MLA_Polylang {
 		global $polylang;
 
 		// Find the first "language" column slug
+		$language_column = '';
 		foreach ( $polylang->filters_columns->model->get_languages_list() as $language) {
 			if ( empty($polylang->filters_columns->curlang) || $language->slug != $polylang->filters_columns->curlang->slug) {
 				$language_column = 'language_'.$language->slug;
@@ -1799,7 +1854,12 @@ class MLA_Polylang {
 		ob_start();
 		do_action( 'quick_edit_custom_box', $language_column, 'attachment' );
 		$value = ob_get_clean();
-
+		if ( empty( $value ) ) {
+			MLACore::mla_debug_add( __LINE__ . ' MLA_Polylang::mla_list_table_inline_values language_column = ' . var_export( $language_column, true ), MLACore::MLA_DEBUG_CATEGORY_ANY );
+			MLACore::mla_debug_add( __LINE__ . ' MLA_Polylang::mla_list_table_inline_values $polylang->filters_columns->curlang = ' . var_export( $polylang->filters_columns->curlang, true ), MLACore::MLA_DEBUG_CATEGORY_ANY );
+			MLACore::mla_debug_add( __LINE__ . ' MLA_Polylang::mla_list_table_inline_values $polylang->filters_columns->model->get_languages_list() = ' . var_export( $polylang->filters_columns->model->get_languages_list(), true ), MLACore::MLA_DEBUG_CATEGORY_ANY );
+		}
+		
 		// Strip off <fieldset> and <div> tags around the <input> and <label> tags
 		preg_match('/\<input|\<label/', $value, $match_start, PREG_OFFSET_CAPTURE );
 		preg_match('/\<\/label[^\>]*\>/', $value, $match_end, PREG_OFFSET_CAPTURE );
@@ -2007,7 +2067,12 @@ class MLA_Polylang {
 		static $languages = NULL, $current_language;
 
 		if ( 'language' == $column_name ) {
-			$item_language = $polylang->model->get_post_language( $item->ID );
+			if ( self::$polylang_1dot8_plus ) {
+				$item_language = PLL()->model->post->get_language( $item->ID );
+			} else {
+				$item_language = $polylang->model->get_post_language( $item->ID );
+			}
+	
 			$content = is_object( $item_language ) ? $item_language->name : 'none';
 		} elseif ('pll_translations' == $column_name ) {
 			if ( is_null( $languages ) ) {
@@ -2190,8 +2255,13 @@ class MLA_Polylang {
 		global $polylang;
 
 		$item_id = $item->ID;
-		$old_lang = $polylang->model->get_post_language( $item_id );
-		$translations = $polylang->model->get_translations( 'post', $item_id );
+		if ( self::$polylang_1dot8_plus ) {
+			$old_lang = PLL()->model->post->get_language( $item_id );
+			$translations = PLL()->model->post->get_translations( $item_id );
+		} else {
+			$old_lang = $polylang->model->get_post_language( $item_id );
+			$translations = $polylang->model->get_translations( 'post', $item_id );
+		}
 
 		if ( isset( $old_lang->slug ) ) {
 			$old_lang = $old_lang->slug;

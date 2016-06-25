@@ -3,7 +3,7 @@
 Plugin Name: HealCode MINDBODY Widget
 Plugin URI: https://wordpress.org/plugins/healcode-mb-widget/
 Description: Add HealCode Widgets to your WordPress website. This plugin lets you generate a shortcode for a widget. The shortcodes can be used in your pages, posts and widgets.
-Version: 1.1.4
+Version: 1.1.12
 Author: HealCode
 Author URI: http://www.healcode.com/
 Text Domain: healcode-mb-widget
@@ -38,29 +38,11 @@ ob_start();
 define('HC_INSERT_HTML_PLUGIN_FILE',__FILE__);
 
 require( dirname( __FILE__ ) . '/hc-functions.php' );
-
-require( dirname( __FILE__ ) . '/add_shortcode_tynimce.php' );
-
+require( dirname( __FILE__ ) . '/hc-editor-plugin.php' );
 require( dirname( __FILE__ ) . '/install.php' );
-
 require( dirname( __FILE__ ) . '/menu.php' );
-
 require( dirname( __FILE__ ) . '/shortcode-handler.php' );
-
-require( dirname( __FILE__ ) . '/ajax-handler.php' );
-
 require( dirname( __FILE__ ) . '/uninstall.php' );
-
 require( dirname( __FILE__ ) . '/widget.php' );
-
-require( dirname( __FILE__ ) . '/direct_call.php' );
-
-
-
-if(get_option('hc_credit_link')=="hmw"){
-
-	add_action('wp_footer', 'hc_hmw_credit');
-
-}
 
 ?>

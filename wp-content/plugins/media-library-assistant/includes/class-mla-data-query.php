@@ -1255,7 +1255,7 @@ class MLAQuery {
 		 */
 		if ( isset( self::$search_parameters['mla_terms_search']['phrases'] ) ) {
 			$terms_search_parameters = self::$search_parameters['mla_terms_search'];
-			$terms = array_map( 'trim', explode( ',', $terms_search_parameters['phrases'] ) );
+			$terms = array_map( 'trim', explode( $terms_search_parameters['phrase_delimiter'], $terms_search_parameters['phrases'] ) );
 			if ( 1 < count( $terms ) ) {
 				$terms_connector = '(';			
 			} else {

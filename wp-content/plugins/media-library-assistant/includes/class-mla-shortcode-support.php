@@ -19,6 +19,11 @@ if ( !class_exists( 'MLAData' ) ) {
 	MLAData::initialize();
 }
 
+if ( !class_exists( 'MLATemplate_Support' ) ) {
+	require_once( MLA_PLUGIN_PATH . 'includes/class-mla-template-support.php' );
+}
+//error_log( __LINE__ . ' DEBUG: MLAShortcode_Support $_REQUEST = ' . var_export( $_REQUEST, true ), 0 );
+
 /**
  * Class MLA (Media Library Assistant) Shortcode Support provides the functions that
  * implement the [mla_gallery] and [mla_tag_cloud] shortcodes. It also implements the
@@ -28,114 +33,6 @@ if ( !class_exists( 'MLAData' ) ) {
  * @since 2.20
  */
 class MLAShortcode_Support {
-	/**
-	 * Style and Markup templates
-	 *
-	 * @since 2.20
-	 *
-	 * @var	array
-	 */
-	public static $mla_custom_templates = NULL;
-
-	/**
-	 * Load style and markup templates to $mla_custom_templates
-	 *
-	 * @since 2.20
-	 *
-	 * @return	void
-	 */
-	public static function mla_load_custom_templates() {
-		MLAShortcode_Support::$mla_custom_templates = MLACore::mla_load_template( 'mla-custom-templates.tpl' );
-
-		/* 	
-		 * Load the default templates
-		 */
-		if ( is_null( MLAShortcode_Support::$mla_custom_templates ) ) {
-			MLACore::mla_debug_add( '<strong>mla_debug _load_option_templates()</strong> ' . __( 'error loading tpls/mla-option-templates.tpl', 'media-library-assistant' ), MLACore::MLA_DEBUG_CATEGORY_ANY );
-			return;
-		} elseif ( !MLAShortcode_Support::$mla_custom_templates ) {
-			MLACore::mla_debug_add( '<strong>mla_debug _load_option_templates()</strong> ' . __( 'tpls/mla-option-templates.tpl not found', 'media-library-assistant' ), MLACore::MLA_DEBUG_CATEGORY_ANY );
-			MLAShortcode_Support::$mla_custom_templates = NULL;
-			return;
-		}
-
-		/*
-		 * Add user-defined Style and Markup templates
-		 */
-		$templates = MLACore::mla_get_option( 'style_templates' );
-		if ( is_array(	$templates ) ) {
-			foreach ( $templates as $name => $value ) {
-				MLAShortcode_Support::$mla_custom_templates[ $name . '-style' ] = $value;
-			} // foreach $templates
-		} // is_array
-
-		$templates = MLACore::mla_get_option( 'markup_templates' );
-		if ( is_array(	$templates ) ) {
-			foreach ( $templates as $name => $value ) {
-				if ( isset( $value['arguments'] ) ) {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-arguments-markup' ] = $value['arguments'];
-				} else {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-arguments-markup' ] = false;
-				}
-				
-				if ( isset( $value['open'] ) ) {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-open-markup' ] = $value['open'];
-				} else {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-open-markup' ] = false;
-				}
-				
-				if ( isset( $value['row-open'] ) ) {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-row-open-markup' ] = $value['row-open'];
-				} else {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-row-open-markup' ] = false;
-				}
-				
-				if ( isset( $value['item'] ) ) {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-item-markup' ] = $value['item'];
-				} else {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-item-markup' ] = false;
-				}
-				
-				if ( isset( $value['row-close'] ) ) {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-row-close-markup' ] = $value['row-close'];
-				} else {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-row-close-markup' ] = false;
-				}
-				
-				if ( isset( $value['close'] ) ) {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-close-markup' ] = $value['close'];
-				} else {
-					MLAShortcode_Support::$mla_custom_templates[ $name . '-close-markup' ] = false;
-				}
-			} // foreach $templates
-		} // is_array
-	}
-
-	/**
-	 * Fetch style or markup template from $mla_templates
-	 *
-	 * @since 2.20
-	 *
-	 * @param	string	Template name
-	 * @param	string	Template type; 'style' (default) or 'markup'
-	 *
-	 * @return	string|boolean|null	requested template, false if not found or null if no templates
-	 */
-	public static function mla_fetch_gallery_template( $key, $type = 'style' ) {
-		if ( ! is_array( MLAShortcode_Support::$mla_custom_templates ) ) {
-			MLACore::mla_debug_add( '<strong>mla_fetch_gallery_template()</strong> ' . __( 'no templates exist', 'media-library-assistant' ), MLACore::MLA_DEBUG_CATEGORY_ANY );
-			return NULL;
-		}
-
-		$array_key = $key . '-' . $type;
-		if ( array_key_exists( $array_key, MLAShortcode_Support::$mla_custom_templates ) ) {
-			return MLAShortcode_Support::$mla_custom_templates[ $array_key ];
-		} else {
-			MLACore::mla_debug_add( "<strong>mla_fetch_gallery_template( {$key}, {$type} )</strong> " . __( 'not found', 'media-library-assistant' ), MLACore::MLA_DEBUG_CATEGORY_ANY );
-			return false;
-		}
-	}
-
 	/**
 	 * Verify the presence of Ghostscript for mla_viewer
 	 *
@@ -426,6 +323,9 @@ class MLAShortcode_Support {
 			'mla_caption' => ''
 		);
 
+		/*
+		 * These arguments must not be passed on to alternate gallery shortcodes
+		 */
 		$mla_arguments = array_merge( array(
 			'mla_output' => 'gallery',
 			'mla_style' => MLACore::mla_get_option('default_style'),
@@ -524,7 +424,7 @@ class MLAShortcode_Support {
 		 * Apply default arguments set in the markup template
 		 */
 		$template = isset( $attr['mla_markup'] ) ? $attr['mla_markup'] : $mla_arguments['mla_markup'];
-		$arguments = self::mla_fetch_gallery_template( $template . '-arguments', 'markup' );
+		$arguments = MLATemplate_Support::mla_fetch_custom_template( $template, 'gallery', 'markup', 'arguments' );
 		if ( !empty( $arguments ) ) {
 			$attr = wp_parse_args( $attr, self::_validate_attributes( array(), $arguments ) );
 		}
@@ -543,7 +443,6 @@ class MLAShortcode_Support {
 			}
 
 			$attr_value = str_replace( '{+', '[+', str_replace( '+}', '+]', $attr_value ) );
-//			$replacement_values = MLAData::mla_expand_field_level_parameters( $attr_value, NULL, $page_values );
 			$replacement_values = MLAData::mla_expand_field_level_parameters( $attr_value, $attr, $page_values );
 			$attr[ $attr_key ] = MLAData::mla_parse_template( $attr_value, $replacement_values );
 		}
@@ -813,13 +712,13 @@ class MLAShortcode_Support {
 		}
 
 		if ( apply_filters( 'use_mla_gallery_style', $use_mla_gallery_style, $style_values['mla_style'] ) ) {
-			$style_template = MLAShortcode_support::mla_fetch_gallery_template( $style_values['mla_style'], 'style' );
+			$style_template = MLATemplate_support::mla_fetch_custom_template( $style_values['mla_style'], 'gallery', 'style' );
 			if ( empty( $style_template ) ) {
 				$style_values['mla_style'] = $default_arguments['mla_style'];
-				$style_template = MLAShortcode_support::mla_fetch_gallery_template( $style_values['mla_style'], 'style' );
+				$style_template = MLATemplate_support::mla_fetch_custom_template( $style_values['mla_style'], 'gallery', 'style' );
 				if ( empty( $style_template ) ) {
 					$style_values['mla_style'] = 'default';
-					$style_template = MLAShortcode_support::mla_fetch_gallery_template( 'default', 'style' );
+					$style_template = MLATemplate_support::mla_fetch_custom_template( 'default', 'gallery', 'style' );
 				}
 			}
 
@@ -858,13 +757,13 @@ class MLAShortcode_Support {
 
 		$markup_values = $style_values;
 
-		$open_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-open', 'markup' );
+		$open_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'gallery', 'markup', 'open' );
 		if ( false === $open_template ) {
 			$markup_values['mla_markup'] = $default_arguments['mla_markup'];
-			$open_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-open', 'markup' );
+			$open_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'gallery', 'markup', 'open' );
 			if ( false === $open_template ) {
 				$markup_values['mla_markup'] = 'default';
-				$open_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-open', 'markup' );
+				$open_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'gallery', 'markup', 'open' );
 			}
 		}
 		if ( empty( $open_template ) ) {
@@ -877,14 +776,14 @@ class MLAShortcode_Support {
 		if ( $html5 && ( 'default' == $markup_values['mla_markup'] ) ) {
 			$row_open_template = '';
 		} else{
-			$row_open_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-row-open', 'markup' );
+			$row_open_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'gallery', 'markup', 'row-open' );
 
 			if ( empty( $row_open_template ) ) {
 				$row_open_template = '';
 			}
 		}
 
-		$item_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-item', 'markup' );
+		$item_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'gallery', 'markup', 'item' );
 		if ( empty( $item_template ) ) {
 			$item_template = '';
 		}
@@ -895,14 +794,14 @@ class MLAShortcode_Support {
 		if ( $html5 && ( 'default' == $markup_values['mla_markup'] ) ) {
 			$row_close_template = '';
 		} else{
-			$row_close_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-row-close', 'markup' );
+			$row_close_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'gallery', 'markup', 'row-close' );
 
 			if ( empty( $row_close_template ) ) {
 				$row_close_template = '';
 			}
 		}
 
-		$close_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-close', 'markup' );
+		$close_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'gallery', 'markup', 'close' );
 		if ( empty( $close_template ) ) {
 			$close_template = '';
 		}
@@ -919,8 +818,13 @@ class MLAShortcode_Support {
 			$mla_alt_ids_output = $output = '';
 		}
 
+		/*
+		 * These $markup_values are used for both pagination and gallery output
+		 */
+		$markup_values = apply_filters( 'mla_gallery_open_values', $markup_values );
+
 		if ($is_gallery ) {
-			$markup_values = apply_filters( 'mla_gallery_open_values', $markup_values );
+			//$markup_values = apply_filters( 'mla_gallery_open_values', $markup_values );
 
 			$open_template = apply_filters( 'mla_gallery_open_template', $open_template );
 			if ( empty( $open_template ) ) {
@@ -1011,6 +915,7 @@ class MLAShortcode_Support {
 			 * fill in item-specific elements
 			 */
 			$item_values['index'] = (string) 1 + $column_index;
+			$item_values['last_in_row'] = '';
 
 			$item_values['excerpt'] = wptexturize( $attachment->post_excerpt );
 			$item_values['attachment_ID'] = $attachment->ID;
@@ -1037,8 +942,20 @@ class MLAShortcode_Support {
 			$item_values['description'] = wptexturize( $attachment->post_content );
 			$item_values['file_url'] = wptexturize( $attachment->guid );
 			$item_values['author_id'] = $attachment->post_author;
+			$item_values['author'] = '';
 			$item_values['caption'] = '';
 			$item_values['captiontag_content'] = '';
+
+			$item_values['pagelink'] = '';
+			$item_values['filelink'] = '';
+			$item_values['link'] = '';
+			$item_values['pagelink_url'] = '';
+			$item_values['filelink_url'] = '';
+			$item_values['link_url'] = '';
+			$item_values['thumbnail_content'] = '';
+			$item_values['thumbnail_width'] = '';
+			$item_values['thumbnail_height'] = '';
+			$item_values['thumbnail_url'] = '';
 
 			$user = get_user_by( 'id', $attachment->post_author );
 			if ( isset( $user->data->display_name ) ) {
@@ -1691,7 +1608,26 @@ class MLAShortcode_Support {
 			'mla_caption' => ''
 		);
 
-		$mla_arguments = array_merge( array(
+		$defaults = array_merge(
+			self::$mla_get_terms_parameters,
+			array(
+			'smallest' => 8,
+			'largest' => 22,
+			'unit' => 'pt',
+			'separator' => "\n",
+			'single_text' => '%d item',
+			'multiple_text' => '%d items',
+
+			'echo' => false,
+			'link' => 'view',
+			'current_item' => '',
+			'current_item_class' => 'mla_current_item',
+
+			'itemtag' => 'ul',
+			'termtag' => 'li',
+			'captiontag' => '',
+			'columns' => MLACore::mla_get_option('mla_tag_cloud_columns'),
+
 			'mla_output' => 'flat',
 			'mla_style' => NULL,
 			'mla_markup' => NULL,
@@ -1712,29 +1648,6 @@ class MLAShortcode_Support {
 			'mla_paginate_total' => NULL,
 			'mla_paginate_type' => 'plain'),
 			$mla_item_specific_arguments
-		);
-
-		$defaults = array_merge(
-			self::$mla_get_terms_parameters,
-			array(
-			'smallest' => 8,
-			'largest' => 22,
-			'unit' => 'pt',
-			'separator' => "\n",
-			'single_text' => '%d item',
-			'multiple_text' => '%d items',
-
-			'echo' => false,
-			'link' => 'view',
-			'current_item' => '',
-			'current_item_class' => 'mla_current_item',
-
-			'itemtag' => 'ul',
-			'termtag' => 'li',
-			'captiontag' => '',
-			'columns' => MLACore::mla_get_option('mla_tag_cloud_columns')
-			),
-			$mla_arguments
 		);
 
 		/*
@@ -1794,10 +1707,29 @@ class MLAShortcode_Support {
 		);
 
 		/*
+		 * Determine markup template to get default arguments
+		 */
+		$arguments = shortcode_atts( $defaults, $attr );
+		if ( $arguments['mla_markup'] ) {
+			$template = $arguments['mla_markup'];
+		} else {
+			$output_parameters = array_map( 'strtolower', array_map( 'trim', explode( ',', $arguments['mla_output'] ) ) );
+	
+			if ( 'grid' == $output_parameters[0] ) {
+				$template = MLACore::mla_get_option('default_tag_cloud_markup');
+			} elseif ( in_array( $output_parameters[0], array( 'list', 'ulist', 'olist', 'dlist' ) ) ) {
+				if ( ( 'dlist' == $output_parameters[0] ) || ('list' == $output_parameters[0] && 'dd' == $arguments['captiontag'] ) ) {
+					$template = 'tag-cloud-dl';
+				} else {
+					$template = 'tag-cloud-ul';
+				}
+			}
+		}
+
+		/*
 		 * Apply default arguments set in the markup template
 		 */
-		$template = isset( $attr['mla_markup'] ) ? $attr['mla_markup'] : $mla_arguments['mla_markup'];
-		$arguments = self::mla_fetch_gallery_template( $template . '-arguments', 'markup' );
+		$arguments = MLATemplate_Support::mla_fetch_custom_template( $template, 'tag-cloud', 'markup', 'arguments' );
 		if ( !empty( $arguments ) ) {
 			$attr = wp_parse_args( $attr, self::_validate_attributes( array(), $arguments ) );
 		}
@@ -1816,7 +1748,6 @@ class MLAShortcode_Support {
 			}
 
 			$attr_value = str_replace( '{+', '[+', str_replace( '+}', '+]', $attr_value ) );
-//			$replacement_values = MLAData::mla_expand_field_level_parameters( $attr_value, NULL, $page_values );
 			$replacement_values = MLAData::mla_expand_field_level_parameters( $attr_value, $attr, $page_values );
 			$attr[ $attr_key ] = MLAData::mla_parse_template( $attr_value, $replacement_values );
 		}
@@ -1899,16 +1830,33 @@ class MLAShortcode_Support {
 			}
 		}
 
-		if ( $is_list = 'list' == $output_parameters[0] ) {
+		if ( $is_list = in_array( $output_parameters[0], array( 'list', 'ulist', 'olist', 'dlist' ) ) ) {
 			$default_style = 'none';
-			if ( empty( $arguments['captiontag'] ) ) {
-				$default_markup = 'tag-cloud-ul';
-			} else {
-				$default_markup = 'tag-cloud-dl';
 
-				if ( 'dd' == $arguments['captiontag'] ) {
-					$arguments['itemtag'] = 'dl';
-					$arguments['termtag'] = 'dt';
+			if ( 'list' == $output_parameters[0] && 'dd' == $arguments['captiontag'] ) {
+				$default_markup = 'tag-cloud-dl';
+				$arguments['itemtag'] = 'dl';
+				$arguments['termtag'] = 'dt';
+			} else {
+				$default_markup = 'tag-cloud-ul';
+				$arguments['termtag'] = 'li';
+				$arguments['captiontag'] = '';
+			
+				switch ( $output_parameters[0] ) {
+					case 'ulist':
+						$arguments['itemtag'] = 'ul';
+						break;
+					case 'olist':
+						$arguments['itemtag'] = 'ol';
+						break;
+					case 'dlist':
+						$default_markup = 'tag-cloud-dl';
+						$arguments['itemtag'] = 'dl';
+						$arguments['termtag'] = 'dt';
+						$arguments['captiontag'] = 'dd';
+					break;
+					default:
+						$arguments['itemtag'] = 'ul';
 				}
 			}
 
@@ -1982,7 +1930,11 @@ class MLAShortcode_Support {
 
 			$cloud .= $arguments['mla_nolink_text'];
 			if ( 'array' == $arguments['mla_output'] ) {
-				return array( $cloud );
+				if ( empty( $cloud ) ) {
+					return array();
+				} else {
+					return array( $cloud );
+				}
 			}
 
 			if ( empty($arguments['echo']) ) {
@@ -2142,10 +2094,10 @@ class MLAShortcode_Support {
 		$style_template = $gallery_style = '';
 		$use_mla_tag_cloud_style = ( $is_grid || $is_list ) && ( 'none' != strtolower( $style_values['mla_style'] ) );
 		if ( apply_filters( 'use_mla_tag_cloud_style', $use_mla_tag_cloud_style, $style_values['mla_style'] ) ) {
-			$style_template = MLAShortcode_support::mla_fetch_gallery_template( $style_values['mla_style'], 'style' );
+			$style_template = MLATemplate_support::mla_fetch_custom_template( $style_values['mla_style'], 'tag-cloud', 'style' );
 			if ( empty( $style_template ) ) {
 				$style_values['mla_style'] = $default_style;
-				$style_template = MLAShortcode_support::mla_fetch_gallery_template( $default_style, 'style' );
+				$style_template = MLATemplate_support::mla_fetch_custom_template( $default_style, 'tag-cloud', 'style' );
 			}
 
 			if ( ! empty ( $style_template ) ) {
@@ -2177,10 +2129,10 @@ class MLAShortcode_Support {
 		$markup_values = $style_values;
 
 		if ( $is_grid || $is_list ) {
-			$open_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-open', 'markup' );
+			$open_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'tag-cloud', 'markup', 'open' );
 			if ( false === $open_template ) {
 				$markup_values['mla_markup'] = $default_markup;
-				$open_template = MLAShortcode_support::mla_fetch_gallery_template( $default_markup . '-open', 'markup' );
+				$open_template = MLATemplate_support::mla_fetch_custom_template( $default_markup, 'tag-cloud', 'markup', 'open' );
 			}
 
 			if ( empty( $open_template ) ) {
@@ -2188,7 +2140,7 @@ class MLAShortcode_Support {
 			}
 
 			if ( $is_grid ) {
-				$row_open_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-row-open', 'markup' );
+				$row_open_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'tag-cloud', 'markup', 'row-open' );
 				if ( empty( $row_open_template ) ) {
 					$row_open_template = '';
 				}
@@ -2196,13 +2148,13 @@ class MLAShortcode_Support {
 				$row_open_template = '';
 			}
 
-			$item_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-item', 'markup' );
+			$item_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'tag-cloud', 'markup', 'item' );
 			if ( empty( $item_template ) ) {
 				$item_template = '';
 			}
 
 			if ( $is_grid ) {
-				$row_close_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-row-close', 'markup' );
+				$row_close_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'tag-cloud', 'markup', 'row-close' );
 				if ( empty( $row_close_template ) ) {
 					$row_close_template = '';
 					}
@@ -2210,7 +2162,7 @@ class MLAShortcode_Support {
 				$row_close_template = '';
 			}
 
-			$close_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-close', 'markup' );
+			$close_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'tag-cloud', 'markup', 'close' );
 			if ( empty( $close_template ) ) {
 				$close_template = '';
 			}
@@ -2327,17 +2279,26 @@ class MLAShortcode_Support {
 			$item_values['term_group'] = $tag->term_group;
 			$item_values['term_taxonomy_id'] = $tag->term_taxonomy_id;
 			$item_values['taxonomy'] = wptexturize( $tag->taxonomy );
-			$item_values['current_item_class'] = '';
 			$item_values['description'] = wptexturize( $tag->description );
 			$item_values['parent'] = $tag->parent;
 			$item_values['count'] = isset ( $tag->count ) ? $tag->count : 0; 
 			$item_values['scaled_count'] = $tag->scaled_count;
 			$item_values['font_size'] = str_replace( ',', '.', ( $item_values['smallest'] + ( ( $item_values['scaled_count'] - $item_values['min_scaled_count'] ) * $item_values['font_step'] ) ) );
 			$item_values['link_url'] = $tag->link;
+			$item_values['currentlink_url'] = sprintf( '%1$s?current_item=%2$d', $item_values['page_url'], $item_values['term_id'] );
 			$item_values['editlink_url'] = $tag->edit_link;
 			$item_values['termlink_url'] = $tag->term_link;
 			// Added in the code below:
-			// 'caption', 'link_attributes', 'current_item_class', 'rollover_text', 'link_style', 'link_text', 'currentlink', 'editlink', 'termlink', 'thelink'
+			$item_values['caption'] = '';
+			$item_values['link_attributes'] = '';
+			$item_values['current_item_class'] = '';
+			$item_values['rollover_text'] = '';
+			$item_values['link_style'] = '';
+			$item_values['link_text'] = '';
+			$item_values['currentlink'] = '';
+			$item_values['editlink'] = '';
+			$item_values['termlink'] = '';
+			$item_values['thelink'] = '';
 
 			if ( ! empty( $arguments['current_item'] ) ) {
 				if ( is_integer( $arguments['current_item'] ) ) {
@@ -2423,6 +2384,7 @@ class MLAShortcode_Support {
 			if ( ! empty( $link_href ) ) {
 				$item_values['thelink'] = sprintf( '<a %1$shref="%2$s" title="%3$s" style="%4$s">%5$s</a>', $link_attributes, $link_href, $item_values['rollover_text'], $item_values['link_style'], $item_values['link_text'] );
 			} elseif ( 'current' == $arguments['link'] ) {
+				$item_values['link_url'] = $item_values['currentlink_url'];
 				$item_values['thelink'] = $item_values['currentlink'];
 			} elseif ( 'edit' == $arguments['link'] ) {
 				$item_values['thelink'] = $item_values['editlink'];
@@ -2559,79 +2521,108 @@ class MLAShortcode_Support {
 	 * @return void Appends to &$list, &$links
 	 */
 	public static function _compose_term_list( &$list, &$links, &$terms, &$markup_values, &$arguments, &$attr ) {
-		$term = current( $terms );
-		if ( $term->parent ) {
-			$markup_values['itemtag_class'] = 'class="term-list term-list-taxonomy-' . $term->taxonomy . ' children" '; 
-			$markup_values['itemtag_id'] = 'id="' . $markup_values['selector'] . '-' . $term->parent . '" ';
+		$term = reset( $terms );
+		$markup_values['current_level'] = $current_level = $term->level;
+		if ( $current_level ) {
+			$markup_values['itemtag_class'] = 'term-list term-list-taxonomy-' . $term->taxonomy . ' children'; 
+			$markup_values['itemtag_id'] = $markup_values['selector'] . '-' . $term->parent;
 		} else {
-			$markup_values['itemtag_class'] = 'class="term-list term-list-taxonomy-' . $term->taxonomy . '" '; 
-			$markup_values['itemtag_id'] = 'id="' . $markup_values['selector'] . '" ';
+			$markup_values['itemtag_class'] = 'term-list term-list-taxonomy-' . $term->taxonomy; 
+			$markup_values['itemtag_id'] = $markup_values['selector'];
 		}
 
-		/*
-		 * These are the default parameters for term list display
-		 */
-		$mla_item_specific_arguments = array(
-			'mla_link_attributes' => '',
-			'mla_link_class' => '',
-			// 'mla_link_style' => '',
-			'mla_link_href' => '',
-			'mla_link_text' => '',
-			'mla_nolink_text' => '',
-			'mla_rollover_text' => '',
-			'mla_caption' => ''
-		);
+		$mla_item_parameter = $arguments['mla_item_parameter'];
 
 		/*
 		 * Determine output type and templates
 		 */
 		$output_parameters = array_map( 'strtolower', array_map( 'trim', explode( ',', $arguments['mla_output'] ) ) );
 
-		$is_list = 'list' == $output_parameters[0];
+		$is_list = in_array( $output_parameters[0], array( 'list', 'ulist', 'olist', 'dlist' ) );
 		$is_dropdown = 'dropdown' == $output_parameters[0];
 		$is_checklist = 'checklist' == $output_parameters[0];
 		$is_hierarchical = !empty( $arguments['hierarchical'] ) && ( 'true' == strtolower( $arguments['hierarchical'] ) );
 
-		if ( $is_list ) {
-			$open_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-open', 'markup' );
+		if ( $is_list || $is_dropdown || $is_checklist ) {
+			if ( $term->parent ) {
+				$open_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'term-list', 'markup', 'child-open' );
+			} else {
+				$open_template = false;
+			}
+			
+			if ( false === $open_template ) {
+				$open_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'term-list', 'markup', 'open' );
+			}
+			
+			/*
+			 * Fall back to default template if no Open section
+			 */
 			if ( false === $open_template ) {
 				$markup_values['mla_markup'] = $default_markup;
-				$open_template = MLAShortcode_support::mla_fetch_gallery_template( $default_markup . '-open', 'markup' );
+
+				if ( $term->parent ) {
+					$open_template = MLATemplate_support::mla_fetch_custom_template( $default_markup, 'term-list', 'markup', 'child-open' );
+				} else {
+					$open_template = false;
+				}
+			
+				if ( false === $open_template ) {
+					$open_template = MLATemplate_support::mla_fetch_custom_template( $default_markup, 'term-list', 'markup', 'open' );
+				}
 			}
 
 			if ( empty( $open_template ) ) {
 				$open_template = '';
 			}
 
-			$item_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-item', 'markup' );
+			if ( $term->parent ) {
+				$item_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'term-list', 'markup', 'child-item' );
+			} else {
+				$item_template = false;
+			}
+			
+			if ( false === $item_template ) {
+				$item_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'term-list', 'markup', 'item' );
+			}
+			
 			if ( empty( $item_template ) ) {
 				$item_template = '';
 			}
 
-			$close_template = MLAShortcode_support::mla_fetch_gallery_template( $markup_values['mla_markup'] . '-close', 'markup' );
+			if ( $term->parent ) {
+				$close_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'term-list', 'markup', 'child-close' );
+			} else {
+				$close_template = false;
+			}
+			
+			if ( false === $close_template ) {
+				$close_template = MLATemplate_support::mla_fetch_custom_template( $markup_values['mla_markup'], 'term-list', 'markup', 'close' );
+			}
+			
 			if ( empty( $close_template ) ) {
 				$close_template = '';
 			}
 
-			/*
-			 * Look for gallery-level markup substitution parameters
-			 */
-			$new_text = $open_template . $close_template;
-			$markup_values = MLAData::mla_expand_field_level_parameters( $new_text, $attr, $markup_values );
-
-			$markup_values = apply_filters( 'mla_term_list_open_values', $markup_values );
-			$open_template = apply_filters( 'mla_term_list_open_template', $open_template );
-			if ( empty( $open_template ) ) {
-				$gallery_open = '';
-			} else {
-				$gallery_open = MLAData::mla_parse_template( $open_template, $markup_values );
+			if ( $is_list || ( ( 0 == $current_level ) && $is_dropdown ) || $is_checklist ) {
+				/*
+				 * Look for gallery-level markup substitution parameters
+				 */
+				$new_text = $open_template . $close_template;
+				$markup_values = MLAData::mla_expand_field_level_parameters( $new_text, $attr, $markup_values );
+	
+				$markup_values = apply_filters( 'mla_term_list_open_values', $markup_values );
+				$open_template = apply_filters( 'mla_term_list_open_template', $open_template );
+				if ( empty( $open_template ) ) {
+					$gallery_open = '';
+				} else {
+					$gallery_open = MLAData::mla_parse_template( $open_template, $markup_values );
+				}
+	
+				$list .=  apply_filters( 'mla_term_list_open_parse', $gallery_open, $open_template, $markup_values );
 			}
-
-			$list .=  apply_filters( 'mla_term_list_open_parse', $gallery_open, $open_template, $markup_values );
 		} // is_list
 
 		foreach ( $terms as $key => $term ) {
-//error_log( __LINE__ . " _compose_term_list {$key} => " . var_export( $term, true ), 0 );
 			$item_values = $markup_values;
 			
 			/*
@@ -2644,39 +2635,50 @@ class MLAShortcode_Support {
 			$item_values['term_group'] = $term->term_group;
 			$item_values['term_taxonomy_id'] = $term->term_taxonomy_id;
 			$item_values['taxonomy'] = wptexturize( $term->taxonomy );
-			$item_values['current_item_class'] = '';
 			$item_values['description'] = wptexturize( $term->description );
 			$item_values['parent'] = $term->parent;
-			$item_values['level'] = $term->level;
-			$item_values['count'] = isset ( $term->count ) ? $term->count : 0; 
+			$item_values['count'] = isset ( $term->count ) ? 0 + $term->count : 0; 
 			$item_values['link_url'] = $term->link;
+			$item_values['currentlink_url'] = sprintf( '%1$s?current_item=%2$d', $item_values['page_url'], $item_values['term_id'] );
 			$item_values['editlink_url'] = $term->edit_link;
 			$item_values['termlink_url'] = $term->term_link;
 			$item_values['children'] = '';
 			$item_values['termtag_attributes'] = '';
-			$item_values['termtag_class'] = $term->parent ? 'class="term-list-term children" ' : 'class="term-list-term" ';
-			$item_values['termtag_id'] = sprintf( 'id="%1$s-%2$d" ', $item_values['taxonomy'], $item_values['term_id'] );
+			$item_values['termtag_class'] = $term->parent ? 'term-list-term children' : 'term-list-term';
+			$item_values['termtag_id'] = sprintf( '%1$s-%2$d', $item_values['taxonomy'], $item_values['term_id'] );
 			// Added in the code below:
-			// 'current_item_class', 'caption', 'link_attributes', 'rollover_text', 'link_style', 'link_text', 'currentlink', 'editlink', 'termlink', 'thelink'
+			$item_values['caption'] = '';
+			$item_values['link_attributes'] = '';
+			$item_values['current_item_class'] = '';
+			$item_values['rollover_text'] = '';
+			$item_values['link_style'] = '';
+			$item_values['link_text'] = '';
+			$item_values['currentlink'] = '';
+			$item_values['editlink'] = '';
+			$item_values['termlink'] = '';
+			$item_values['thelink'] = '';
 
-			if ( ! empty( $arguments['current_item'] ) ) {
-				if ( is_integer( $arguments['current_item'] ) ) {
-					if ( $arguments['current_item'] == $term->term_id ) {
-						$item_values['current_item_class'] = $arguments['current_item_class'];
-					}
-				} else {
-					if ( $arguments['current_item'] == $term->slug ) {
-						$item_values['current_item_class'] = $arguments['current_item_class'];
+			if ( ! empty( $arguments[ $mla_item_parameter ] ) ) {
+				foreach ( $arguments[ $mla_item_parameter ] as $current_item ) {
+					if ( is_integer( $current_item ) ) {
+						if ( $current_item == $term->term_id ) {
+							$item_values['current_item_class'] = $arguments['current_item_class'];
+							break;
+						}
+					} else {
+						if ( $current_item == $term->slug ) {
+							$item_values['current_item_class'] = $arguments['current_item_class'];
+							break;
+						}
 					}
 				}
 			}
-
 			
 			/*
 			 * Add item_specific field-level substitution parameters
 			 */
 			$new_text = isset( $item_template ) ? $item_template : '';
-			foreach( $mla_item_specific_arguments as $index => $value ) {
+			foreach( self::$term_list_item_specific_arguments as $index => $value ) {
 				$new_text .= str_replace( '{+', '[+', str_replace( '+}', '+]', $arguments[ $index ] ) );
 			}
 
@@ -2729,19 +2731,23 @@ class MLAShortcode_Support {
 			}
 
 			if ( ! empty( $arguments['show_count'] ) && ( 'true' == strtolower( $arguments['show_count'] ) ) ) {
-				$item_values['link_text'] .= ' (' . $item_values['count'] . ')';
+				// Ignore option-all
+				if ( -1 !== $item_values['count'] ) {
+					$item_values['link_text'] .= ' (' . $item_values['count'] . ')';
+				}
 			}
 
 			/*
 			 * Currentlink, editlink, termlink and thelink  TODO - link style
 			 */
-			$item_values['currentlink'] = sprintf( '<a %1$shref="%2$s?current_item=%3$d" title="%4$s" style="%5$s">%6$s</a>', $link_attributes, $item_values['page_url'], $item_values['term_id'], $item_values['rollover_text'], '', $item_values['link_text'] );
+			$item_values['currentlink'] = sprintf( '<a %1$shref="%2$s?%3$s=%4$d" title="%5$s" style="%6$s">%7$s</a>', $link_attributes, $item_values['page_url'], $mla_item_parameter, $item_values['term_id'], $item_values['rollover_text'], '', $item_values['link_text'] );
 			$item_values['editlink'] = sprintf( '<a %1$shref="%2$s" title="%3$s" style="%4$s">%5$s</a>', $link_attributes, $item_values['editlink_url'], $item_values['rollover_text'], '', $item_values['link_text'] );
 			$item_values['termlink'] = sprintf( '<a %1$shref="%2$s" title="%3$s" style="%4$s">%5$s</a>', $link_attributes, $item_values['termlink_url'], $item_values['rollover_text'], '', $item_values['link_text'] );
 
 			if ( ! empty( $link_href ) ) {
 				$item_values['thelink'] = sprintf( '<a %1$shref="%2$s" title="%3$s" style="%4$s">%5$s</a>', $link_attributes, $link_href, $item_values['rollover_text'], '', $item_values['link_text'] );
 			} elseif ( 'current' == $arguments['link'] ) {
+				$item_values['link_url'] = $item_values['currentlink_url'];
 				$item_values['thelink'] = $item_values['currentlink'];
 			} elseif ( 'edit' == $arguments['link'] ) {
 				$item_values['thelink'] = $item_values['editlink'];
@@ -2752,13 +2758,47 @@ class MLAShortcode_Support {
 			} else {
 				$item_values['thelink'] = $item_values['link_text'];
 			}
-		
+
+			if ( $is_dropdown || $is_checklist ) {
+				// Indent the dropdown list
+				if ( $is_dropdown && $current_level && $is_hierarchical ) {
+					$pad = str_repeat('&nbsp;', $current_level * 3);
+				} else {
+					$pad = '';
+				}
+				
+				if ( empty( $arguments['mla_option_text'] ) ) {
+					$item_values['thelabel'] = $pad . $item_values['link_text'];
+				} else {
+					$item_values['thelabel'] = $pad . self::_process_shortcode_parameter( $arguments['mla_option_text'], $item_values );
+				}
+
+				if ( empty( $arguments['mla_option_value'] ) ) {
+					$item_values['thevalue'] = $item_values['term_id'];
+				} else {
+					$item_values['thevalue'] = self::_process_shortcode_parameter( $arguments['mla_option_value'], $item_values );
+				}
+
+				$item_values['popular'] = ''; // TODO Calculate 'term-list-popular'
+				
+				if ( $item_values['current_item_class'] == $arguments['current_item_class'] ) {
+					if ( $is_dropdown ) {
+						$item_values['selected'] = 'selected=selected';
+					} else {
+						$item_values['selected'] = 'checked=checked';
+					}
+				} else {
+					$item_values['selected'] = '';
+				}
+			}
+
 			$child_links = array();
 			if ( $is_hierarchical && !empty( $term->children ) ) {
 				self::_compose_term_list( $item_values['children'], $child_links, $term->children, $markup_values, $arguments, $attr );
+				$markup_values['current_level'] = $current_level; // Changed in _compose_term_list
 			}
 
-			if ( $is_list ) {
+			if ( $is_list || $is_dropdown || $is_checklist ) {
 				/*
 				 * item markup
 				 */
@@ -2776,13 +2816,14 @@ class MLAShortcode_Support {
 			} 
 		} // foreach tag
 
-		if ( $is_list ) {
-			$markup_values = apply_filters( 'mla_term_list_close_values', $markup_values );
-			$close_template = apply_filters( 'mla_term_list_close_template', $close_template );
-			$parse_value = MLAData::mla_parse_template( $close_template, $markup_values );
-			$list .= apply_filters( 'mla_term_list_close_parse', $parse_value, $close_template, $markup_values );
-		} // is_list
-		else {
+		if ( $is_list || $is_dropdown || $is_checklist ) {
+			if ( $is_list || ( ( 0 == $current_level ) && $is_dropdown ) || $is_checklist ) {
+				$markup_values = apply_filters( 'mla_term_list_close_values', $markup_values );
+				$close_template = apply_filters( 'mla_term_list_close_template', $close_template );
+				$parse_value = MLAData::mla_parse_template( $close_template, $markup_values );
+				$list .= apply_filters( 'mla_term_list_close_parse', $parse_value, $close_template, $markup_values );
+			}
+		} else {
 			switch ( $markup_values['mla_output'] ) {
 			case 'array' :
 				$list =& $links;
@@ -2793,8 +2834,26 @@ class MLAShortcode_Support {
 				break;
 			} // switch format
 		}
-//error_log( __LINE__ . ' _compose links = ' . var_export( $links, true ), 0 );
 	}
+
+	/**
+	 * These are the default parameters for term list display
+	 *
+	 * @since 2.30
+	 *
+	 * @var	array
+	 */
+	private static $term_list_item_specific_arguments = array(
+			'mla_link_attributes' => '',
+			'mla_link_class' => '',
+			'mla_link_href' => '',
+			'mla_link_text' => '',
+			'mla_rollover_text' => '',
+			'mla_caption' => '',
+			
+			'mla_option_text' => '',
+			'mla_option_value' => '',
+		);
 
 	/**
 	 * The MLA Term List support function.
@@ -2831,72 +2890,72 @@ class MLAShortcode_Support {
 			);
 		}
 
-		/*
-		 * These are the default parameters for term list display
-		 */
-		$mla_item_specific_arguments = array(
-			'mla_link_attributes' => '',
-			'mla_link_class' => '',
-			// 'mla_link_style' => '',
-			'mla_link_href' => '',
-			'mla_link_text' => '',
-			'mla_nolink_text' => '',
-			'mla_rollover_text' => '',
-			'mla_caption' => ''
-		);
-
-		$mla_arguments = array_merge( array(
-			'mla_output' => 'list',
+		$defaults = array_merge(
+			self::$mla_get_terms_parameters,
+			array(
+			'echo' => false,
+			'mla_debug' => false,
+			'mla_output' => 'ulist',
 			'hierarchical' => 'true',
+
+			'separator' => "\n",
+			'single_text' => '%d item',
+			'multiple_text' => '%d items',
+			'link' => 'current',
+			'current_item' => '',
+			'current_item_class' => 'mla_current_item',
+			'mla_item_parameter' => 'current_item',
+			'show_count' => false,
+
+			'mla_style' => NULL,
+			'mla_markup' => NULL,
+			'itemtag' => 'ul',
+			'termtag' => 'li',
+			'captiontag' => '',
+
+			'mla_nolink_text' => '',
+			'mla_target' => '',
+			'hide_if_empty' => false,
+			'option_all_text' => '',
+			'option_all_value' => '0',
+			'option_none_text' => '',
+			'option_none_value' => '-1',
+
 			'depth' => 0,
 			'child_of' => 0,
 			'include_tree' => NULL,
 			'exclude_tree' => NULL,
-			'mla_style' => NULL,
-			'mla_markup' => NULL,
-			'mla_target' => '',
-			'mla_debug' => false,
-
-			// Pagination parameters
-			//'term_id' => NULL,
-			//'mla_end_size'=> 1,
-			//'mla_mid_size' => 2,
-			//'mla_prev_text' => '&laquo; ' . __( 'Previous', 'media-library-assistant' ),
-			//'mla_next_text' => __( 'Next', 'media-library-assistant' ) . ' &raquo;',
-			//'mla_page_parameter' => 'mla_list_current',
-			//'mla_list_current' => NULL,
-			//'mla_paginate_total' => NULL,
-			//'mla_paginate_type' => 'plain'
 			),
-			$mla_item_specific_arguments
-		);
-
-		$defaults = array_merge(
-			self::$mla_get_terms_parameters,
-			array(
-			'separator' => "\n",
-			'single_text' => '%d item',
-			'multiple_text' => '%d items',
-
-			'echo' => false,
-			'link' => 'view',
-			'current_item' => '',
-			'current_item_class' => 'mla_current_item',
-			'show_count' => false,
-
-			'itemtag' => 'ul',
-			'termtag' => 'li',
-			'captiontag' => '',
-			),
-			$mla_arguments
+			self::$term_list_item_specific_arguments
 		);
 
 		/*
-		 * Filter the attributes before "request:" prefix processing.
+		 * Filter the attributes before $mla_item_parameter and "request:" prefix processing.
 		 */
 		 
 		$attr = apply_filters( 'mla_term_list_raw_attributes', $attr );
 
+		/*
+		 * The current_item parameter can be changed to support
+		 * multiple lists per page.
+		 */
+		if ( ! isset( $attr['mla_item_parameter'] ) ) {
+			$attr['mla_item_parameter'] = $defaults['mla_item_parameter'];
+		}
+
+		$mla_item_parameter = $attr['mla_item_parameter'];
+		 
+		/*
+		 * Special handling of mla_item_parameter to make
+		 * multiple lists per page easier. Look for this parameter in $_REQUEST
+		 * if it's not present in the shortcode itself.
+		 */
+		if ( ! isset( $attr[ $mla_item_parameter ] ) ) {
+			if ( isset( $_REQUEST[ $mla_item_parameter ] ) ) {
+				$attr[ $mla_item_parameter ] = $_REQUEST[ $mla_item_parameter ];
+			}
+		}
+		 
 		// $instance supports multiple lists in one page/post	
 		static $instance = 0;
 		$instance++;
@@ -2927,10 +2986,45 @@ class MLAShortcode_Support {
 		);
 
 		/*
+		 * Determine markup template to get default arguments
+		 */
+		$arguments = shortcode_atts( $defaults, $attr );
+
+		/*
+		 * $mla_item_parameter, if non-default, doesn't make it through the shortcode_atts
+		 * filter, so we handle it separately
+		 */
+		if ( ! isset( $arguments[ $mla_item_parameter ] ) ) {
+			if ( isset( $attr[ $mla_item_parameter ] ) ) {
+				$arguments[ $mla_item_parameter ] = $attr[ $mla_item_parameter ];
+			} else {
+				$arguments[ $mla_item_parameter ] = $defaults['current_item'];
+
+			}
+		}
+
+		if ( $arguments['mla_markup'] ) {
+			$template = $arguments['mla_markup'];
+		} else {
+			$output_parameters = array_map( 'strtolower', array_map( 'trim', explode( ',', $arguments['mla_output'] ) ) );
+	
+			if ( in_array( $output_parameters[0], array( 'list', 'ulist', 'olist', 'dlist' ) ) ) {
+				if ( ( 'dlist' == $output_parameters[0] ) || ('list' == $output_parameters[0] && 'dd' == $arguments['captiontag'] ) ) {
+					$template = 'term-list-dl';
+				} else {
+					$template = 'term-list-ul';
+				}
+			} elseif ( 'dropdown' == $output_parameters[0] ) {
+				$template = 'term-list-dropdown';
+			} elseif ( 'checklist' == $output_parameters[0] ) {
+				$template = 'term-list-checklist';
+			}
+		}
+		
+		/*
 		 * Apply default arguments set in the markup template
 		 */
-		$template = isset( $attr['mla_markup'] ) ? $attr['mla_markup'] : $mla_arguments['mla_markup'];
-		$arguments = self::mla_fetch_gallery_template( $template . '-arguments', 'markup' );
+		$arguments = MLATemplate_Support::mla_fetch_custom_template( $template, 'term-list', 'markup', 'arguments' );
 		if ( !empty( $arguments ) ) {
 			$attr = wp_parse_args( $attr, self::_validate_attributes( array(), $arguments ) );
 		}
@@ -2950,7 +3044,7 @@ class MLAShortcode_Support {
 			 * item-specific Display Content parameters must be evaluated
 			 * later, when all of the information is available.
 			 */
-			if ( array_key_exists( $attr_key, $mla_item_specific_arguments ) ) {
+			if ( array_key_exists( $attr_key, self::$term_list_item_specific_arguments ) ) {
 				continue;
 			}
 
@@ -2963,10 +3057,31 @@ class MLAShortcode_Support {
 		$arguments = shortcode_atts( $defaults, $attr );
 
 		/*
-		 * Clean up the current_item to separate term_id from slug
+		 * $mla_item_parameter, if non-default, doesn't make it through the shortcode_atts
+		 * filter, so we handle it separately
 		 */
-		if ( ! empty( $arguments['current_item'] ) && ctype_digit( $arguments['current_item'] ) ) {
-			$arguments['current_item'] = absint( $arguments['current_item'] );
+		if ( ! isset( $arguments[ $mla_item_parameter ] ) ) {
+			if ( isset( $attr[ $mla_item_parameter ] ) ) {
+				$arguments[ $mla_item_parameter ] = $attr[ $mla_item_parameter ];
+			} else {
+				$arguments[ $mla_item_parameter ] = $defaults['current_item'];
+
+			}
+		}
+
+		/*
+		 * Clean up the current_item(s) to separate term_id from slug
+		 */
+		if ( ! empty( $arguments[ $mla_item_parameter ] ) ) {
+			if ( is_string( $arguments[ $mla_item_parameter ] ) ) {
+				$arguments[ $mla_item_parameter ] = explode( ',', $arguments[ $mla_item_parameter ] );
+			}
+
+			foreach( $arguments[ $mla_item_parameter ] as $index => $value ) {
+				if ( ctype_digit( $value ) ) {
+					$arguments[ $mla_item_parameter ][ $index ] = absint( $value );
+				}
+			}
 		}
 
 		$arguments = apply_filters( 'mla_term_list_arguments', $arguments );
@@ -2992,16 +3107,33 @@ class MLAShortcode_Support {
 		 */
 		$output_parameters = array_map( 'strtolower', array_map( 'trim', explode( ',', $arguments['mla_output'] ) ) );
 
-		if ( $is_list = 'list' == $output_parameters[0] ) {
+		if ( $is_list = in_array( $output_parameters[0], array( 'list', 'ulist', 'olist', 'dlist' ) ) ) {
 			$default_style = 'none';
-			if ( empty( $arguments['captiontag'] ) ) {
-				$default_markup = 'term-list-ul';
-			} else {
-				$default_markup = 'term-list-dl';
 
-				if ( 'dd' == $arguments['captiontag'] ) {
-					$arguments['itemtag'] = 'dl';
-					$arguments['termtag'] = 'dt';
+			if ( 'list' == $output_parameters[0] && 'dd' == $arguments['captiontag'] ) {
+				$default_markup = 'term-list-dl';
+				$arguments['itemtag'] = 'dl';
+				$arguments['termtag'] = 'dt';
+			} else {
+				$default_markup = 'term-list-ul';
+				$arguments['termtag'] = 'li';
+				$arguments['captiontag'] = '';
+			
+				switch ( $output_parameters[0] ) {
+					case 'ulist':
+						$arguments['itemtag'] = 'ul';
+						break;
+					case 'olist':
+						$arguments['itemtag'] = 'ol';
+						break;
+					case 'dlist':
+						$default_markup = 'term-list-dl';
+						$arguments['itemtag'] = 'dl';
+						$arguments['termtag'] = 'dt';
+						$arguments['captiontag'] = 'dd';
+					break;
+					default:
+						$arguments['itemtag'] = 'ul';
 				}
 			}
 
@@ -3017,6 +3149,8 @@ class MLAShortcode_Support {
 		if ( $is_dropdown = 'dropdown' == $output_parameters[0] ) {
 			$default_style = 'none';
 			$default_markup = 'term-list-dropdown';
+			$arguments['itemtag'] = 'select';
+			$arguments['termtag'] = 'option';
 
 			if ( NULL == $arguments['mla_style'] ) {
 				$arguments['mla_style'] = $default_style;
@@ -3030,6 +3164,7 @@ class MLAShortcode_Support {
 		if ( $is_checklist = 'checklist' == $output_parameters[0] ) {
 			$default_style = 'none';
 			$default_markup = 'term-list-checklist';
+			$arguments['termtag'] = 'li';
 
 			if ( NULL == $arguments['mla_style'] ) {
 				$arguments['mla_style'] = $default_style;
@@ -3066,7 +3201,6 @@ class MLAShortcode_Support {
 		}
 			
 		$tags = self::mla_get_terms( $arguments );
-
 		if ( !empty( $exclude_later ) ) {
 			$arguments['exclude'] = $exclude_later;
 		}
@@ -3099,6 +3233,7 @@ class MLAShortcode_Support {
 			$found_rows = count( $tags );
 		}
 
+		$show_empty = false;
 		if ( 0 == $found_rows ) {
 			if ( self::$mla_debug ) {
 				MLACore::mla_debug_add( '<strong>' . __( 'mla_debug empty list', 'media-library-assistant' ) . '</strong>, query = ' . var_export( $arguments, true ) );
@@ -3111,17 +3246,50 @@ class MLAShortcode_Support {
 				$list = '';
 			}
 
-			$list .= $arguments['mla_nolink_text'];
 			if ( 'array' == $arguments['mla_output'] ) {
-				return array( $list );
+				$list .= $arguments['mla_nolink_text'];
+				
+				if ( empty( $list ) ) {
+					return array();
+				} else {
+					return array( $list );
+				}
 			}
 
-			if ( empty($arguments['echo']) ) {
-				return $list;
-			}
+			$show_empty = empty( $arguments['hide_if_empty'] ) || ( 'true' !== strtolower( $arguments['hide_if_empty'] ) );
+			if ( ( $is_checklist || $is_dropdown ) && $show_empty ) {
+				if ( empty( $arguments['option_none_text'] ) ) {
+					$arguments['option_none_text'] = __( 'no-terms', 'media-library-assistant' );
+				}
 
-			echo $list;
-			return;
+				$tags[0] = ( object ) array(
+					'term_id' => $arguments['option_none_value'],
+					'name' => $arguments['option_none_text'],
+					'slug' => sanitize_title( $arguments['option_none_text'] ),
+					'term_group' => '0',
+					'term_taxonomy_id' => $arguments['option_none_value'],
+					'taxonomy' => current( $arguments['taxonomy'] ),
+					'description' => '',
+					'parent' => '0',
+					'count' => 0,
+					'level' => 0,
+					'edit_link' => '',
+					'term_link' => '',
+					'link' => '',
+				);
+
+				$is_hierarchical = false;
+				$found_rows = 1;
+			} else {
+				$list .= $arguments['mla_nolink_text'];
+
+				if ( empty($arguments['echo']) ) {
+					return $list;
+				}
+	
+				echo $list;
+				return;
+			}
 		}
 
 		if ( self::$mla_debug ) {
@@ -3155,38 +3323,64 @@ class MLAShortcode_Support {
 				$found_rows = count( $tags );
 			}
 		} else {
-			// TODO Make this conditional on $arguments['link']
-			foreach ( $tags as $key => $tag ) {
-				$link = get_edit_tag_link( $tag->term_id, $tag->taxonomy );
-				if ( ! is_wp_error( $link ) ) {
-					$tags[ $key ]->edit_link = $link;
-					$link = get_term_link( intval($tag->term_id), $tag->taxonomy );
-					$tags[ $key ]->term_link = $link;
-				}
-	
-				if ( is_wp_error( $link ) ) {
-					$list =  '<strong>' . __( 'ERROR', 'media-library-assistant' ) . ': ' . $link->get_error_message() . '</strong>, ' . $link->get_error_data( $link->get_error_code() );
-	
-					if ( 'array' == $arguments['mla_output'] ) {
-						return array( $list );
+			if ( !$show_empty ) {
+				foreach ( $tags as $key => $tag ) {
+					$tags[ $key ]->level = 0;
+					$link = get_edit_tag_link( $tag->term_id, $tag->taxonomy );
+					if ( ! is_wp_error( $link ) ) {
+						$tags[ $key ]->edit_link = $link;
+						$link = get_term_link( intval($tag->term_id), $tag->taxonomy );
+						$tags[ $key ]->term_link = $link;
 					}
 		
-					if ( empty($arguments['echo']) ) {
-						return $list;
+					if ( is_wp_error( $link ) ) {
+						$list =  '<strong>' . __( 'ERROR', 'media-library-assistant' ) . ': ' . $link->get_error_message() . '</strong>, ' . $link->get_error_data( $link->get_error_code() );
+		
+						if ( 'array' == $arguments['mla_output'] ) {
+							return array( $list );
+						}
+			
+						if ( empty($arguments['echo']) ) {
+							return $list;
+						}
+			
+						echo $list;
+						return;
 					}
 		
-					echo $list;
-					return;
-				}
-	
-				if ( 'edit' == $arguments['link'] ) {
-					$tags[ $key ]->link = $tags[ $key ]->edit_link;
-				} else {
-					$tags[ $key ]->link = $tags[ $key ]->term_link;
-				}
-			} // foreach tag
+					if ( 'edit' == $arguments['link'] ) {
+						$tags[ $key ]->link = $tags[ $key ]->edit_link;
+					} else {
+						$tags[ $key ]->link = $tags[ $key ]->term_link;
+					}
+				} // foreach tag
+			}
 		}
 
+		/*
+		 * Add the optional 'all-terms' option, if requested
+		 */
+		if ( ( $is_checklist || $is_dropdown ) && !empty( $arguments['option_all_text'] ) && !$show_empty ) {
+			$option_all = ( object ) array(
+				'term_id' => $arguments['option_all_value'],
+				'name' => $arguments['option_all_text'],
+				'slug' => sanitize_title( $arguments['option_all_text'] ),
+				'term_group' => '0',
+				'term_taxonomy_id' => $arguments['option_all_value'],
+				'taxonomy' => current( $arguments['taxonomy'] ),
+				'description' => '',
+				'parent' => '0',
+				'count' => -1,
+				'level' => 0,
+				'edit_link' => '',
+				'term_link' => '',
+				'link' => '',
+			);
+
+			array_unshift( $tags[ $option_all->taxonomy ], $option_all );
+			$found_rows += 1;
+		}
+		
 		$style_values = array_merge( $page_values, array(
 			'mla_output' => $arguments['mla_output'],
 			'mla_style' => $arguments['mla_style'],
@@ -3197,24 +3391,10 @@ class MLAShortcode_Support {
 			'termtag' => tag_escape( $arguments['termtag'] ),
 			'captiontag' => tag_escape( $arguments['captiontag'] ),
 			'itemtag_attributes' => '',
-			'itemtag_class' => 'class="term-list term-list-taxonomy-' . implode( '-', $arguments['taxonomy'] ) . '" ', 
-			'itemtag_id' => 'id="' . $page_values['selector'] . '" ',
-			//'columns' => $columns,
-			//'itemwidth' => $width_string,
-			//'margin' => $margin_string,
-			//'float' => $float,
+			'itemtag_class' => 'term-list term-list-taxonomy-' . implode( '-', $arguments['taxonomy'] ), 
+			'itemtag_id' => $page_values['selector'],
 			'all_found_rows' => $found_rows,
 			'found_rows' => $found_rows,
-			//'min_count' => $min_count,
-			//'max_count' => $max_count,
-			//'min_scaled_count' => $min_scaled_count,
-			//'max_scaled_count' => $max_scaled_count,
-			//'spread' => $spread,
-			//'smallest' => $arguments['smallest'],
-			//'largest' => $arguments['largest'],
-			//'unit' => $arguments['unit'],
-			//'font_spread' => $font_spread,
-			//'font_step' => $font_step,
 			'separator' => $arguments['separator'],
 			'single_text' => $arguments['single_text'],
 			'multiple_text' => $arguments['multiple_text'],
@@ -3225,10 +3405,10 @@ class MLAShortcode_Support {
 		$style_template = $gallery_style = '';
 		$use_mla_term_list_style = $is_list && ( 'none' != strtolower( $style_values['mla_style'] ) );
 		if ( apply_filters( 'use_mla_term_list_style', $use_mla_term_list_style, $style_values['mla_style'] ) ) {
-			$style_template = MLAShortcode_support::mla_fetch_gallery_template( $style_values['mla_style'], 'style' );
+			$style_template = MLATemplate_support::mla_fetch_custom_template( $style_values['mla_style'], 'term-list', 'style' );
 			if ( empty( $style_template ) ) {
 				$style_values['mla_style'] = $default_style;
-				$style_template = MLAShortcode_support::mla_fetch_gallery_template( $default_style, 'style' );
+				$style_template = MLATemplate_support::mla_fetch_custom_template( $default_style, 'term-list', 'style' );
 			}
 
 			if ( ! empty ( $style_template ) ) {
@@ -3246,7 +3426,7 @@ class MLAShortcode_Support {
 
 		$list .= $gallery_style;
 		$markup_values = $style_values;
-		
+
 		/*
 		 * Accumulate links for flat and array output
 		 */
@@ -3419,7 +3599,6 @@ class MLAShortcode_Support {
 
 		$new_attributes = ( ! empty( $arguments['mla_link_attributes'] ) ) ? esc_attr( self::_process_shortcode_parameter( $arguments['mla_link_attributes'], $markup_values ) ) . ' ' : '';
 
-		//$new_base =  ( ! empty( $arguments['mla_link_href'] ) ) ? esc_attr( self::_process_shortcode_parameter( $arguments['mla_link_href'], $markup_values ) ) : $markup_values['new_url'];
 		$new_base =  ( ! empty( $arguments['mla_link_href'] ) ) ? self::_process_shortcode_parameter( $arguments['mla_link_href'], $markup_values ) : $markup_values['new_url'];
 
 		/*
@@ -3707,7 +3886,6 @@ class MLAShortcode_Support {
 		}
 
 		if ( ! empty( $arguments['mla_link_href'] ) ) {
-			//$new_link .= 'href="' . esc_attr( self::_process_shortcode_parameter( $arguments['mla_link_href'], $markup_values ) ) . '" >';
 			$new_link .= 'href="' . self::_process_shortcode_parameter( $arguments['mla_link_href'], $markup_values ) . '" >';
 		} else {
 			$new_link .= 'href="' . $markup_values['new_url'] . '" >';
@@ -3948,6 +4126,7 @@ class MLAShortcode_Support {
 			// Terms Search
 			'mla_terms_phrases' => '',
 			'mla_terms_taxonomies' => '',
+			'mla_phrase_delimiter' => '',
 			'mla_phrase_connector' => '',
 			'mla_term_connector' => '',
 			// Search
@@ -4335,6 +4514,13 @@ class MLAShortcode_Support {
 
 				unset( $arguments[ $key ] );
 				break;
+			case 'mla_phrase_delimiter':
+				if ( ! empty( $value ) ) {
+					MLAQuery::$search_parameters[ $key ] = substr( $value, 0, 1 );
+				}
+
+				unset( $arguments[ $key ] );
+				break;
 			case 'mla_terms_phrases':
 				$children_ok = false;
 				// fallthru
@@ -4509,7 +4695,11 @@ class MLAShortcode_Support {
 
 		if ( ! empty($query_arguments['include']) ) {
 			$incposts = wp_parse_id_list( $query_arguments['include'] );
-			$query_arguments['posts_per_page'] = count($incposts);  // only the number of posts included
+			
+			if ( ! ( isset( $query_arguments['posts_per_page'] ) && ( 0 < $query_arguments['posts_per_page'] ) ) ) {
+				$query_arguments['posts_per_page'] = count($incposts);  // only the number of posts included
+			}
+			
 			$query_arguments['post__in'] = $incposts;
 			unset( $query_arguments['include'] );
 		} elseif ( ! empty($query_arguments['exclude']) ) {
@@ -4560,6 +4750,12 @@ class MLAShortcode_Support {
 
 			if ( ! empty( MLAQuery::$search_parameters['mla_terms_phrases'] ) ) {
 				MLAQuery::$search_parameters['mla_terms_search']['phrases'] = MLAQuery::$search_parameters['mla_terms_phrases'];
+
+				if ( empty( MLAQuery::$search_parameters['mla_phrase_delimiter'] ) ) {
+					MLAQuery::$search_parameters['mla_terms_search']['phrase_delimiter'] = ',';
+				} else {
+					MLAQuery::$search_parameters['mla_terms_search']['phrase_delimiter'] = MLAQuery::$search_parameters['mla_phrase_delimiter'];
+				}
 
 				if ( empty( MLAQuery::$search_parameters['mla_phrase_connector'] ) ) {
 					MLAQuery::$search_parameters['mla_terms_search']['radio_phrases'] = 'AND';
@@ -5257,7 +5453,6 @@ class MLAShortcode_Support {
 
 		$tags['found_rows'] = $found_rows;
 		$tags = apply_filters( 'mla_get_terms_query_results', $tags );
-//error_log( __LINE__ . ' mla_get_terms tags = ' . var_export( $tags, true ), 0 );
 
 		return $tags;
 	} // mla_get_terms
@@ -5327,10 +5522,6 @@ class MLAShortcode_Support {
 				$child_ids[ $term->taxonomy ][ $term->term_id ] = absint( $term->parent );
 			}
 		}
-//error_log( __LINE__ . ' _get_term_tree root terms = ' . var_export( $term_tree, true ), 0 );
-//error_log( __LINE__ . ' _get_term_tree root ids = ' . var_export( $root_ids, true ), 0 );
-//error_log( __LINE__ . ' _get_term_tree parents = ' . var_export( $parents, true ), 0 );
-//error_log( __LINE__ . ' _get_term_tree child ids = ' . var_export( $child_ids, true ), 0 );
 
 		/*
 		 * Collapse multi-level children
@@ -5345,7 +5536,6 @@ class MLAShortcode_Support {
 				foreach( $tax_parents as $parent_id => $children ) {
 					foreach( $children as $index => $child ) {
 						if ( ! array_key_exists( $child->term_id, $tax_parents ) ) {
-//error_log( __LINE__ . " _get_term_tree leaf = " . var_export( $child, true ), 0 );
 	
 							if ( array_key_exists( $child->parent, $root_ids[ $taxonomy ] ) ) {
 								// Found a root node - attach the leaf
@@ -5353,9 +5543,7 @@ class MLAShortcode_Support {
 							} elseif ( isset( $child_ids[ $taxonomy ][ $child->parent ] ) ) {
 								// Found a non-root parent node - attach the leaf
 								$the_parent = $child_ids[ $taxonomy ][ $child->parent ];
-//error_log( __LINE__ . " _get_term_tree tax_parents[{$the_parent}] = " . var_export( $tax_parents[ $the_parent ], true ), 0 );
 								foreach( $tax_parents[ $the_parent ] as $candidate_index => $candidate ) {
-//error_log( __LINE__ . " _get_term_tree tax_parents[{$the_parent}][ {$candidate_index} ] = " . var_export( $candidate, true ), 0 );
 									if ( $candidate->term_id == $child->parent ) {
 										$parents[ $taxonomy ][ $the_parent ][ $candidate_index ]->children[] = $child;
 										break;
@@ -5374,8 +5562,7 @@ class MLAShortcode_Support {
 						} // leaf node; no children
 					} // foreach child
 				} // foreach parent_id
-//error_log( __LINE__ . ' _get_term_tree tax_parents = ' . var_export( $tax_parents, true ), 0 );
-			}
+			} // has parents
 		} // foreach taxonomy
 
 		/*
@@ -5406,7 +5593,6 @@ class MLAShortcode_Support {
 			if ( $exclude_tree ) {
 				self::_remove_exclude_tree( $term_tree[ $taxonomy ], $exclude_tree );
 			} // $include_tree
-error_log( __LINE__ . ' _get_term_tree root terms = ' . var_export( $term_tree, true ), 0 );
 			
 			$term_count = 0;
 			$root_limit = count( $term_tree[ $taxonomy ] );
@@ -5425,13 +5611,11 @@ error_log( __LINE__ . ' _get_term_tree root terms = ' . var_export( $term_tree, 
 				}
 			}
 
-error_log( __LINE__ . " _get_term_tree( {$taxonomy} ) terms = " . var_export( $term_count, true ), 0 );
 			$term_tree[ $taxonomy ]['found_rows'] = $term_count;
 			$all_terms_count += $term_count;
 		}
 		
 		$term_tree['found_rows'] = $all_terms_count;
-error_log( __LINE__ . ' _get_term_tree root terms = ' . var_export( $term_tree, true ), 0 );
 		return $term_tree;
 	} // _get_term_tree
 
@@ -5632,6 +5816,4 @@ error_log( __LINE__ . ' _get_term_tree root terms = ' . var_export( $term_tree, 
 		}
 	}
 } // Class MLAShortcode_Support
-
-MLAShortcode_Support::mla_load_custom_templates();
 ?>

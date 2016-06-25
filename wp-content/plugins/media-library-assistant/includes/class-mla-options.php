@@ -304,7 +304,7 @@ class MLAOptions {
 	}
 
 	/**
-	 * Style and Markup templates
+	 * Option Setting templates
 	 *
 	 * @since 0.80
 	 *
@@ -313,7 +313,7 @@ class MLAOptions {
 	private static $mla_option_templates = NULL;
 
 	/**
-	 * Load style and markup templates to $mla_templates
+	 * Load option settings templates to $mla_option_templates
 	 *
 	 * @since 0.80
 	 *
@@ -323,7 +323,7 @@ class MLAOptions {
 		MLAOptions::$mla_option_templates = MLACore::mla_load_template( 'mla-option-templates.tpl' );
 
 		/* 	
-		 * Load the default templates
+		 * Load the option settings templates
 		 */
 		if ( is_null( MLAOptions::$mla_option_templates ) ) {
 			MLACore::mla_debug_add( '<strong>mla_debug _load_option_templates()</strong> ' . __( 'error loading tpls/mla-option-templates.tpl', 'media-library-assistant' ) );
@@ -333,140 +333,6 @@ class MLAOptions {
 			MLAOptions::$mla_option_templates = NULL;
 			return;
 		}
-	}
-
-	/**
-	 * Localize $mla_option_definitions array
-	 *
-	 * Localization must be done at runtime; these calls cannot be placed in the
-	 * "public static" array definition itself. Called from MLATest::initialize.
-	 *
-	 * @since 1.70
-	 *
-	 * @return	void
-	 * /
-	public static function mla_localize_option_definitions_array() {
-		MLACoreOptions::mla_localize_option_definitions_array();
-	} // */
-
-	/**
-	 * Get ALL style templates from $mla_templates, including 'default'
-	 *
-	 * @since 0.80
-	 *
-	 * @return	array|null	name => value for all style templates or null if no templates
-	 */
-	public static function mla_get_style_templates() {
-		if ( ! is_array( MLAShortcode_Support::$mla_custom_templates ) ) {
-			MLACore::mla_debug_add( '<strong>mla_debug mla_get_style_templates()</strong> ' . __( 'no templates exist', 'media-library-assistant' ) );
-			return NULL;
-		}
-
-		$templates = array();
-		foreach ( MLAShortcode_Support::$mla_custom_templates as $key => $value ) {
-				$tail = strrpos( $key, '-style' );
-				if ( ! ( false === $tail ) ) {
-					$name = substr( $key, 0, $tail );
-					$templates[ $name ] = $value;
-				}
-		} // foreach
-
-		return $templates;
-	}
-
-	/**
-	 * Put user-defined style templates to $mla_templates and database
-	 *
-	 * @since 0.80
-	 *
-	 * @param	array	name => value for all user-defined style templates
-	 * @return	boolean	true if success, false if failure
-	 */
-	public static function mla_put_style_templates( $templates ) {
-		if ( MLACore::mla_update_option( 'style_templates', $templates ) ) {
-			MLAShortcode_Support::mla_load_custom_templates();
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Get ALL markup templates from $mla_templates, including 'default'
-	 *
-	 * @since 0.80
-	 *
-	 * @return	array|null	name => value for all markup templates or null if no templates
-	 */
-	public static function mla_get_markup_templates() {
-		if ( ! is_array( MLAShortcode_Support::$mla_custom_templates ) ) {
-			MLACore::mla_debug_add( '<strong>mla_debug mla_get_markup_templates()</strong> ' . __( 'no templates exist', 'media-library-assistant' ) );
-			return NULL;
-		}
-
-		$templates = array();
-		foreach ( MLAShortcode_Support::$mla_custom_templates as $key => $value ) {
-			$tail = strrpos( $key, '-arguments-markup' );
-			if ( ! ( false === $tail ) ) {
-				$name = substr( $key, 0, $tail );
-				$templates[ $name ]['arguments'] = $value;
-				continue;
-			}
-
-			// Note order: -row-open must precede -open!
-			$tail = strrpos( $key, '-row-open-markup' );
-			if ( ! ( false === $tail ) ) {
-				$name = substr( $key, 0, $tail );
-				$templates[ $name ]['row-open'] = $value;
-				continue;
-			}
-
-			$tail = strrpos( $key, '-open-markup' );
-			if ( ! ( false === $tail ) ) {
-				$name = substr( $key, 0, $tail );
-				$templates[ $name ]['open'] = $value;
-				continue;
-			}
-
-			$tail = strrpos( $key, '-item-markup' );
-			if ( ! ( false === $tail ) ) {
-				$name = substr( $key, 0, $tail );
-				$templates[ $name ]['item'] = $value;
-				continue;
-			}
-
-			$tail = strrpos( $key, '-row-close-markup' );
-			if ( ! ( false === $tail ) ) {
-				$name = substr( $key, 0, $tail );
-				$templates[ $name ]['row-close'] = $value;
-				continue;
-			}
-
-			$tail = strrpos( $key, '-close-markup' );
-			if ( ! ( false === $tail ) ) {
-				$name = substr( $key, 0, $tail );
-				$templates[ $name ]['close'] = $value;
-			}
-		} // foreach
-
-		return $templates;
-	}
-
-	/**
-	 * Put user-defined markup templates to $mla_templates and database
-	 *
-	 * @since 0.80
-	 *
-	 * @param	array	name => value for all user-defined markup templates
-	 * @return	boolean	true if success, false if failure
-	 */
-	public static function mla_put_markup_templates( $templates ) {
-		if ( MLACore::mla_update_option( 'markup_templates', $templates ) ) {
-			MLAShortcode_Support::mla_load_custom_templates();
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
@@ -1018,7 +884,6 @@ class MLAOptions {
 
 		$options = apply_filters( 'mla_update_attachment_metadata_options', $options, $data, $post_id );
 		$data = apply_filters( 'mla_update_attachment_metadata_prefilter', $data, $post_id, $options );
-//error_log( __LINE__ . ' mla_update_attachment_metadata_filter options = ' . var_export( $options, true ), 0 );
 
 		if ( $options['is_upload'] ) {
 			if ( $options['enable_iptc_exif_mapping'] || $options['enable_custom_field_mapping'] ) {

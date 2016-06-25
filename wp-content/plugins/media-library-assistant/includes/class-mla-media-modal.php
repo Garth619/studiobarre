@@ -394,14 +394,14 @@ class MLAModal {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 
 		if ( $wp_locale->is_rtl() ) {
-			wp_register_style( self::JAVASCRIPT_MEDIA_MODAL_STYLES, MLA_PLUGIN_URL . 'css/mla-media-modal-style-rtl.css', false, MLA::CURRENT_MLA_VERSION );
+			wp_register_style( self::JAVASCRIPT_MEDIA_MODAL_STYLES, MLA_PLUGIN_URL . 'css/mla-media-modal-style-rtl.css', false, MLACore::CURRENT_MLA_VERSION );
 		} else {
-			wp_register_style( self::JAVASCRIPT_MEDIA_MODAL_STYLES, MLA_PLUGIN_URL . 'css/mla-media-modal-style.css', false, MLA::CURRENT_MLA_VERSION );
+			wp_register_style( self::JAVASCRIPT_MEDIA_MODAL_STYLES, MLA_PLUGIN_URL . 'css/mla-media-modal-style.css', false, MLACore::CURRENT_MLA_VERSION );
 		}
 
 		wp_enqueue_style( self::JAVASCRIPT_MEDIA_MODAL_STYLES );
 
-		wp_enqueue_script( self::JAVASCRIPT_MEDIA_MODAL_SLUG, MLA_PLUGIN_URL . "js/mla-media-modal-scripts{$suffix}.js", array( 'media-views', 'wp-lists', 'suggest' ), MLA::CURRENT_MLA_VERSION, false );
+		wp_enqueue_script( self::JAVASCRIPT_MEDIA_MODAL_SLUG, MLA_PLUGIN_URL . "js/mla-media-modal-scripts{$suffix}.js", array( 'media-views', 'wp-lists', 'suggest' ), MLACore::CURRENT_MLA_VERSION, false );
 
 		if ( 'checked' == MLACore::mla_get_option( MLACoreOptions::MLA_MEDIA_MODAL_TERMS_SEARCH ) ) {
 			MLAModal::mla_add_terms_search_scripts();
@@ -495,15 +495,15 @@ class MLAModal {
 
 		if ( $add_the_scripts ) {
 			if ( $wp_locale->is_rtl() ) {
-				wp_register_style( MLA::STYLESHEET_SLUG . '-terms-search', MLA_PLUGIN_URL . 'css/mla-style-terms-search-rtl.css', false, MLA::CURRENT_MLA_VERSION );
+				wp_register_style( MLACore::STYLESHEET_SLUG . '-terms-search', MLA_PLUGIN_URL . 'css/mla-style-terms-search-rtl.css', false, MLACore::CURRENT_MLA_VERSION );
 			} else {
-				wp_register_style( MLA::STYLESHEET_SLUG . '-terms-search', MLA_PLUGIN_URL . 'css/mla-style-terms-search.css', false, MLA::CURRENT_MLA_VERSION );
+				wp_register_style( MLACore::STYLESHEET_SLUG . '-terms-search', MLA_PLUGIN_URL . 'css/mla-style-terms-search.css', false, MLACore::CURRENT_MLA_VERSION );
 			}
 
-			wp_enqueue_style( MLA::STYLESHEET_SLUG . '-terms-search' );
+			wp_enqueue_style( MLACore::STYLESHEET_SLUG . '-terms-search' );
 
 			wp_enqueue_script( MLACore::JAVASCRIPT_INLINE_EDIT_SLUG . '-terms-search', MLA_PLUGIN_URL . "js/mla-terms-search-scripts{$suffix}.js", 
-				array( 'jquery' ), MLA::CURRENT_MLA_VERSION, false );
+				array( 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 			$script_variables = array(
 				'useDashicons' => false,

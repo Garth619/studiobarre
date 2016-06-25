@@ -1918,8 +1918,7 @@ body.page-template-page-press #main {
   
   .chain {
 	  width:40px;
-	 
-	  position: absolute;
+		position: absolute;
 	  bottom:15px;
 	  left:70px;
   }
@@ -1928,3 +1927,65 @@ body.page-template-page-press #main {
   #load-more {
 	  display: none !important;
   }
+  
+    
+  h1.testimonial_header {
+	  color:#FFE000;
+	  font-size:60px;
+	  font-weight:300;
+	  font-family: "core_sans_g_25_extralightRg",arial;
+	  padding:85px 0;
+	  text-align:center;
+  }
+  
+  
+  .testimonial_wrapper {
+	  width:100%;
+	 }
+	 
+	 .single_testimonial {
+		 width:100%;
+		 overflow: hidden;
+		 margin-bottom:50px; 
+	 }
+	 
+	 .testimonial_image_wrapper {
+		 float:left;
+	 }
+	 
+	 .testimonial_image {
+		 border:#FFE000 2px solid;
+		 display: block;
+		 width:229px;
+		 
+		}
+	 
+	 .testimonial_content {
+		  float:right;
+		  width:630px;
+		  padding:20px 0 30px 0;
+		  border-bottom:1px #fff solid;
+		  min-height:213px;
+	 }
+	 
+	 .testimonial_wrapper h2, .testimonial_wrapper p {
+		 font-size:17px;
+		 margin-bottom:10px;
+		 line-height: 1.2;
+	 }
+	 
+	 .testimonial_content .read_more {
+		 color:#FFE000;
+		 font-size:17px;
+		 cursor:pointer;
+	 }
+	 
+	 .test_bio {
+		 position: relative;
+	 }
+	 
+	
+	 
+	 .read_more_wrapper {
+		 display: none;
+		}

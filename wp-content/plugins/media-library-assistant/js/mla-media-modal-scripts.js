@@ -28,7 +28,9 @@ var wp, wpAjax, ajaxurl, jQuery, _,
 	};
 
 (function($){
-	var mlaDrop = wp.media.view.AttachmentsBrowser;
+	var mlaAttachmentsBrowser = wp.media.view.AttachmentsBrowser,
+	    mlaAttachmentCompat = wp.media.view.AttachmentCompat,
+	    mlaSelection = wp.media.model.Selection;
 	
 /*	for debug : trace every event triggered in the MediaFrame controller * /
 	var originalMediaFrameTrigger = wp.media.view.MediaFrame.prototype.trigger;
@@ -777,7 +779,7 @@ this.listenTo( this.controller, 'all', this.toolbarEvent );
 
 				// Apply the original method to create the toolbar
 				//wp.media.view.AttachmentsBrowser.__super__.createToolbar.apply( this, arguments );
-				mlaDrop.prototype.createToolbar.apply( this, arguments );
+				mlaAttachmentsBrowser.prototype.createToolbar.apply( this, arguments );
 				mlaModal.utility.mlaAttachmentsBrowser = this;
 				filters = this.options.filters;
 
@@ -832,9 +834,9 @@ this.listenTo( this.controller, 'all', this.toolbarEvent );
 				if ( this.options.search ) {
 					if ( mlaModal.settings.enableSearchBox ) {
 						this.controller.on( 'content:activate', this.hideDefaultSearch );
+						this.controller.on( 'edit:activate', this.hideDefaultSearch );
 						this.controller.on( 'router:render', this.hideDefaultSearch );
 						this.controller.on( 'uploader:ready', this.hideDefaultSearch );
-						this.controller.on( 'edit:activate', this.hideDefaultSearch );
 
 						this.toolbar.set( 'MlaSearch', new wp.media.view.MlaSearch({
 							controller: this.controller,
@@ -1244,7 +1246,8 @@ this.listenTo( this.controller, 'all', this.toolbarEvent );
 		wp.media.view.AttachmentCompat = wp.media.view.AttachmentCompat.extend({
 			initialize: function() {
 				// Call the base method in the super class
-				wp.media.view.AttachmentCompat.__super__.initialize.apply( this, arguments );
+				//wp.media.view.AttachmentCompat.__super__.initialize.apply( this, arguments );
+				mlaAttachmentCompat.prototype.initialize.apply( this, arguments );
 
 				// Hook the 'ready' event when the sidebar has been rendered so we can add our enhancements
 				this.on( 'ready', function() {
@@ -1283,7 +1286,8 @@ this.listenTo( this.controller, 'all', this.toolbarEvent );
 
 			initialize: function() {
 				// Call the base method in the super class
-				wp.media.model.Selection.__super__.initialize.apply( this, arguments );
+				//wp.media.model.Selection.__super__.initialize.apply( this, arguments );
+				mlaSelection.prototype.initialize.apply( this, arguments );
 
 /*	for debug : trace every event triggered in the wp.media.model.Selection * /
 this.stopListening( this );

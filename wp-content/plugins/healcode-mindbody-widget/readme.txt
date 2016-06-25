@@ -4,7 +4,7 @@ Donate link: http://healcode.com/
 Tags: HealCode, MINDBODY, add HealCode, insert Widget, insert Widgets, add Widget, add Widgets, add HealCode Widget, add HealCode Widgets, MINDBODY Widgets, shortcode, shortcodes, calendar, pear, schedule, soap, yoga, pilates, crossfit, mindbody website integration, mindbody api, sidebar, footer, header, mindbody website integration
 Requires at least: 3.0
 Tested up to: 4.5
-Stable tag: 1.1.4
+Stable tag: 1.1.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,10 +199,11 @@ More questions ? [Contact HealCode Support.](http://www.healcode.com/tech_suppor
 
 1. The “Add Widget Shortcode” page in the WordPress Dashboard
 2. This is the Widget’s entry after adding a Widget shortcode; you have the options of deactivating the widget, editing it, or deleting it.
-3. The dropdown in the TinyMCE editor. Widgets can quickly and easily be added to pages.
-4. This is a demo Schedule Widget that was installed using a Widget shortcode. Notice that the Schedule Widget is displaying real-time information from our demo MINDBODY account.
-5. Adding a HealCode Widget to a "sidebar" using WordPress widgets (not to be consfused with HealCode widgets).
-6. You can add a "Today's Schedule" widget to the sidebar.
+3. This the button in the editor you click to select your shortcode.
+4. The modal allows for super easy shortcode insertion. Just click the button for the shortcode you want to insert.
+5. This is a demo Schedule Widget that was installed using a Widget shortcode. Notice that the Schedule Widget is displaying real-time information from our demo MINDBODY account.
+6. Adding a HealCode Widget to a "sidebar" using WordPress widgets (not to be confused with HealCode widgets).
+7. You can add a "Today's Schedule" widget to the sidebar.
 
 
 
@@ -229,47 +230,101 @@ More questions ? [Contact HealCode Support.](http://www.healcode.com/tech_suppor
 
 == Changelog ==
 
-= 1.0.0 =
-* Compatibility with WordPress 4.1
-= 1.0.1 =
-* Styling changes
-= 1.0.2 =
-* Image change
+= 1.1.12 =
+* bug fix
+= 1.1.11 =
+* Compatibility with Visual Composer
+* Cleaned code, because clean code is awesome
+= 1.1.10 =
+* Update Submenu
+= 1.1.9 =
+* Update JS enqueuing to best practice
+= 1.1.8 =
+* Fix initial load for first time installers
+* Update screenshots
+= 1.1.7 =
+* Editor update
+= 1.1.6 =
+* Code cleanup
+= 1.1.5 =
+* Code cleanup
+* Settings simplification
+= 1.1.4 =
+* Revert to 1.1.0
+= 1.1.3 =
+* Update defaults
+= 1.1.2 =
+* More cleanup
+= 1.1.1 =
+* Clean up files
+= 1.1.0 =
+* Compatibility with WordPress 4.5
+= 1.0.9 =
+* Compatibility with WordPress 4.4
+= 1.0.8 =
+* Fixed issue with the Visual Editor for some WP themes
+= 1.0.7 =
+* Changing WP_Widget to __construct
+* Compatibility with WordPress 4.3.0
+= 1.0.6 =
+* Editing lingo
+= 1.0.5 =
+* Compatibility with WordPress 4.2.2
 = 1.0.3 =
 * Bug fix - fixed the shortcodes on the Widget Shortcodes screen
 * Adjusted text in the WordPress widget screen
-= 1.0.5 =
-* Compatibility with WordPress 4.2.2
-= 1.0.6 =
-* Editing lingo
-= 1.0.7 =
-* Changing WP_Widget to __construct
-* Compatibility with WordPress 4.3.0
-= 1.0.8 =
-* Fixed issue with the Visual Editor for some WP themes
-= 1.0.9 =
-* Compatibility with WordPress 4.4
-= 1.1.0 =
-* Compatibility with WordPress 4.5
+= 1.0.2 =
+* Image change
+= 1.0.1 =
+* Styling changes
+= 1.0.0 =
+* Compatibility with WordPress 4.1
 
 == Upgrade Notice ==
 
-= 1.0.1 =
-* Styling changes
-= 1.0.2 =
-* Image change
-= 1.0.3 =
-* Bug fix
-= 1.0.5 =
-* Compatibility with WordPress 4.2.2
-= 1.0.6 =
-* Editing lingo
+= 1.1.12 =
+* bug fix
+= 1.1.11 =
+* Compatibility with Visual Composer
+* Cleaned code, because clean code is awesome
+= 1.1.10 =
+* Update submenu
+= 1.1.9 =
+* Update JS enqueuing to best practice
+= 1.1.8 =
+* Fix initial load for first time installers
+* Update screenshots
+= 1.1.7 =
+* Editor update
+= 1.1.6 =
+* Code cleanup
+= 1.1.5 =
+* Code cleanup
+* Settings simplification
+= 1.1.4 =
+* Revert to 1.1.0
+= 1.1.3 =
+* Update defaults
+= 1.1.2 =
+* More cleanup
+= 1.1.1 =
+* Clean up files
+= 1.1.0 =
+* Compatibility with WordPress 4.5
+= 1.0.9 =
+* Compatibility with WordPress 4.4
+= 1.0.8 =
+* Fixed issue with the Visual Editor for some WP themes
 = 1.0.7 =
 * Changing WP_Widget to __construct
 * Compatibility with WordPress 4.3.0
-= 1.0.8 =
-* Fixed issue with the Visual Editor for some WP themes
-= 1.0.9 =
-* Compatibility with WordPress 4.4
-= 1.1.0 =
-* Compatibility with WordPress 4.5
+= 1.0.6 =
+* Editing lingo
+= 1.0.5 =
+* Compatibility with WordPress 4.2.2
+= 1.0.3 =
+* Bug fix
+= 1.0.2 =
+* Image change
+= 1.0.1 =
+* Styling changes

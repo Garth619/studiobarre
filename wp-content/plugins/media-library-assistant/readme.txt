@@ -3,8 +3,8 @@ Contributors: dglingren
 Donate link: http://fairtradejudaica.org/make-a-difference/donate/
 Tags: attachments, gallery, images, media, media library, tag cloud, media-tags, media tags, tags, media categories, categories, IPTC, EXIF, XMP, GPS, PDF, metadata, photos, photographs, photoblog, photo albums, lightroom, photoshop, MIME, mime-type, icon, upload, file extensions, WPML, Polylang, multilanguage, multilingual, localization
 Requires at least: 3.5.0
-Tested up to: 4.5
-Stable tag: 2.25
+Tested up to: 4.5.2
+Stable tag: 2.31
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,9 +14,11 @@ Enhances the Media Library; powerful [mla_gallery], taxonomy support, IPTC/EXIF/
 
 The Media Library Assistant provides several enhancements for managing the Media Library, including:
 
-* The **`[mla_gallery]` shortcode**, used in a post, page or custom post type to add a gallery of images and/or other Media Library items (such as PDF documents). MLA Gallery is a superset of the WordPress `[gallery]` shortcode; it is compatible with `[gallery]` and provides many enhancements. These include: 1) full query and display support for WordPress categories, tags, custom taxonomies and custom fields, 2) support for all post_mime_type values, not just images 3) media Library items need not be "attached" to the post, and 4) control over the styles, markup and content of each gallery using Style and Markup Templates. **Twenty-eight hooks** provided for complete gallery customization from your theme or plugin code.
+* The **`[mla_gallery]` shortcode**, used in a post, page or custom post type to add a gallery of images and/or other Media Library items (such as PDF documents). MLA Gallery is a superset of the WordPress `[gallery]` shortcode; it is compatible with `[gallery]` and provides many enhancements. These include: 1) full query and display support for WordPress categories, tags, custom taxonomies and custom fields, 2) support for all post_mime_type values, not just images 3) media Library items need not be "attached" to the post, and 4) control over the styles, markup and content of each gallery using Style and Markup Templates. **Twenty-eight hooks** are provided for complete gallery customization from your theme or plugin code.
 
-* The **`[mla_tag_cloud]` shortcode**, used in a post, page, custom post type or widget to display the "most used" terms in your Media Library where the size of each term is determined by how many times that particular term has been assigned to Media Library items. **Twenty-five hooks** provided for complete cloud customization from your theme or plugin code.
+* The **`[mla_tag_cloud]` shortcode**, used in a post, page, custom post type or widget to display the "most used" terms in your Media Library where the size of each term is determined by how many times that particular term has been assigned to Media Library items. **Twenty-five hooks** are provided for complete cloud customization from your theme or plugin code.
+
+* The **`[mla_term_list]` shortcode**, used in a post, page, custom post type or widget to display hierarchical (and flat) taxonomy terms in list, dropdown control or checklist formats. **Twenty hooks** are provided for complete list customization from your theme or plugin code.
 
 * Powerful **Content Templates**, which let you compose a value from multiple data sources, mix literal text with data values, test for empty values and choose among two or more alternatives or suppress output entirely.
 
@@ -170,6 +172,30 @@ All of the MLA source code has been annotated with "DocBlocks", a special type o
 
 == Changelog ==
 
+= 2.31 =
+* Fix: Remove call to `xdebug_get_function_stack()` causing fatal PHP error.
+
+= 2.30 =
+* New: A **new shortcode, [mla_term_list],** composes lists, dropdown controls and checkbox lists for flat and hierarchical taxonomies.
+* New: A new example plugin, `/media-library-assistant/examples/mla-term-list-hooks-example.php.txt` has been added. It documents the filters (hooks) provided by the `[mla_term_list]` shortcode.
+* New: A new example plugin, `/media-library-assistant/examples/mla-custom-taxonomy-example.php.txt` has been added. It defines three custom taxonomies and shows how to combine `[mla_term_list]` and `[mla_gallery]` terms search parameters.
+* New: The Settings/Media Library Assistant "MLA Gallery" tab has been renamed "Shortcodes" to more accurately reflect its content. An expanded jump table makes it easier to access the style and markup sections for each shortcode.
+* New: A data element specification has been added to the taxonomy terms data substitution prefix. For example, you can get the term slug value(s) by coding `[+terms:attachment_category(slug)+]`.
+* New: **Field-level substitution parameter filters (hooks)** have been added to allow you to create and access custom substitution parameters and format options.
+* New: A new example plugin, `/media-library-assistant/examples/mla-substitution-parameter-hooks-example.php.txt` has been added. It documents all the new hooks and adds a custom "parent_terms:" prefix to illustrate their use.
+* New: A new "Taxonomy term keyword(s) search" parameter has been added to change the delimiter used to separate terms in the input list. 
+* New: A new example plugin, `/media-library-assistant/examples/mla-bulk-edit-remap-example.php.txt` has been added. It performs IPTC/EXIF and Custom Field mapping at the conclusion of a Bulk Edit action, so data sources like "terms:" are properly applied.
+* New: A new example plugin, `/media-library-assistant/examples/mla-current-user-example.php.txt` has been added. It changes the `[mla_gallery]` parameter `author=current` to the ID value of the current logged in user.
+* New: The `/media-library-assistant/examples/mla-project-slug-example.php.txt` example plugin has been enhanced to allow one or more `attachment_tags` terms to be excluded from the filtered results.
+* New: The `/media-library-assistant/examples/mla-insert-fixit.php.txt` example plugin has been enhanced to link unattached items that are inserted in or are the Featured Image for a post or page.
+* New: Additional debug log messages have been added for IPTC/EXIF and Custom Field mapping AJAX actions.
+* Fix: The `mla-media-modal-scripts.js` script has been changed to **avoid "Uncaught RangeError" problems**.
+* Fix: The `posts_per_page` parameter is no longer ignored when the data selection parameter is `ids=` (or `include=`).
+* Fix: Corrupted `exif:DateTimeOriginal` values are replaced by `xmp:CreateDate` when possible. The original bad EXIF value is retained as `exif:BadDateTimeOriginal`.
+* Fix: MLA Media Manager enhancements are now loaded when plugins such as Beaver Builder invoke the Media Manager on the "front end".
+* Fix: Polylang version 1.8+ API changes have been incorporated, eliminating "deprecated" warning messages.
+* Fix: Files with valid, but empty XMP metadata that contain no namespaces are now handled without generating PHP Warning messages.
+
 = 2.25 =
 * New: **Argument Substitution Parameters** can be added to custom markup templates to provide default values for shortcode parameters. See the [Other Notes section](http://wordpress.org/extend/plugins/media-library-assistant/other_notes/ "Click here, then scroll down") section or the Settings/Media Library Assistant Documentation tab for more information.
 * New: For the Media/Assistant submenu, the **list/grid view switcher** has been added so you can access the WordPress Media/Library grid view even if the Media/Library submenu entry has been suppressed. A new option in the Settings/Media Library Assistant General tab controls the switcher display.
@@ -191,25 +217,9 @@ All of the MLA source code has been annotated with "DocBlocks", a special type o
 * Fix: Some template and metadata parsing error messages have been converted from unconditional `error_log()` calls to MLA Debug calls so they can be suppressed when not needed.
 * Fix: Information on the `[mla_tag_cloud]` itemtag, termtag and captiontag parameters has been added to the Documentation tab.
 
-= 2.24 =
-* Fix: Corrected the MLA error that suppressed Admin Columns functions for Posts, Pages, Custom Post Types, Users and Comments.
-
-= 2.23 =
-* New: For the `[mla_gallery]` shortcode, **Posts, Pages and custom Post Types can be included in the gallery display**. See the [Other Notes section](http://wordpress.org/extend/plugins/media-library-assistant/other_notes/ "Click here, then scroll down") section or the Settings/Media Library Assistant Documentation tab for more information.
-* New: For the `[mla_gallery]` shortcode, **a new `mla_alt_ids_value` parameter** lets you substitute item-specific values such as the file URL for the default item ID. This expands the uses of the `mla_alt_shortcode` parameter.
-* New: For the Media Manager Modal (popup) Window, site-wide defaults for the Display Settings can be set on the Settings/Media Library Assistant General tab. A checkbox option is provided to disable this feature and use the WordPress cookie-based default scheme.
-* New: For IPTC/EXIF mapping, **XMP and PDF metadata is used by default when EXIF metadata is not available**. This means that EXIF rules/values like "Keywords" are found in XMP/PDF metadata without resorting to complex Content Templates.
-* New: For the Media/Assistant **Quick Edit area, simple array values** in custom fields are now supported when Option: array is set in the mapping rule.
-* New: For the Settings/Media Library Assistant Debug tab, the Display Limit default value is now 131072 (128k) characters. This prevents very large error log files from causing page load problems.
-* New: A new example plugin, `/media-library-assistant/examples/mla-random-galleries-example.php.txt`, has been added to illustrate a high-performance SQL-based alternative to WP_Query taxonomy queries for selecting random images assigned to an `attachment_category` term. It is particularly helpful when many `[mla_gallery]` shortcodes of this type occur on a single post/page.
-* Fix: **Fatal errors caused by the Admin Columns 2.4.9 update** have been resolved.
-* Fix: For the Settings/Media Library Assistant Uploads tab, the icon size calculation no longer requires an `http:` request.
-* Fix: For the Settings/Media Library Assistant tabs, only options with non-default values are stored to the options table. This reduces the number of entries added to the table by MLA.
-* Fix: For `[mla_tag_cloud]`, `mla_nolink_text` now works as documented.
-* Fix: EXIF and XMP parsing has been improved for images processed by very old PhotoShop and WINXP programs, e.g., "Keywords" assignment.
-* Fix: When the "Upload Files" tab of the "Insert Media" Modal (popup) Window is used to add items, the MLA enhanced taxonomy metaboxes have been restored to the ATTACHMENT DETAILS pane.
-
-= 2.00 - 2.22 =
+= 2.00 - 2.24 =
+* 2.24 - Corrects the MLA error that suppressed Admin Columns functions for Posts, Pages, Custom Post Types, Users and Comments.
+* 2.23 - Admin Columns 2.4.9 fixes, EXIF/XMP/PDF improvements, Posts, Pages and custom Post Types in `[mla_gallery]` display. Seven enhancements in all, six fixes.
 * 2.22 - Support for the "Admin Columns" plugin, PHP7 and "enclosing shortcode" syntax. Better performance, new filters and examples. Eight enhancements in all, eight fixes.
 * 2.21 - Fix for "empty grid", "No media attachments found", "No items found" and "Unknown column" symptoms. Thanks to all who quickly alerted me to the problem. One other fix for "Featured Image" handling of size=none.
 * 2.20 - Reduced memory/time footprint, default setting changes, WPML/Polylang IPTC/EXIF mapping fixes, partial German translation. Nine other enhancements, thirteen fixes.
@@ -272,8 +282,8 @@ All of the MLA source code has been annotated with "DocBlocks", a special type o
 
 == Upgrade Notice ==
 
-= 2.25 =
-Default shortcode parameters in templates, list/grid view switcher, delete option settings, better XML parsing. Eight enhancements in all, eleven fixes
+= 2.31 =
+Remove call to `xdebug_get_function_stack()` causing fatal PHP error.
 
 == Other Notes ==
 

@@ -47,7 +47,7 @@ if ( empty( $supported_taxonomies ) ) {
             <input type="checkbox" name="s[mla_search_alt_text]" id="search-alt-text" value="alt-text" <# if ( -1 != data.searchFields.indexOf( 'alt-text' ) ) { #>checked<# } #> />
             <?php _e( 'ALT Text', 'media-library-assistant' ); ?>
         </li>
-		<br>
+		<br style="clear: both">
         <li>
             <input type="checkbox" name="s[mla_search_excerpt]" id="search-excerpt" value="excerpt" <# if ( -1 != data.searchFields.indexOf( 'excerpt' ) ) { #>checked<# } #> />
             <?php _e( 'Caption', 'media-library-assistant' ); ?>

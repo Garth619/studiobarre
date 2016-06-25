@@ -58,12 +58,10 @@
 <li class="nav-header">
 <i class="icon-custom icon-method"></i> Methods</li>
 <li class="method public "><a href="#_compose_term_list" title="_compose_term_list :: Compose one level of an mla_term_list"><span class="description">Compose one level of an mla_term_list</span><pre>_compose_term_list()</pre></a></li>
-<li class="method public "><a href="#mla_fetch_gallery_template" title="mla_fetch_gallery_template :: Fetch style or markup template from $mla_templates"><span class="description">Fetch style or markup template from $mla_templates</span><pre>mla_fetch_gallery_template()</pre></a></li>
 <li class="method public "><a href="#mla_gallery_shortcode" title="mla_gallery_shortcode :: The MLA Gallery shortcode."><span class="description">The MLA Gallery shortcode.</span><pre>mla_gallery_shortcode()</pre></a></li>
 <li class="method public "><a href="#mla_get_shortcode_attachments" title="mla_get_shortcode_attachments :: Parses shortcode parameters and returns the gallery objects"><span class="description">Parses shortcode parameters and returns the gallery objects</span><pre>mla_get_shortcode_attachments()</pre></a></li>
 <li class="method public "><a href="#mla_get_terms" title="mla_get_terms :: Retrieve the terms in one or more taxonomies."><span class="description">Retrieve the terms in one or more taxonomies.</span><pre>mla_get_terms()</pre></a></li>
 <li class="method public "><a href="#mla_ghostscript_present" title="mla_ghostscript_present :: Verify the presence of Ghostscript for mla_viewer"><span class="description">Verify the presence of Ghostscript for mla_viewer</span><pre>mla_ghostscript_present()</pre></a></li>
-<li class="method public "><a href="#mla_load_custom_templates" title="mla_load_custom_templates :: Load style and markup templates to $mla_custom_templates"><span class="description">Load style and markup templates to $mla_custom_templates</span><pre>mla_load_custom_templates()</pre></a></li>
 <li class="method public "><a href="#mla_shortcode_query_posts_clauses_filter" title="mla_shortcode_query_posts_clauses_filter :: Filters all clauses for shortcode queries, pre caching plugins"><span class="description">Filters all clauses for shortcode queries, pre caching plugins</span><pre>mla_shortcode_query_posts_clauses_filter()</pre></a></li>
 <li class="method public "><a href="#mla_shortcode_query_posts_clauses_request_filter" title="mla_shortcode_query_posts_clauses_request_filter :: Filters all clauses for shortcode queries, post caching plugins"><span class="description">Filters all clauses for shortcode queries, post caching plugins</span><pre>mla_shortcode_query_posts_clauses_request_filter()</pre></a></li>
 <li class="method public "><a href="#mla_shortcode_query_posts_join_filter" title="mla_shortcode_query_posts_join_filter :: Filters the JOIN clause for shortcode queries"><span class="description">Filters the JOIN clause for shortcode queries</span><pre>mla_shortcode_query_posts_join_filter()</pre></a></li>
@@ -89,12 +87,12 @@
 <li class="method private "><a href="#_validate_sql_orderby" title="_validate_sql_orderby :: Translates query parameters to a valid SQL order by clause."><span class="description">Translates query parameters to a valid SQL order by clause.</span><pre>_validate_sql_orderby()</pre></a></li>
 <li class="nav-header">
 <i class="icon-custom icon-property"></i> Properties</li>
-<li class="property public "><a href="#%24mla_custom_templates" title="$mla_custom_templates :: Style and Markup templates"><span class="description">Style and Markup templates</span><pre>$mla_custom_templates</pre></a></li>
 <li class="nav-header private">» Private</li>
 <li class="property private "><a href="#%24mla_debug" title="$mla_debug :: Turn debug collection and display on or off"><span class="description">Turn debug collection and display on or off</span><pre>$mla_debug</pre></a></li>
 <li class="property private "><a href="#%24mla_get_shortcode_attachments_parameters" title="$mla_get_shortcode_attachments_parameters :: Data selection parameters for the WP_Query in [mla_gallery]"><span class="description">Data selection parameters for the WP_Query in [mla_gallery]</span><pre>$mla_get_shortcode_attachments_parameters</pre></a></li>
 <li class="property private "><a href="#%24mla_get_terms_parameters" title="$mla_get_terms_parameters :: Data selection parameters for [mla_tag_cloud], [mla_term_list]"><span class="description">Data selection parameters for [mla_tag_cloud], [mla_term_list]</span><pre>$mla_get_terms_parameters</pre></a></li>
 <li class="property private "><a href="#%24query_parameters" title='$query_parameters :: WP_Query filter "parameters"'><span class="description">WP_Query filter "parameters"</span><pre>$query_parameters</pre></a></li>
+<li class="property private "><a href="#%24term_list_item_specific_arguments" title="$term_list_item_specific_arguments :: These are the default parameters for term list display"><span class="description">These are the default parameters for term list display</span><pre>$term_list_item_specific_arguments</pre></a></li>
 </ul>
 </div>
 <div class="span8">
@@ -156,29 +154,6 @@ mla_get_shortcode_attachments() and mla_get_terms() database access functions.</
 <div class="subelement argument">
 <h4>$attr</h4>
 <code>array</code><p>Shortcode parameters, explicit, by reference</p></div>
-</div></div>
-</div>
-<a name="mla_fetch_gallery_template" id="mla_fetch_gallery_template"></a><div class="element clickable method public mla_fetch_gallery_template" data-toggle="collapse" data-target=".mla_fetch_gallery_template .collapse">
-<h2>Fetch style or markup template from $mla_templates</h2>
-<pre>mla_fetch_gallery_template(string $key, string $type) : string | boolean | null</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<table class="table table-bordered"><tr>
-<th>since</th>
-<td>2.20</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$key</h4>
-<code>string</code><p>Template name</p></div>
-<div class="subelement argument">
-<h4>$type</h4>
-<code>string</code><p>Template type; 'style' (default) or 'markup'</p>
-</div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>string</code><code>boolean</code><code>null</code>requested template, false if not found or null if no templates</div>
 </div></div>
 </div>
 <a name="mla_gallery_shortcode" id="mla_gallery_shortcode"></a><div class="element clickable method public mla_gallery_shortcode" data-toggle="collapse" data-target=".mla_gallery_shortcode .collapse">
@@ -318,18 +293,6 @@ descending and then by term_id before this value is applied. Default 0.</p>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>boolean</code>true if Ghostscript available else false</div>
-</div></div>
-</div>
-<a name="mla_load_custom_templates" id="mla_load_custom_templates"></a><div class="element clickable method public mla_load_custom_templates" data-toggle="collapse" data-target=".mla_load_custom_templates .collapse">
-<h2>Load style and markup templates to $mla_custom_templates</h2>
-<pre>mla_load_custom_templates() : void</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<table class="table table-bordered"><tr>
-<th>since</th>
-<td>2.20</td>
-</tr></table>
 </div></div>
 </div>
 <a name="mla_shortcode_query_posts_clauses_filter" id="mla_shortcode_query_posts_clauses_filter"></a><div class="element clickable method public mla_shortcode_query_posts_clauses_filter" data-toggle="collapse" data-target=".mla_shortcode_query_posts_clauses_filter .collapse">
@@ -843,18 +806,6 @@ Enhanced version of /wp-includes/formatting.php function sanitize_sql_orderby().
 </div>
 <h3>
 <i class="icon-custom icon-property"></i> Properties</h3>
-<a name="%24mla_custom_templates" id="$mla_custom_templates"> </a><div class="element clickable property public $mla_custom_templates" data-toggle="collapse" data-target=".$mla_custom_templates .collapse">
-<h2>Style and Markup templates</h2>
-<pre>$mla_custom_templates : array</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<table class="table table-bordered"><tr>
-<th>since</th>
-<td>2.20</td>
-</tr></table>
-</div></div>
-</div>
 <a name="%24mla_debug" id="$mla_debug"> </a><div class="element clickable property private $mla_debug" data-toggle="collapse" data-target=".$mla_debug .collapse">
 <h2>Turn debug collection and display on or off</h2>
 <pre>$mla_debug : boolean</pre>
@@ -907,6 +858,18 @@ any further logic required to translate those values is contained in the filter.
 </tr></table>
 </div></div>
 </div>
+<a name="%24term_list_item_specific_arguments" id="$term_list_item_specific_arguments"> </a><div class="element clickable property private $term_list_item_specific_arguments" data-toggle="collapse" data-target=".$term_list_item_specific_arguments .collapse">
+<h2>These are the default parameters for term list display</h2>
+<pre>$term_list_item_specific_arguments : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>since</th>
+<td>2.30</td>
+</tr></table>
+</div></div>
+</div>
 </div>
 </div>
 </div>
@@ -914,7 +877,7 @@ any further logic required to translate those values is contained in the filter.
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
-            generated on 2016-04-08T17:25:40-07:00.<br></footer></div>
+            generated on 2016-06-05T17:27:59-07:00.<br></footer></div>
 </div>
 </body>
 </html>

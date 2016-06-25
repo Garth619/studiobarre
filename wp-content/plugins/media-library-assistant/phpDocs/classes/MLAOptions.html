@@ -65,13 +65,9 @@
 <li class="method public "><a href="#mla_evaluate_custom_field_mapping" title="mla_evaluate_custom_field_mapping :: Evaluate custom field mapping updates for a post"><span class="description">Evaluate custom field mapping updates for a post</span><pre>mla_evaluate_custom_field_mapping()</pre></a></li>
 <li class="method public "><a href="#mla_evaluate_iptc_exif_mapping" title="mla_evaluate_iptc_exif_mapping :: Evaluate IPTC/EXIF mapping updates for a post"><span class="description">Evaluate IPTC/EXIF mapping updates for a post</span><pre>mla_evaluate_iptc_exif_mapping()</pre></a></li>
 <li class="method public "><a href="#mla_get_data_source" title="mla_get_data_source :: Get IPTC/EXIF or custom field mapping data source; WP_ADMIN mode"><span class="description">Get IPTC/EXIF or custom field mapping data source; WP_ADMIN mode</span><pre>mla_get_data_source()</pre></a></li>
-<li class="method public "><a href="#mla_get_markup_templates" title="mla_get_markup_templates :: Get ALL markup templates from $mla_templates, including 'default'"><span class="description">Get ALL markup templates from $mla_templates, including 'default'</span><pre>mla_get_markup_templates()</pre></a></li>
 <li class="method public "><a href="#mla_get_option" title="mla_get_option :: Return the stored value or default value of a defined MLA option"><span class="description">Return the stored value or default value of a defined MLA option</span><pre>mla_get_option()</pre></a></li>
-<li class="method public "><a href="#mla_get_style_templates" title="mla_get_style_templates :: Get ALL style templates from $mla_templates, including 'default'"><span class="description">Get ALL style templates from $mla_templates, including 'default'</span><pre>mla_get_style_templates()</pre></a></li>
 <li class="method public "><a href="#mla_iptc_exif_option_handler" title="mla_iptc_exif_option_handler :: Render and manage iptc/exif support options"><span class="description">Render and manage iptc/exif support options</span><pre>mla_iptc_exif_option_handler()</pre></a></li>
 <li class="method public "><a href="#mla_is_data_source" title="mla_is_data_source :: Identify custom field mapping data source; WP_ADMIN mode"><span class="description">Identify custom field mapping data source; WP_ADMIN mode</span><pre>mla_is_data_source()</pre></a></li>
-<li class="method public "><a href="#mla_put_markup_templates" title="mla_put_markup_templates :: Put user-defined markup templates to $mla_templates and database"><span class="description">Put user-defined markup templates to $mla_templates and database</span><pre>mla_put_markup_templates()</pre></a></li>
-<li class="method public "><a href="#mla_put_style_templates" title="mla_put_style_templates :: Put user-defined style templates to $mla_templates and database"><span class="description">Put user-defined style templates to $mla_templates and database</span><pre>mla_put_style_templates()</pre></a></li>
 <li class="method public "><a href="#mla_search_option_handler" title="mla_search_option_handler :: Render and manage Search box options, e.g., connector and search fields"><span class="description">Render and manage Search box options, e.g., connector and search fields</span><pre>mla_search_option_handler()</pre></a></li>
 <li class="method public "><a href="#mla_supported_taxonomies" title="mla_supported_taxonomies :: Returns an array of taxonomy names assigned to $support_type"><span class="description">Returns an array of taxonomy names assigned to $support_type</span><pre>mla_supported_taxonomies()</pre></a></li>
 <li class="method public "><a href="#mla_taxonomy_option_handler" title="mla_taxonomy_option_handler :: Render and manage taxonomy support options, e.g., Categories and Post Tags"><span class="description">Render and manage taxonomy support options, e.g., Categories and Post Tags</span><pre>mla_taxonomy_option_handler()</pre></a></li>
@@ -89,7 +85,7 @@ settings are being updated or reset.</span><pre>mla_taxonomy_support()</pre></a>
 <li class="method private "><a href="#_compose_parent_option_list" title="_compose_parent_option_list :: Compose an hierarchical taxonomy Parent options list with current selection"><span class="description">Compose an hierarchical taxonomy Parent options list with current selection</span><pre>_compose_parent_option_list()</pre></a></li>
 <li class="method private "><a href="#_get_custom_field_names" title="_get_custom_field_names :: Generate a list of all (post) Custom Field names"><span class="description">Generate a list of all (post) Custom Field names</span><pre>_get_custom_field_names()</pre></a></li>
 <li class="method private "><a href="#_get_term_id" title="_get_term_id :: Build and search a cache of taxonomy and term name to term ID mappings"><span class="description">Build and search a cache of taxonomy and term name to term ID mappings</span><pre>_get_term_id()</pre></a></li>
-<li class="method private "><a href="#_load_option_templates" title="_load_option_templates :: Load style and markup templates to $mla_templates"><span class="description">Load style and markup templates to $mla_templates</span><pre>_load_option_templates()</pre></a></li>
+<li class="method private "><a href="#_load_option_templates" title="_load_option_templates :: Load option settings templates to $mla_option_templates"><span class="description">Load option settings templates to $mla_option_templates</span><pre>_load_option_templates()</pre></a></li>
 <li class="method private "><a href="#_update_attachment_metadata" title="_update_attachment_metadata :: Update _wp_attachment_metadata for just-inserted attachment"><span class="description">Update _wp_attachment_metadata for just-inserted attachment</span><pre>_update_attachment_metadata()</pre></a></li>
 <li class="method private "><a href="#_update_custom_field_mapping" title="_update_custom_field_mapping :: Update custom field mappings"><span class="description">Update custom field mappings</span><pre>_update_custom_field_mapping()</pre></a></li>
 <li class="method private "><a href="#_update_iptc_exif_custom_mapping" title="_update_iptc_exif_custom_mapping :: Update Custom field portion of IPTC/EXIF mappings"><span class="description">Update Custom field portion of IPTC/EXIF mappings</span><pre>_update_iptc_exif_custom_mapping()</pre></a></li>
@@ -99,7 +95,7 @@ settings are being updated or reset.</span><pre>mla_taxonomy_support()</pre></a>
 <i class="icon-custom icon-property"></i> Properties</li>
 <li class="nav-header private">» Private</li>
 <li class="property private "><a href="#%24add_attachment_id" title="$add_attachment_id :: Attachment ID passed from mla_add_attachment_action to mla_update_attachment_metadata_filter"><span class="description">Attachment ID passed from mla_add_attachment_action to mla_update_attachment_metadata_filter</span><pre>$add_attachment_id</pre></a></li>
-<li class="property private "><a href="#%24mla_option_templates" title="$mla_option_templates :: Style and Markup templates"><span class="description">Style and Markup templates</span><pre>$mla_option_templates</pre></a></li>
+<li class="property private "><a href="#%24mla_option_templates" title="$mla_option_templates :: Option Setting templates"><span class="description">Option Setting templates</span><pre>$mla_option_templates</pre></a></li>
 <li class="nav-header">
 <i class="icon-custom icon-constant"></i> Constants</li>
 <li class="constant  "><a href="#MLA_ADD_NEW_BULK_EDIT" title="MLA_ADD_NEW_BULK_EDIT :: Provides a unique name for the Media/Add New bulk edit option"><span class="description">Provides a unique name for the Media/Add New bulk edit option</span><pre>MLA_ADD_NEW_BULK_EDIT</pre></a></li>
@@ -412,21 +408,6 @@ and provides functions to get and put them from/to WordPress option variables</p
 <code>string</code><code>array</code>data source value</div>
 </div></div>
 </div>
-<a name="mla_get_markup_templates" id="mla_get_markup_templates"></a><div class="element clickable method public mla_get_markup_templates" data-toggle="collapse" data-target=".mla_get_markup_templates .collapse">
-<h2>Get ALL markup templates from $mla_templates, including 'default'</h2>
-<pre>mla_get_markup_templates() : array | null</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<table class="table table-bordered"><tr>
-<th>since</th>
-<td>0.80</td>
-</tr></table>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>array</code><code>null</code>name => value for all markup templates or null if no templates</div>
-</div></div>
-</div>
 <a name="mla_get_option" id="mla_get_option"></a><div class="element clickable method public mla_get_option" data-toggle="collapse" data-target=".mla_get_option .collapse">
 <h2>Return the stored value or default value of a defined MLA option</h2>
 <pre>mla_get_option(string $option, boolean $get_default, boolean $get_stored, array $option_table) : mixed</pre>
@@ -453,21 +434,6 @@ and provides functions to get and put them from/to WordPress option variables</p
 <h3>Returns</h3>
 <div class="subelement response">
 <code>mixed</code>Value(s) for the option or false if the option is not a defined MLA option</div>
-</div></div>
-</div>
-<a name="mla_get_style_templates" id="mla_get_style_templates"></a><div class="element clickable method public mla_get_style_templates" data-toggle="collapse" data-target=".mla_get_style_templates .collapse">
-<h2>Get ALL style templates from $mla_templates, including 'default'</h2>
-<pre>mla_get_style_templates() : array | null</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<table class="table table-bordered"><tr>
-<th>since</th>
-<td>0.80</td>
-</tr></table>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>array</code><code>null</code>name => value for all style templates or null if no templates</div>
 </div></div>
 </div>
 <a name="mla_iptc_exif_option_handler" id="mla_iptc_exif_option_handler"></a><div class="element clickable method public mla_iptc_exif_option_handler" data-toggle="collapse" data-target=".mla_iptc_exif_option_handler .collapse">
@@ -524,46 +490,6 @@ and provides functions to get and put them from/to WordPress option variables</p
 <h3>Returns</h3>
 <div class="subelement response">
 <code>boolean</code>true if candidate name matches a data source</div>
-</div></div>
-</div>
-<a name="mla_put_markup_templates" id="mla_put_markup_templates"></a><div class="element clickable method public mla_put_markup_templates" data-toggle="collapse" data-target=".mla_put_markup_templates .collapse">
-<h2>Put user-defined markup templates to $mla_templates and database</h2>
-<pre>mla_put_markup_templates(array $templates) : boolean</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<table class="table table-bordered"><tr>
-<th>since</th>
-<td>0.80</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$templates</h4>
-<code>array</code><p>name => value for all user-defined markup templates</p>
-</div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>boolean</code>true if success, false if failure</div>
-</div></div>
-</div>
-<a name="mla_put_style_templates" id="mla_put_style_templates"></a><div class="element clickable method public mla_put_style_templates" data-toggle="collapse" data-target=".mla_put_style_templates .collapse">
-<h2>Put user-defined style templates to $mla_templates and database</h2>
-<pre>mla_put_style_templates(array $templates) : boolean</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<table class="table table-bordered"><tr>
-<th>since</th>
-<td>0.80</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$templates</h4>
-<code>array</code><p>name => value for all user-defined style templates</p>
-</div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>boolean</code>true if success, false if failure</div>
 </div></div>
 </div>
 <a name="mla_search_option_handler" id="mla_search_option_handler"></a><div class="element clickable method public mla_search_option_handler" data-toggle="collapse" data-target=".mla_search_option_handler .collapse">
@@ -931,7 +857,7 @@ haven't been mapped to any attachments, yet.</p></p>
 </div></div>
 </div>
 <a name="_load_option_templates" id="_load_option_templates"></a><div class="element clickable method private _load_option_templates" data-toggle="collapse" data-target="._load_option_templates .collapse">
-<h2>Load style and markup templates to $mla_templates</h2>
+<h2>Load option settings templates to $mla_option_templates</h2>
 <pre>_load_option_templates() : void</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
@@ -1068,7 +994,7 @@ added to the Media Library.</p></p>
 </div></div>
 </div>
 <a name="%24mla_option_templates" id="$mla_option_templates"> </a><div class="element clickable property private $mla_option_templates" data-toggle="collapse" data-target=".$mla_option_templates .collapse">
-<h2>Style and Markup templates</h2>
+<h2>Option Setting templates</h2>
 <pre>$mla_option_templates : array</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
@@ -1398,7 +1324,7 @@ also controls the ATTACHMENT DETAILS enhancements</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
-            generated on 2016-04-08T17:25:39-07:00.<br></footer></div>
+            generated on 2016-06-05T17:27:59-07:00.<br></footer></div>
 </div>
 </body>
 </html>

@@ -24,7 +24,7 @@ class MLAShortcodes {
 	public static function initialize() {
 		add_shortcode( 'mla_gallery', 'MLAShortcodes::mla_gallery_shortcode' );
 		add_shortcode( 'mla_tag_cloud', 'MLAShortcodes::mla_tag_cloud_shortcode' );
-		//add_shortcode( 'mla_term_list', 'MLAShortcodes::mla_term_list_shortcode' );
+		add_shortcode( 'mla_term_list', 'MLAShortcodes::mla_term_list_shortcode' );
 
 		/*
 		 * Avoid wptexturize defect

@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 function hc_hmw_network_uninstall($networkwide) {
 	global $wpdb;
 

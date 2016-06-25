@@ -1,5 +1,4 @@
 <?php
-
 global $wpdb;
 
 $_POST = stripslashes_deep($_POST);
@@ -20,10 +19,10 @@ if($snippetCount==0){
 	header("Location:".admin_url('admin.php?page=insert-html-short-manage&hc_hmw_msg=2'));
 	exit();
 }else{
-	
+
 	$wpdb->update($wpdb->prefix.'hc_hmw_short_code', array('status'=>$hc_hmw_snippetStatus), array('id'=>$hc_hmw_snippetId));
 	header("Location:".admin_url('admin.php?page=insert-html-short-manage&hc_hmw_msg=4&pagenum='.$hc_hmw_pageno));
 	exit();
-	
+
 }
 ?>

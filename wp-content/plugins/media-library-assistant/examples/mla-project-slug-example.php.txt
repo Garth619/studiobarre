@@ -3,7 +3,7 @@
  * Creates a taxonomy=slug parameter from a parent's custom field value
  *
  * @package MLA Project Slug Example
- * @version 1.00
+ * @version 1.01
  */
 
 /*
@@ -14,7 +14,7 @@ Author: David Lingren
 Version: 1.00
 Author URI: http://fairtradejudaica.org/our-story/staff/
 
-Copyright 2014 David Lingren
+Copyright 2014-2016 David Lingren
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -88,13 +88,24 @@ class MLAProjectSlugExample {
 			$taxonomy = ( isset( $values[1] ) ) ? $values[1] : 'attachment_category';
 			$values = get_post_meta( $post->ID, $meta_key );
 
-			if ( is_array( $values ) ) {
-				$shortcode_attributes[ $taxonomy ] = implode( ',', $values );
-				unset( $shortcode_attributes['parent_meta'] );
+			if ( isset( $shortcode_attributes['exclude_tags'] ) ) {
+				$values = implode(  $values );
+				$exclude_tags = 'array( "' . implode( '", "', explode( ',', $shortcode_attributes['exclude_tags'] ) ) . '" )';
+				$shortcode_attributes['tax_query'] = "array( 'relation' => 'AND',
+array('taxonomy' => '{$taxonomy}' ,'field' => 'slug','terms' => '{$values}', 'operator' => 'IN'),
+array('taxonomy' => 'attachment_tag','field' => 'slug','terms' => {$exclude_tags}, 'operator' => 'NOT IN')
+)";
+
+				unset( $shortcode_attributes['exclude_tags'] );
+			} else {
+				if ( is_array( $values ) ) {
+					$shortcode_attributes[ $taxonomy ] = implode( ',', $values );
+				}
 			}
+
+			unset( $shortcode_attributes['parent_meta'] );
 		}
 
-		//error_log( 'MLAProjectSlugExample::mla_gallery_attributes_filter $shortcode_attributes = ' . var_export( $shortcode_attributes, true ), 0 );
 		return $shortcode_attributes;
 	} // mla_gallery_attributes_filter
 } // Class MLAProjectSlugExample

@@ -78,6 +78,8 @@ if ( ! empty( $mla_plugin_loader_error_messages ) ) {
 	}
 
 	if( defined('DOING_AJAX') && DOING_AJAX ) {
+//error_log( __LINE__ . ' plugin loader request = ' . var_export( $_REQUEST, true ), 0 );
+
 		/*
 		 * Ajax handlers
 		 */

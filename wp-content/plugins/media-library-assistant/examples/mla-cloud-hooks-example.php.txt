@@ -489,32 +489,6 @@ class MLATagCloudHooksExample {
 	} // mla_tag_cloud_open_parse_filter
 
 	/**
-	 * MLA Tag Cloud Style
-	 *
-	 * This is an old filter retained for compatibility with earlier MLA versions.
-	 * You will probably find the "Values" and "Parse" filters more useful.
-	 *
-	 * @since 1.00
-	 *
-	 * @param	string	HTML markup for "gallery style" and "gallery open", combined
-	 * @param	array	parameter_name => parameter_value pairs for gallery style
-	 * @param	array	parameter_name => parameter_value pairs for gallery open
-	 * @param	string	template used to generate the HTML markup for gallery style
-	 * @param	string	template used to generate the HTML markup for gallery open
-	 *
-	 * @return	array	updated HTML markup for "gallery style" and "gallery open" output
-	 */
-	public static function mla_tag_cloud_style_filter( $html_markup, $style_values, $open_values, $style_template, $open_template ) {
-		//error_log( 'MLATagCloudHooksExample::mla_tag_cloud_style_filter $html_markup = ' . var_export( $html_markup, true ), 0 );
-		//error_log( 'MLATagCloudHooksExample::mla_tag_cloud_style_filter $style_values = ' . var_export( $style_values, true ), 0 );
-		//error_log( 'MLATagCloudHooksExample::mla_tag_cloud_style_filter $open_values = ' . var_export( $open_values, true ), 0 );
-		//error_log( 'MLATagCloudHooksExample::mla_tag_cloud_style_filter $style_template = ' . var_export( $style_template, true ), 0 );
-		//error_log( 'MLATagCloudHooksExample::mla_tag_cloud_style_filter $open_template = ' . var_export( $open_template, true ), 0 );
-
-		return $html_markup;
-	} // mla_tag_cloud_style_filter
-
-	/**
 	 * MLA Tag Cloud Row Open Values
 	 *
 	 * @since 1.00
@@ -600,13 +574,15 @@ class MLATagCloudHooksExample {
 			}
 			 
 			/*
-			 * 'editlink', 'viewlink' and 'thelink' are already composed at this point, so we must update all of them
+			 * 'currentlink', 'editlink', 'termlink' and 'thelink' are already composed at this point,
+			 * so we must update all of them
 			 */
 			$old_style = $item_values['link_style'];
 			$new_style = $old_style . sprintf( '; color: #%02x%02x%02x', $red, $green, $blue );
 			$item_values['link_style'] = $new_style;
+			$item_values['currentlink'] = str_replace( $old_style, $new_style, $item_values['currentlink'] );
 			$item_values['editlink'] = str_replace( $old_style, $new_style, $item_values['editlink'] );
-			$item_values['viewlink'] = str_replace( $old_style, $new_style, $item_values['viewlink'] );
+			$item_values['termlink'] = str_replace( $old_style, $new_style, $item_values['termlink'] );
 			$item_values['thelink'] = str_replace( $old_style, $new_style, $item_values['thelink'] );
 		}
 

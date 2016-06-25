@@ -21,7 +21,7 @@
 		</td></tr>
 <!-- template="header" -->
         <tr><td colspan="2">
-            <a href="#backtotop">[+Go to Top+]</a>
+            <a href="#backtotop">[+Go to Top+]</a> | <a href="#gotobottom">[+Go to Bottom+]</a>
         </td></tr>
         <tr><td colspan="2">
             <h2 id="[+key+]">[+value+]</h2>
@@ -103,6 +103,7 @@
     <table class="optiontable">
 [+options_list+]
 	</table>
+	<a name="gotobottom"></a>
     <p class="submit mla-settings-submit">
         <input name="mla-general-options-save" type="submit" class="button-primary" value="[+Save Changes+]" />&nbsp;&nbsp;
         <input name="mla-general-options-export" type="submit" class="button-primary" value="[+Export ALL Settings+]" />
@@ -160,62 +161,44 @@
         </td>
 		[+control_cells+]
 		</tr>
-        <tr valign="top"><th scope="row" class="textright">
-            [+Arguments+]:
-        </th><td colspan="3" class="textleft">
-            <textarea name="[+arguments_name+]" id="[+arguments_id+]" rows="3" cols="100" [+readonly+]>[+arguments_text+]</textarea>
-            <div class="mla-settings-help">&nbsp;&nbsp;[+arguments_help+]</div>
-        </td></tr>
-        <tr valign="top"><th scope="row" class="textright">
-            [+Open+]:
-        </th><td colspan="3" class="textleft">
-            <textarea name="[+open_name+]" id="[+open_id+]" rows="3" cols="100" [+readonly+]>[+open_text+]</textarea>
-            <div class="mla-settings-help">&nbsp;&nbsp;[+open_help+]</div>
-        </td></tr>
-        <tr valign="top"><th scope="row" class="textright">
-            [+Row+]&nbsp;[+Open+]:
-        </th><td colspan="3" class="textleft">
-            <textarea name="[+row_open_name+]" id="[+row_open_id+]" rows="3" cols="100" [+readonly+]>[+row_open_text+]</textarea>
-            <div class="mla-settings-help">&nbsp;&nbsp;[+row_open_help+]</div>
-        </td></tr>
-        <tr valign="top"><th scope="row" class="textright">
-            [+Item+]:
-        </th><td colspan="3" class="textleft">
-            <textarea name="[+item_name+]" id="[+item_id+]" rows="6" cols="100" [+readonly+]>[+item_text+]</textarea>
-            <div class="mla-settings-help">&nbsp;&nbsp;[+item_help+]</div>
-        </td></tr>
-        <tr valign="top"><th scope="row" class="textright">
-            [+Row+]&nbsp;[+Close+]:
-        </th><td colspan="3" class="textleft">
-            <textarea name="[+row_close_name+]" id="[+row_close_id+]" rows="3" cols="100" [+readonly+]>[+row_close_text+]</textarea>
-            <div class="mla-settings-help">&nbsp;&nbsp;[+row_close_help+]</div>
-        </td></tr>
-        <tr valign="top"><th scope="row" class="textright">
-            [+Close+]:
-        </th><td colspan="3" class="textleft">
-            <textarea name="[+close_name+]" id="[+close_id+]" rows="3" cols="100" [+readonly+]>[+close_text+]</textarea>
-            <div class="mla-settings-help">&nbsp;&nbsp;[+close_help+]</div>
-        </td></tr>
+		[+sections_list+]
 </table>
 <hr width="650" align="left" />
 
+<!-- template="shortcode-jump-row" -->
+<tr>
+<td style="padding-right: 30px"><a href="#[+shortcode+]-style">[+Go to Style Templates+]</a></td>
+<td><a href="#[+shortcode+]-markup">[+Go to Markup Templates+]</a></td>
+</tr>
+
+<!-- template="templates-list" -->
+    <a name="[+shortcode+]-[+template_type+]"></a>&nbsp;<br />&nbsp;<br /><a href="#backtotop">[+Go to Top+]</a> | <a href="#gotobottom">[+Go to Bottom+]</a>
+
+<h3>[+Templates+]</h3>
+    <table class="optiontable">
+[+templates_list+]
+	</table>
+
+<!-- template="template-section" -->
+        <tr valign="top"><th scope="row" class="textright">
+            [+Label+]:
+        </th><td colspan="3" class="textleft">
+            <textarea name="[+name+]" id="[+id+]" rows="[+rows+]" cols="100" [+readonly+]>[+text+]</textarea>
+            <div class="mla-settings-help">&nbsp;&nbsp;[+help+]</div>
+        </td></tr>
+
 <!-- template="mla-gallery-tab" -->
-<h2>[+MLA Gallery Options+]</h2>
-<p><a href="#style">[+Go to Style Templates+]</a></p>
-<p><a href="#markup">[+Go to Markup Templates+]</a></p>
+<h2>[+MLA Shortcode Options+]</h2>
+<table>
+[+Shortcode Jump Rows+]
+</table>
 <p>[+In this tab+]</p>
 <form action="[+form_url+]" method="post" class="mla-display-settings-page" id="mla-display-settings-mla-gallery-tab">
 [+options_list+]
-<a name="style">&nbsp;<br />&nbsp;<br /><a href="#backtotop">[+Go to Top+]</a>
-<h3>[+Style Templates+]</h3>
-    <table class="optiontable">
-[+style_options_list+]
-	</table>
-<a name="markup">&nbsp;<br />&nbsp;<br /><a href="#backtotop">[+Go to Top+]</a>
-<h3>[+Markup Templates+]</h3>
-    <table class="optiontable">
-[+markup_options_list+]
-	</table>
+[+style_sections_list+]
+[+markup_sections_list+]
+&nbsp;<br />&nbsp;<br /><a href="#backtotop">[+Go to Top+]</a>
+	<a name="gotobottom"></a>
     <p class="submit mla-settings-submit">
         <input name="mla-gallery-options-save" type="submit" class="button-primary" value="[+Save Changes+]" />
     </p>
@@ -334,8 +317,8 @@
 	</table>
     <p class="submit mla-settings-submit">
         <input name="mla-debug-options-save" class="button-primary" id="mla-debug-options-save" type="submit" value="[+Save Changes+]" />
-	<div class="mla-settings-help">[+Click Save Changes+]</div>
     </p>
+	<div class="mla-settings-help">[+Click Save Changes+]</div>
 [+_wpnonce+]
 [+_wp_http_referer+]
 </form>

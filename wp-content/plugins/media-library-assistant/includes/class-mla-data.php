@@ -757,98 +757,119 @@ class MLAData {
 	 * @return	string	formatted field-level content
 	 */
 	public static function mla_apply_field_level_format( $value, $args ) {
-		if ( 'attr' == $args['format'] ) {
-			$value = esc_attr( $value );
-		} elseif ( 'url' == $args['format'] ) {
-			$value = urlencode( $value );
-		} elseif ( ( 'commas' == $args['format'] ) && is_numeric( $value ) ) {
-			$value = number_format( (float)$value );
-		} elseif ( 'timestamp' == $args['format'] && is_numeric( $value ) ) {
-			/*
-			 * date "Returns a string formatted according to the given format string using the given integer"
-			 */
-			$format = empty( $args['args'] ) ? 'd/m/Y H:i:s' : $args['args'];
-			if ( is_array( $format ) ) {
-				$format = $format[0];
-			}
-
-			$value = date( $format , (integer) $value );
-		} elseif ( 'date' == $args['format'] ) {
-			/*
-			 * strtotime will "Parse about any English textual datetime description into a Unix timestamp"
-			 * If it succeeds we can format the timestamp for display
-			 */
-			$format = empty( $args['args'] ) ? 'd/m/Y H:i:s' : $args['args'];
-			$timestamp = strtotime( $value );
-			if( false !== $timestamp ) {
-				if ( is_array( $format ) ) {
-					$format = $format[0];
+		if ( empty( $value ) ) {
+			return $value;
+		}
+		
+		switch ( $args['format'] ) {
+			case 'native':
+			case 'raw':
+				break;
+			case 'attr':
+				$value = esc_attr( $value );
+				break;
+			case 'url':
+				$value = urlencode( $value );
+				break;
+			case 'commas':
+				if ( is_numeric( $value ) ) {
+					$value = number_format( (float)$value );
 				}
-
-				$value = date( $format, $timestamp );
-			}
-		} elseif ( 'fraction' == $args['format'] ) {
-			$show_fractions = true;
-			if ( ! empty( $args['args'] ) ) {
-				if ( is_array( $args['args'] ) ) {
-					if ( is_numeric( $args['args'][0] ) ) {
-						$format = '%1$+.' . absint( $args['args'][0] ) . 'f';
-					} else {
-						$format = $args['args'][0];
+				break;
+			case 'timestamp':
+				if ( is_numeric( $value ) ) {
+					/*
+					 * date "Returns a string formatted according to the given format string using the given integer"
+					 */
+					$format = empty( $args['args'] ) ? 'd/m/Y H:i:s' : $args['args'];
+					if ( is_array( $format ) ) {
+						$format = $format[0];
 					}
-
-					$show_fractions = ( 'false' !== strtolower( trim( $args['args'][1] ) ) );
-				} else {
-					if ( is_numeric( $args['args'] ) ) {
-						$format = '%1$+.' . absint( $args['args'] ) . 'f';
-					} else {
-						$format = $args['args'];
+		
+					$value = date( $format , (integer) $value );
+				}
+				break;
+			case 'date':
+				/*
+				 * strtotime will "Parse about any English textual datetime description into a Unix timestamp"
+				 * If it succeeds we can format the timestamp for display
+				 */
+				$format = empty( $args['args'] ) ? 'd/m/Y H:i:s' : $args['args'];
+				$timestamp = strtotime( $value );
+				if( false !== $timestamp ) {
+					if ( is_array( $format ) ) {
+						$format = $format[0];
 					}
+	
+					$value = date( $format, $timestamp );
 				}
-			} else {
-				$format = '%1$+.2f';
-			}
-
-			$fragments = array_map( 'intval', explode( '/', $value ) );
-			if ( 1 == count( $fragments ) ) {
-				$value = trim( $value );
-				if ( ! empty( $value ) ) {
-					$value = $value;
-				}
-			} else {
-				if ( $fragments[0] ) {
-					if ( 1 == $fragments[1] ) {
-						$value = sprintf( '%1$+d', $fragments[0] );
-					} elseif ( 0 != $fragments[1] ) {
-						$value = $fragments[0] / $fragments[1];
-						if ( $show_fractions && ( -1 <= $value ) && ( 1 >= $value ) ) {
-							$value = sprintf( '%1$+d/%2$d', $fragments[0], $fragments[1] );
+				break;
+			case 'fraction':
+				$show_fractions = true;
+				if ( ! empty( $args['args'] ) ) {
+					if ( is_array( $args['args'] ) ) {
+						if ( is_numeric( $args['args'][0] ) ) {
+							$format = '%1$+.' . absint( $args['args'][0] ) . 'f';
 						} else {
-							$value = sprintf( $format, $value );
+							$format = $args['args'][0];
 						}
-					} // fractional value
-				} // non-zero numerator
-			} // valid denominator
-		} elseif ( 'substr' == $args['format'] ) {
-			$start = 0;
-			$length = strlen( $value );
-
-			if ( ! empty( $args['args'] ) ) {
-				if ( is_array( $args['args'] ) ) {
-					$start = intval( $args['args'][0] );
-
-					if ( 1 < count( $args['args'] ) ) {
-						$length = intval( $args['args'][1] );
+	
+						$show_fractions = ( 'false' !== strtolower( trim( $args['args'][1] ) ) );
+					} else {
+						if ( is_numeric( $args['args'] ) ) {
+							$format = '%1$+.' . absint( $args['args'] ) . 'f';
+						} else {
+							$format = $args['args'];
+						}
 					}
 				} else {
-					$start = intval( $args['args'] );
+					$format = '%1$+.2f';
 				}
-			}
-
-			if ( false === $value = substr( $value, $start, $length ) ) {
-				$value = '';
-			}
-		} 
+	
+				$fragments = array_map( 'intval', explode( '/', $value ) );
+				if ( 1 == count( $fragments ) ) {
+					$value = trim( $value );
+					if ( ! empty( $value ) ) {
+						$value = $value;
+					}
+				} else {
+					if ( $fragments[0] ) {
+						if ( 1 == $fragments[1] ) {
+							$value = sprintf( '%1$+d', $fragments[0] );
+						} elseif ( 0 != $fragments[1] ) {
+							$value = $fragments[0] / $fragments[1];
+							if ( $show_fractions && ( -1 <= $value ) && ( 1 >= $value ) ) {
+								$value = sprintf( '%1$+d/%2$d', $fragments[0], $fragments[1] );
+							} else {
+								$value = sprintf( $format, $value );
+							}
+						} // fractional value
+					} // non-zero numerator
+				} // valid denominator
+				break;
+			case 'substr':
+				$start = 0;
+				$length = strlen( $value );
+	
+				if ( ! empty( $args['args'] ) ) {
+					if ( is_array( $args['args'] ) ) {
+						$start = intval( $args['args'][0] );
+	
+						if ( 1 < count( $args['args'] ) ) {
+							$length = intval( $args['args'][1] );
+						}
+					} else {
+						$start = intval( $args['args'] );
+					}
+				}
+	
+				if ( false === $value = substr( $value, $start, $length ) ) {
+					$value = '';
+				}
+				break;
+			default:
+				$value = apply_filters( 'mla_apply_custom_format', $value, $args );
+		}
 
 		return $value;
 	}
@@ -873,6 +894,7 @@ class MLAData {
 	 */
 	public static function mla_expand_field_level_parameters( $tpl, $query = NULL, $markup_values = array(), $post_id = 0, $keep_existing = false, $default_option = 'text' ) {
 		static $cached_post_id = 0, $item_metadata = NULL, $attachment_metadata = NULL, $id3_metadata = NULL;
+
 		if ( $cached_post_id != $post_id ) {
 			$item_metadata = NULL;
 			$attachment_metadata = NULL;
@@ -880,8 +902,8 @@ class MLAData {
 			$cached_post_id = $post_id;
 		}
 
-		$placeholders = self::mla_get_template_placeholders( $tpl, $default_option );
 		$template_count = 0;
+		$placeholders = self::mla_get_template_placeholders( $tpl, $default_option );
 		foreach ($placeholders as $key => $value ) {
 			if ( isset( $markup_values[ $key ] ) ) {
 				continue;
@@ -935,11 +957,22 @@ class MLAData {
 					$markup_values[ $key ] = $text;
 					break;
 				case 'terms':
+
+					// Look for field specification
+					$match_count = preg_match( '/^(.+)\((.+)\)/', $value['value'], $matches );
+					if ( $match_count ) {
+						$taxonomy = $matches[1];
+						$field = $matches[2];
+					} else {
+						$taxonomy = $value['value'];
+						$field = 'name';
+					}
+					
 					if ( 0 < $post_id ) {
-						$terms = get_object_term_cache( $post_id, $value['value'] );
+						$terms = get_object_term_cache( $post_id, $taxonomy );
 						if ( false === $terms ) {
-							$terms = wp_get_object_terms( $post_id, $value['value'] );
-							wp_cache_add( $post_id, $terms, $value['value'] . '_relationships' );
+							$terms = wp_get_object_terms( $post_id, $taxonomy );
+							wp_cache_add( $post_id, $terms, $taxonomy . '_relationships' );
 						}
 					} else {
 						break;
@@ -952,13 +985,17 @@ class MLAData {
 						if ( 'single' == $value['option'] || 1 == count( $terms ) ) {
 							reset( $terms );
 							$term = current( $terms );
-							$text = sanitize_term_field( 'name', $term->name, $term->term_id, $value['value'], 'display' );
-						} elseif ( 'export' == $value['option'] ) {
+							$fields = get_object_vars( $term );
+							$text = isset( $fields[ $field ] ) ? $fields[ $field ] : $fields['name'];
+							$text = sanitize_term_field( $field, $text, $term->term_id, $taxonomy, 'display' );
+						} elseif ( ( 'export' == $value['option'] ) || ( 'unpack' == $value['option'] ) ) {
 							$text = sanitize_text_field( var_export( $terms, true ) );
 						} else {
 							foreach ( $terms as $term ) {
-								$term_name = sanitize_term_field( 'name', $term->name, $term->term_id, $value['value'], 'display' );
-								$text .= strlen( $text ) ? ', ' . $term_name : $term_name;
+								$fields = get_object_vars( $term );
+								$field_value = isset( $fields[ $field ] ) ? $fields[ $field ] : $fields['name'];
+								$field_value = sanitize_term_field( $field, $field_value, $term->term_id, $taxonomy, 'display' );
+								$text .= strlen( $text ) ? ', ' . $field_value : $field_value;
 							}
 						}
 					}
@@ -1104,11 +1141,19 @@ class MLAData {
 						 * A standard element can have a format modifier, e.g., commas, attr
 						 */
 						$markup_values[ $key ] = $markup_values[ $value['value'] ];
+					} else {
+						$custom_value = apply_filters( 'mla_expand_custom_data_source', NULL, $key, $candidate, $value, $query, $markup_values, $post_id, $keep_existing, $default_option );
+						if ( !is_null( $custom_value ) ) {
+							$markup_values[ $key ] = $custom_value;
+						}
 					}
 
 					break;
 				default:
-					// ignore anything else
+					$custom_value = apply_filters( 'mla_expand_custom_prefix', NULL, $key, $value, $query, $markup_values, $post_id, $keep_existing, $default_option );
+					if ( !is_null( $custom_value ) ) {
+						$markup_values[ $key ] = $custom_value;
+					}
 			} // switch
 
 			if ( isset( $markup_values[ $key ] ) ) {
@@ -1182,61 +1227,79 @@ class MLAData {
 		foreach ( $matches[0] as $match ) {
 			$key = substr( $match, 2, (strlen( $match ) - 4 ) );
 			$result = array( 'prefix' => '', 'value' => '', 'option' => $default_option, 'format' => 'native' );
-			$match_count = preg_match( '/\[\+([^:]+):(.+)/', $match, $matches );
+			$match_count = preg_match( '/\[\+([^:]+):(.+)\+\]/', $match, $matches );
 			if ( 1 == $match_count ) {
 				$result['prefix'] = $matches[1];
 				$tail = $matches[2];
 			} else {
-				$tail = substr( $match, 2);
+				$tail = $key;
 			}
 
-			$match_count = preg_match( '/([^,]+)(,(text|single|export|unpack|array|multi|commas|raw|attr|url|timestamp|date|fraction|substr))(\(([^)]+)\))*\+\]/', $tail, $matches );
-			if ( 1 == $match_count ) {
-				$result['value'] = $matches[1];
-				if ( ! empty( $matches[5] ) ) {
-					$args = self::_parse_arguments( $matches[5] );
-
-					if ( 1 == count( $args ) ) {
-						$args = $args[0];
+			if ( false !== strpos( $tail, ',' ) ) {
+				$match_count = preg_match( '/([^,]+)(,(text|single|export|unpack|array|multi|commas|raw|attr|url|timestamp|date|fraction|substr))(\(([^)]+)\))*/', $tail, $matches );
+				if ( 1 == $match_count ) {
+					$result['value'] = $matches[1];
+					if ( ! empty( $matches[5] ) ) {
+						$args = self::_parse_arguments( $matches[5] );
+	
+						if ( 1 == count( $args ) ) {
+							$args = $args[0];
+						}
+					} else {
+						$args = '';
+					}
+	
+					if ( 'commas' == $matches[3] ) {		
+						$result['option'] = 'text';
+						$result['format'] = 'commas';
+					} elseif ( 'raw' == $matches[3] ) {		
+						$result['option'] = 'text';
+						$result['format'] = 'raw';
+					} elseif ( 'attr' == $matches[3] ) {		
+						$result['option'] = 'text';
+						$result['format'] = 'attr';
+					} elseif ( 'url' == $matches[3] ) {		
+						$result['option'] = 'text';
+						$result['format'] = 'url';
+					} elseif ( 'timestamp' == $matches[3] ) {		
+						$result['option'] = 'text';
+						$result['format'] = 'timestamp';
+						$result['args'] = $args;
+					} elseif ( 'date' == $matches[3] ) {		
+						$result['option'] = 'text';
+						$result['format'] = 'date';
+						$result['args'] = $args;
+					} elseif ( 'fraction' == $matches[3] ) {		
+						$result['option'] = 'text';
+						$result['format'] = 'fraction';
+						$result['args'] = $args;
+					} elseif ( 'substr' == $matches[3] ) {		
+						$result['option'] = 'text';
+						$result['format'] = 'substr';
+						$result['args'] = $args;
+					} else {
+						$result['option'] = $matches[3];
 					}
 				} else {
-					$args = '';
-				}
+					$match_count = preg_match( '/([^,]+),([^(]+)(\(([^)]+)\))*/', $tail, $matches );
+					if ( 1 == $match_count ) {
+						$result['value'] = $matches[1];
+						$result['format'] = $matches[2];
 
-				if ( 'commas' == $matches[3] ) {		
-					$result['option'] = 'text';
-					$result['format'] = 'commas';
-				} elseif ( 'raw' == $matches[3] ) {		
-					$result['option'] = 'text';
-					$result['format'] = 'raw';
-				} elseif ( 'attr' == $matches[3] ) {		
-					$result['option'] = 'text';
-					$result['format'] = 'attr';
-				} elseif ( 'url' == $matches[3] ) {		
-					$result['option'] = 'text';
-					$result['format'] = 'url';
-				} elseif ( 'timestamp' == $matches[3] ) {		
-					$result['option'] = 'text';
-					$result['format'] = 'timestamp';
-					$result['args'] = $args;
-				} elseif ( 'date' == $matches[3] ) {		
-					$result['option'] = 'text';
-					$result['format'] = 'date';
-					$result['args'] = $args;
-				} elseif ( 'fraction' == $matches[3] ) {		
-					$result['option'] = 'text';
-					$result['format'] = 'fraction';
-					$result['args'] = $args;
-				} elseif ( 'substr' == $matches[3] ) {		
-					$result['option'] = 'text';
-					$result['format'] = 'substr';
-					$result['args'] = $args;
-				} else {
-					$result['option'] = $matches[3];
+						if ( ! empty( $matches[4] ) ) {
+							$args = self::_parse_arguments( $matches[4] );
+		
+							if ( 1 == count( $args ) ) {
+								$args = $args[0];
+							}
+							$result['args'] = $args;
+						}
+					} else {
+						$result['value'] = $tail;
+					}
 				}
-
 			} else {
-				$result['value'] = substr( $tail, 0, (strlen( $tail ) - 2 ) );
+				$result['value'] = $tail;
 			}
 
 		$results[ $key ] = $result;
@@ -1879,26 +1942,28 @@ class MLAData {
 		 * code name for XMP; the names have been preserved for compatibility purposes.
 		 */
 		$namespace_arrays = array();
-		foreach ( $levels[1]['values']['rdf:RDF']['rdf:Description'] as $key => $value ) {
-			if ( is_string( $value ) ) {
-				$value = self::_parse_iso8601_date( self::mla_parse_pdf_date( $value ) );
-			} elseif ( is_array( $value ) ) {
-				$value = self::_parse_xmp_array( $value );
-			}
-
-			if ( false !== ($colon = strpos( $key, ':' ) ) ) {
-				$array_name = substr( $key, 0, $colon );
-				$array_index = substr( $key, $colon + 1 );
-				$namespace_arrays[ $array_name ][ $array_index ] = $value;
-
-				if ( ! isset( $results[ $array_index ] ) && in_array( $array_name, array( 'xmp', 'xmpMM', 'xmpRights', 'xap', 'xapMM', 'dc', 'pdf', 'pdfx', 'mwg-rs' ) ) ) {
-					if ( is_array( $value ) && 1 == count( $value ) && isset( $value[0] ) ) {
-						$results[ $array_index ] = $value[0];
-					} else {
-						$results[ $array_index ] = $value;
-					}
+		if ( isset( $levels[1] ) && isset( $levels[1]['values'] ) && isset( $levels[1]['values']['rdf:RDF'] ) && isset( $levels[1]['values']['rdf:RDF']['rdf:Description'] ) ) {
+			foreach ( $levels[1]['values']['rdf:RDF']['rdf:Description'] as $key => $value ) {
+				if ( is_string( $value ) ) {
+					$value = self::_parse_iso8601_date( self::mla_parse_pdf_date( $value ) );
+				} elseif ( is_array( $value ) ) {
+					$value = self::_parse_xmp_array( $value );
 				}
-			} // found namespace
+	
+				if ( false !== ($colon = strpos( $key, ':' ) ) ) {
+					$array_name = substr( $key, 0, $colon );
+					$array_index = substr( $key, $colon + 1 );
+					$namespace_arrays[ $array_name ][ $array_index ] = $value;
+	
+					if ( ! isset( $results[ $array_index ] ) && in_array( $array_name, array( 'xmp', 'xmpMM', 'xmpRights', 'xap', 'xapMM', 'dc', 'pdf', 'pdfx', 'mwg-rs' ) ) ) {
+						if ( is_array( $value ) && 1 == count( $value ) && isset( $value[0] ) ) {
+							$results[ $array_index ] = $value[0];
+						} else {
+							$results[ $array_index ] = $value;
+						}
+					}
+				} // found namespace
+			} // foreach Description
 		}
 //error_log( __LINE__ . " MLAData::mla_parse_xmp_metadata results = " . var_export( $results, true ), 0 );
 
@@ -2034,7 +2099,7 @@ class MLAData {
 		}
 
 		$results = array_merge( $results, $namespace_arrays );
-//error_log( __LINE__ . " mla_fetch_attachment_image_metadata results = " . var_export( $results, true ), 0 );
+//error_log( __LINE__ . " MLAData::mla_parse_xmp_metadata results = " . var_export( $results, true ), 0 );
 		return $results;
 	}
 
@@ -2943,7 +3008,6 @@ class MLAData {
 			if ( is_callable( 'exif_read_data' ) && in_array( $size[2], array( IMAGETYPE_JPEG, IMAGETYPE_TIFF_II, IMAGETYPE_TIFF_MM ) ) ) {
 				//set_error_handler( 'MLAData::mla_IPTC_EXIF_error_handler' );
 				$results['mla_exif_metadata'] = $exif_data = @exif_read_data( $path );
-//error_log( __LINE__ . " MLAData::mla_fetch_attachment_image_metadata exif_data = " . var_export( $exif_data, true ), 0 );
 				//restore_error_handler();
 				if ( ! empty( MLAData::$mla_IPTC_EXIF_errors ) ) {
 					$results['mla_exif_errors'] = MLAData::$mla_IPTC_EXIF_errors;
@@ -2955,6 +3019,17 @@ class MLAData {
 			$results['mla_xmp_metadata'] = self::mla_parse_xmp_metadata( $path, 0 );
 			if ( NULL == $results['mla_xmp_metadata'] ) {
 				$results['mla_xmp_metadata'] = array();
+			}
+
+			// experimental damage repair for Robert O'Conner (Rufus McDufus)
+			if ( isset( $exif_data['DateTimeOriginal'] ) && ( 8 > strlen( $exif_data['DateTimeOriginal'] ) ) ) {
+				if ( isset( $results['mla_xmp_metadata']['CreateDate'] )&& ( is_numeric( strtotime( $results['mla_xmp_metadata']['CreateDate'] ) ) ) ) {
+					$exif_data['BadDateTimeOriginal'] = $exif_data['DateTimeOriginal'];
+					$results['mla_exif_metadata']['BadDateTimeOriginal'] = $exif_data['DateTimeOriginal'];
+
+					$exif_data['DateTimeOriginal'] = $results['mla_xmp_metadata']['CreateDate'];
+					$results['mla_exif_metadata']['DateTimeOriginal'] = $results['mla_xmp_metadata']['CreateDate'];
+				}
 			}
 				
 			// experimental damage repair for Elsie Gilmore (earthnutvt)
@@ -3224,17 +3299,6 @@ class MLAData {
 			$results['mla_exif_metadata']['GPS'] = $new_data;
 		}
 
-		/*
-		 * Expand EXIF array values - replaced by mla_find_array_element MLA v2.13
-		 * /
-		foreach ( $results['mla_exif_metadata'] as $exif_key => $exif_value ) {
-			if ( is_array( $exif_value ) ) {
-				foreach ( $exif_value as $key => $value ) {
-					$results['mla_exif_metadata'][ $exif_key . '.' . $key ] = $value;
-				}
-			} // is_array
-		} // */
-
 //error_log( __LINE__ . " mla_fetch_attachment_image_metadata( {$post_id} ) results = " . var_export( $results, true ), 0 );
 		return $results;
 	}
@@ -3391,8 +3455,14 @@ class MLAData {
 						}
 					} else {
 						if ( add_post_meta( $post_id, $meta_key, $meta_value ) ) {
+							if ( is_array( $meta_value ) ) {
+								$new_text = var_export( $meta_value, true );
+							} else {
+								$new_text = $meta_value;
+							}
+			
 							/* translators: 1: meta_key 2: meta_value */
-							$message .= sprintf( __( 'Adding %1$s = %2$s', 'media-library-assistant' ) . '<br>', $meta_key, $meta_value );
+							$message .= sprintf( __( 'Adding %1$s = %2$s', 'media-library-assistant' ) . '<br>', $meta_key, $new_text );
 						}
 					}
 				}

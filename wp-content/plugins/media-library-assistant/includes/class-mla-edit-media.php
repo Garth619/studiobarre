@@ -158,11 +158,11 @@ class MLAEdit {
 		 */
 		if ( 'media-new.php' == $page_hook && ( 'checked' == MLACore::mla_get_option( MLACoreOptions::MLA_ADD_NEW_BULK_EDIT ) ) ) {
 			if ( $wp_locale->is_rtl() ) {
-				wp_register_style( 'mla-add-new-bulk-edit', MLA_PLUGIN_URL . 'css/mla-add-new-bulk-edit-rtl.css', false, MLA::CURRENT_MLA_VERSION );
-				wp_register_style( 'mla-add-new-bulk-edit' . '-set-parent', MLA_PLUGIN_URL . 'css/mla-style-set-parent-rtl.css', false, MLA::CURRENT_MLA_VERSION );
+				wp_register_style( 'mla-add-new-bulk-edit', MLA_PLUGIN_URL . 'css/mla-add-new-bulk-edit-rtl.css', false, MLACore::CURRENT_MLA_VERSION );
+				wp_register_style( 'mla-add-new-bulk-edit' . '-set-parent', MLA_PLUGIN_URL . 'css/mla-style-set-parent-rtl.css', false, MLACore::CURRENT_MLA_VERSION );
 			} else {
-				wp_register_style( 'mla-add-new-bulk-edit', MLA_PLUGIN_URL . 'css/mla-add-new-bulk-edit.css', false, MLA::CURRENT_MLA_VERSION );
-				wp_register_style( 'mla-add-new-bulk-edit' . '-set-parent', MLA_PLUGIN_URL . 'css/mla-style-set-parent.css', false, MLA::CURRENT_MLA_VERSION );
+				wp_register_style( 'mla-add-new-bulk-edit', MLA_PLUGIN_URL . 'css/mla-add-new-bulk-edit.css', false, MLACore::CURRENT_MLA_VERSION );
+				wp_register_style( 'mla-add-new-bulk-edit' . '-set-parent', MLA_PLUGIN_URL . 'css/mla-style-set-parent.css', false, MLACore::CURRENT_MLA_VERSION );
 			}
 
 			wp_enqueue_style( 'mla-add-new-bulk-edit' );
@@ -170,10 +170,10 @@ class MLAEdit {
 
 			// 'suggest' loads the script for flat taxonomy auto-complete/suggested matches
 			wp_enqueue_script( 'mla-add-new-bulk-edit-scripts', MLA_PLUGIN_URL . "js/mla-add-new-bulk-edit-scripts{$suffix}.js", 
-				array( 'suggest', 'jquery' ), MLA::CURRENT_MLA_VERSION, false );
+				array( 'suggest', 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 			wp_enqueue_script( 'mla-add-new-bulk-edit-scripts' . '-set-parent', MLA_PLUGIN_URL . "js/mla-set-parent-scripts{$suffix}.js", 
-				array( 'mla-add-new-bulk-edit-scripts', 'jquery' ), MLA::CURRENT_MLA_VERSION, false );
+				array( 'mla-add-new-bulk-edit-scripts', 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 			$script_variables = array(
 				'uploadTitle' => __( 'Upload New Media items', 'media-library-assistant' ),
@@ -221,17 +221,17 @@ class MLAEdit {
 		 * Media/Edit Media submenu
 		 * Register and queue the style sheet, if needed
 		 */
-		wp_register_style( self::JAVASCRIPT_EDIT_MEDIA_STYLES, MLA_PLUGIN_URL . 'css/mla-edit-media-style.css', false, MLA::CURRENT_MLA_VERSION );
+		wp_register_style( self::JAVASCRIPT_EDIT_MEDIA_STYLES, MLA_PLUGIN_URL . 'css/mla-edit-media-style.css', false, MLACore::CURRENT_MLA_VERSION );
 		wp_enqueue_style( self::JAVASCRIPT_EDIT_MEDIA_STYLES );
 
-		wp_register_style( self::JAVASCRIPT_EDIT_MEDIA_STYLES . '-set-parent', MLA_PLUGIN_URL . 'css/mla-style-set-parent.css', false, MLA::CURRENT_MLA_VERSION );
+		wp_register_style( self::JAVASCRIPT_EDIT_MEDIA_STYLES . '-set-parent', MLA_PLUGIN_URL . 'css/mla-style-set-parent.css', false, MLACore::CURRENT_MLA_VERSION );
 		wp_enqueue_style( self::JAVASCRIPT_EDIT_MEDIA_STYLES . '-set-parent' );
 
 		wp_enqueue_script( self::JAVASCRIPT_EDIT_MEDIA_SLUG, MLA_PLUGIN_URL . "js/mla-edit-media-scripts{$suffix}.js", 
-			array( 'post', 'wp-lists', 'suggest', 'jquery' ), MLA::CURRENT_MLA_VERSION, false );
+			array( 'post', 'wp-lists', 'suggest', 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 		wp_enqueue_script( self::JAVASCRIPT_EDIT_MEDIA_SLUG . '-set-parent', MLA_PLUGIN_URL . "js/mla-set-parent-scripts{$suffix}.js", 
-			array( 'post', 'wp-lists', 'suggest', 'jquery', self::JAVASCRIPT_EDIT_MEDIA_SLUG ), MLA::CURRENT_MLA_VERSION, false );
+			array( 'post', 'wp-lists', 'suggest', 'jquery', self::JAVASCRIPT_EDIT_MEDIA_SLUG ), MLACore::CURRENT_MLA_VERSION, false );
 
 		$script_variables = array(
 			'comma' => _x( ',', 'tag_delimiter', 'media-library-assistant' ),

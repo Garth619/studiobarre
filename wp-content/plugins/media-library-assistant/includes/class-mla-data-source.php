@@ -462,6 +462,12 @@ class MLAData_Source {
 						$field_value['data_source'] = $placeholder['value'];
 						$field_value['meta_name'] = '';
 						$field_value['option'] = $placeholder['option'];
+						$field_value['format'] = $placeholder['format'];
+
+						if ( isset( $placeholder['args'] ) ) {
+							$field_value['args'] = $placeholder['args'];
+						}
+						
 						$field_value = MLAData_Source::_evaluate_data_source( $post_id, $category, $field_value, $attachment_metadata );
 						$item_values[ $key ] = MLAData::mla_apply_field_level_format( $field_value, $placeholder );
 					} // Data Source
@@ -782,6 +788,11 @@ class MLAData_Source {
 				}
 				break;
  			default:
+				$custom_value = apply_filters( 'mla_evaluate_custom_data_source', NULL, $post_id, $category, $data_value, $attachment_metadata );
+				if ( !is_null( $custom_value ) ) {
+					return $custom_value;
+				}
+
 				return '';
 		} // switch $data_source
 

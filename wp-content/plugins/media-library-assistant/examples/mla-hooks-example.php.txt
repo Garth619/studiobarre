@@ -912,7 +912,16 @@ class MLAGalleryHooksExample {
 	private static function _update_caption( $item_values, $new_caption ) {
 		$old_caption = $item_values['caption'];
 		$item_values['caption'] = $new_caption;
-		$item_values['captiontag_content'] = str_replace( $old_caption, $new_caption, $item_values['captiontag_content'] );
+
+		if ( !empty( $item_values['captiontag_content'] ) ) {
+			$item_values['captiontag_content'] = str_replace( $old_caption, $new_caption, $item_values['captiontag_content'] );
+		} else {
+			if ( $item_values['captiontag'] ) {
+				$item_values['captiontag_content'] = '<' . $item_values['captiontag'] . " class='wp-caption-text gallery-caption' id='" . $item_values['selector'] . '-' . $item_values['attachment_ID'] . "'>\n\t\t" . $new_caption . "\n\t</" . $item_values['captiontag'] . ">\n";
+			} else {
+				$item_values['captiontag_content'] = $new_caption;
+			}
+		}
 
 		return $item_values;
 	} // _update_caption

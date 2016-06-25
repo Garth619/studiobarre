@@ -1,7 +1,7 @@
 <?php
-/** 
+/**
 * HealCode MINDBODY Widget Plugin for WordPress
-* 
+*
 */
 
 function hc_hmw_network_install($networkwide) {
@@ -26,15 +26,9 @@ function hc_hmw_network_install($networkwide) {
 
 
 function hc_hmw_install(){
-	
+
 	global $wpdb;
 	//global $current_user; get_currentuserinfo();
-	
-	
-	if(get_option('hc_credit_link') == "")
-	{
-			add_option("hc_credit_link",0);
-	}
 
 	add_option('hc_hmw_limit',20);
 	$queryInsertHtml = "CREATE TABLE IF NOT EXISTS  ".$wpdb->prefix."hc_hmw_short_code (
@@ -49,8 +43,3 @@ function hc_hmw_install(){
 }
 
 register_activation_hook( HC_INSERT_HTML_PLUGIN_FILE ,'hc_hmw_network_install');
-
-
-
-
-

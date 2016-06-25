@@ -238,7 +238,7 @@ class MLASettings {
 			MLACore::mla_update_option( 'iptc_exif_mapping', $option_value );
 		} // version is less than 2.13
 
-		MLACore::mla_update_option( MLACoreOptions::MLA_VERSION_OPTION, MLA::CURRENT_MLA_VERSION );
+		MLACore::mla_update_option( MLACoreOptions::MLA_VERSION_OPTION, MLACore::CURRENT_MLA_VERSION );
 	}
 
 	/**
@@ -347,12 +347,12 @@ class MLASettings {
 		}
 
 		if ( $wp_locale->is_rtl() ) {
-			wp_register_style( MLA::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-style-rtl.css', false, MLA::CURRENT_MLA_VERSION );
+			wp_register_style( MLACore::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-style-rtl.css', false, MLACore::CURRENT_MLA_VERSION );
 		} else {
-			wp_register_style( MLA::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-style.css', false, MLA::CURRENT_MLA_VERSION );
+			wp_register_style( MLACore::STYLESHEET_SLUG, MLA_PLUGIN_URL . 'css/mla-style.css', false, MLACore::CURRENT_MLA_VERSION );
 		}
 
-		wp_enqueue_style( MLA::STYLESHEET_SLUG );
+		wp_enqueue_style( MLACore::STYLESHEET_SLUG );
 
 		/*
 		 * Initialize common script variables
@@ -393,7 +393,7 @@ class MLASettings {
 			case 'view':
 				wp_enqueue_script( self::JAVASCRIPT_INLINE_EDIT_VIEW_SLUG,
 					MLA_PLUGIN_URL . "js/mla-inline-edit-view-scripts{$suffix}.js", 
-					array( 'wp-lists', 'suggest', 'jquery' ), MLA::CURRENT_MLA_VERSION, false );
+					array( 'wp-lists', 'suggest', 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 				$script_variables['fields'] = array( 'original_slug', 'slug', 'singular', 'plural', 'specification', 'menu_order' );
 				$script_variables['checkboxes'] = array( 'post_mime_type', 'table_view' );
@@ -405,7 +405,7 @@ class MLASettings {
 			case 'upload':
 				wp_enqueue_script( self::JAVASCRIPT_INLINE_EDIT_UPLOAD_SLUG,
 					MLA_PLUGIN_URL . "js/mla-inline-edit-upload-scripts{$suffix}.js", 
-					array( 'wp-lists', 'suggest', 'jquery' ), MLA::CURRENT_MLA_VERSION, false );
+					array( 'wp-lists', 'suggest', 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 				$script_variables['fields'] = array( 'original_slug', 'slug', 'mime_type', 'icon_type', 'core_type', 'mla_type', 'source', 'standard_source' );
 				$script_variables['checkboxes'] = array( 'disabled' );
@@ -417,7 +417,7 @@ class MLASettings {
 			case 'custom_field':
 				wp_enqueue_script( self::JAVASCRIPT_INLINE_MAPPING_CUSTOM_SLUG,
 					MLA_PLUGIN_URL . "js/mla-inline-mapping-scripts{$suffix}.js", 
-					array( 'jquery' ), MLA::CURRENT_MLA_VERSION, false );
+					array( 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 				$tab_variables = array(
 					'page' => 'mla-settings-menu-custom_field',
@@ -436,7 +436,7 @@ class MLASettings {
 			case 'iptc_exif':
 				wp_enqueue_script( self::JAVASCRIPT_INLINE_MAPPING_IPTC_EXIF_SLUG,
 					MLA_PLUGIN_URL . "js/mla-inline-mapping-scripts{$suffix}.js", 
-					array( 'jquery' ), MLA::CURRENT_MLA_VERSION, false );
+					array( 'jquery' ), MLACore::CURRENT_MLA_VERSION, false );
 
 				$tab_variables = array(
 					'page' => 'mla-settings-menu-iptc_exif',
@@ -729,6 +729,7 @@ class MLASettings {
 	 * @return	void	echo json response object, then die()
 	 */
 	public static function mla_inline_mapping_custom_action() {
+		MLACore::mla_debug_add( 'MLASettings::mla_inline_mapping_custom_action $_REQUEST = ' . var_export( $_REQUEST, true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
 		set_current_screen( $_REQUEST['screen'] );
 		check_ajax_referer( MLACore::MLA_ADMIN_NONCE_ACTION, MLACore::MLA_ADMIN_NONCE_NAME );
 
@@ -841,6 +842,7 @@ class MLASettings {
 			'refresh' => isset( $page_content['refresh'] ) && true == $page_content['refresh'],
 		);
 
+		MLACore::mla_debug_add( 'MLASettings::mla_inline_mapping_custom_action $chunk_results = ' . var_export( $chunk_results, true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
 		wp_send_json_success( $chunk_results );
 	}
 
@@ -852,6 +854,7 @@ class MLASettings {
 	 * @return	void	echo json response object, then die()
 	 */
 	public static function mla_inline_mapping_iptc_exif_action() {
+		MLACore::mla_debug_add( 'MLASettings::mla_inline_mapping_iptc_exif_action $_REQUEST = ' . var_export( $_REQUEST, true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
 		set_current_screen( $_REQUEST['screen'] );
 		check_ajax_referer( MLACore::MLA_ADMIN_NONCE_ACTION, MLACore::MLA_ADMIN_NONCE_NAME );
 
@@ -975,6 +978,7 @@ class MLASettings {
 			'refresh' => isset( $page_content['refresh'] ) && true == $page_content['refresh'],
 		);
 
+		MLACore::mla_debug_add( 'MLASettings::mla_inline_mapping_iptc_exif_action $chunk_results = ' . var_export( $chunk_results, true ), MLACore::MLA_DEBUG_CATEGORY_AJAX );
 		wp_send_json_success( $chunk_results );
 	}
 
@@ -1137,6 +1141,7 @@ class MLASettings {
 			case 'subheader':
 				$option_values = array(
 					'Go to Top' => __( 'Go to Top', 'media-library-assistant' ),
+					'Go to Bottom' => __( 'Go to Bottom', 'media-library-assistant' ),
 					'key' => MLA_OPTION_PREFIX . $key,
 					'value' => $value['name'] 
 				);
@@ -1290,7 +1295,7 @@ class MLASettings {
 			'general' => array( 'title' => __ ( 'General', 'media-library-assistant' ), 'render' => array( 'MLASettings', '_compose_general_tab' ) ),
 			'view' => array( 'title' => __ ( 'Views', 'media-library-assistant' ), 'render' => array( 'MLASettings', '_compose_view_tab' ) ),
 			'upload' => array( 'title' => __ ( 'Uploads', 'media-library-assistant' ), 'render' => array( 'MLASettings', '_compose_upload_tab' ) ),
-			'mla_gallery' => array( 'title' => __ ( 'MLA Gallery', 'media-library-assistant' ), 'render' => array( 'MLASettings', '_compose_mla_gallery_tab' ) ),
+			'mla_gallery' => array( 'title' => __ ( 'Shortcodes', 'media-library-assistant' ), 'render' => array( 'MLASettings', '_compose_mla_gallery_tab' ) ),
 			'custom_field' => array( 'title' => __ ( 'Custom Fields', 'media-library-assistant' ), 'render' => array( 'MLASettings', '_compose_custom_field_tab' ) ),
 			'iptc_exif' => array( 'title' => 'IPTC/EXIF', 'render' => array( 'MLASettings', '_compose_iptc_exif_tab' ) ),
 			'documentation' => array( 'title' => __ ( 'Documentation', 'media-library-assistant' ), 'render' => array( 'MLASettings', '_compose_documentation_tab' ) ),
@@ -1403,6 +1408,7 @@ class MLASettings {
 			'_wpnonce' => wp_nonce_field( MLACore::MLA_ADMIN_NONCE_ACTION, MLACore::MLA_ADMIN_NONCE_NAME, true, false ),
 			'_wp_http_referer' => wp_referer_field( false ),
 			'Go to Top' => __( 'Go to Top', 'media-library-assistant' ),
+			'Go to Bottom' => __( 'Go to Bottom', 'media-library-assistant' ),
 			'Support Our Work' => __( 'Support Our Work', 'media-library-assistant' ),
 			'Donate to FTJ' => __( 'Donate to FTJ', 'media-library-assistant' ),
 			'Donate' => __( 'Donate', 'media-library-assistant' ),
@@ -1426,9 +1432,9 @@ class MLASettings {
 		 */
 		$shortcodes = array( 
 			// array("name" => "shortcode", "description" => "This shortcode...")
-			// array( 'name' => 'mla_attachment_list', 'description' => __( 'renders a complete list of all attachments and references to them.', 'media-library-assistant' ) ),
 			array( 'name' => 'mla_gallery', 'description' => __( 'enhanced version of the WordPress [gallery] shortcode.', 'media-library-assistant' ) . sprintf( ' %1$s <a href="%2$s">%3$s</a>.',  __( 'For complete documentation', 'media-library-assistant' ), admin_url( 'options-general.php?page=' . MLACoreOptions::MLA_SETTINGS_SLUG . '-documentation&amp;mla_tab=documentation#mla_gallery' ), __( 'click here', 'media-library-assistant' ) ) ),
-			array( 'name' => 'mla_tag_cloud', 'description' => __( 'enhanced version of the WordPress Tag Cloud.', 'media-library-assistant' ) . sprintf( ' %1$s <a href="%2$s">%3$s</a>.',  __( 'For complete documentation', 'media-library-assistant' ), admin_url( 'options-general.php?page=' . MLACoreOptions::MLA_SETTINGS_SLUG . '-documentation&amp;mla_tab=documentation#mla_tag_cloud' ), __( 'click here', 'media-library-assistant' ) ) )
+			array( 'name' => 'mla_tag_cloud', 'description' => __( 'enhanced version of the WordPress Tag Cloud.', 'media-library-assistant' ) . sprintf( ' %1$s <a href="%2$s">%3$s</a>.',  __( 'For complete documentation', 'media-library-assistant' ), admin_url( 'options-general.php?page=' . MLACoreOptions::MLA_SETTINGS_SLUG . '-documentation&amp;mla_tab=documentation#mla_tag_cloud' ), __( 'click here', 'media-library-assistant' ) ) ),
+			array( 'name' => 'mla_term_list', 'description' => __( 'provides flat or hierarchical lists, dropdown controls and checkbox lists of taxonomy terms.', 'media-library-assistant' ) . sprintf( ' %1$s <a href="%2$s">%3$s</a>.',  __( 'For complete documentation', 'media-library-assistant' ), admin_url( 'options-general.php?page=' . MLACoreOptions::MLA_SETTINGS_SLUG . '-documentation&amp;mla_tab=documentation#mla_tag_cloud' ), __( 'wait a bit longer', 'media-library-assistant' ) ) ),
 		);
 
 		$shortcode_list = '';
@@ -2349,49 +2355,53 @@ class MLASettings {
 			return $page_content;
 		}
 
+		/*
+		 * Compose shortcode jump table
+		 */
+		$shortcode_jump_rows = '';
+		foreach( MLATemplate_Support::$mla_template_definitions['style'] as $shortcode => $definition ) {
+			$template_values = array(
+				'shortcode' => $shortcode,
+				'Go to Style Templates' => sprintf( '%1$s [mla_%2$s] %3$s', __( 'Go to', 'media-library-assistant' ), $shortcode, __( 'Style Templates', 'media-library-assistant' ) ),
+				'Go to Markup Templates' => sprintf( '%1$s [mla_%2$s] %3$s', __( 'Go to', 'media-library-assistant' ), $shortcode, __( 'Markup Templates', 'media-library-assistant' ) ),
+			);
+			
+			$shortcode_jump_rows .= MLAData::mla_parse_template( self::$page_template_array['shortcode-jump-row'], $template_values );
+		}
+
 		$page_values = array(
-			'MLA Gallery Options' => __( 'MLA Gallery Options', 'media-library-assistant' ),
-			'Go to Style Templates' => __( 'Go to Style Templates', 'media-library-assistant' ),
-			'Go to Markup Templates' => __( 'Go to Markup Templates', 'media-library-assistant' ),
+			'MLA Shortcode Options' => __( 'MLA Shortcode Options', 'media-library-assistant' ),
+			'Shortcode Jump Rows' => $shortcode_jump_rows,
 			'In this tab' => __( 'In this tab you can view the default style and markup templates. You can also define additional templates and use the <code>mla_style</code> and <code>mla_markup</code> parameters to apply them in your <code>[mla_gallery]</code> shortcodes. <strong>NOTE:</strong> template additions and changes will not be made permanent until you click "Save Changes" at the bottom of this page.', 'media-library-assistant' ),
 			'form_url' => admin_url( 'options-general.php' ) . '?page=mla-settings-menu-mla_gallery&mla_tab=mla_gallery',
 			'options_list' => '',
 			'Go to Top' => __( 'Go to Top', 'media-library-assistant' ),
-			'Style Templates' => __( 'Style Templates', 'media-library-assistant' ),
-			'style_options_list' => '',
-			'Markup Templates' => __( 'Markup Templates', 'media-library-assistant' ),
-			'markup_options_list' => '',
+			'Go to Bottom' => __( 'Go to Bottom', 'media-library-assistant' ),
+			'style_sections_list' => '',
+			'markup_sections_list' => '',
 			'Save Changes' => __( 'Save Changes', 'media-library-assistant' ),
 			'_wpnonce' => wp_nonce_field( MLACore::MLA_ADMIN_NONCE_ACTION, MLACore::MLA_ADMIN_NONCE_NAME, true, false ),
 			'_wp_http_referer' => wp_referer_field( false )
 		);
 
 		/*
-		 * Build default template selection lists; leave out the [mla_tag_cloud] templates
+		 * Build default template selection lists
 		 */
 		MLACoreOptions::$mla_option_definitions['default_style']['options'][] = 'none';
 		MLACoreOptions::$mla_option_definitions['default_style']['texts'][] = '&mdash; ' . __( 'None', 'media-library-assistant' ) . ' &mdash;';
 		MLACoreOptions::$mla_option_definitions['default_style']['options'][] = 'theme';
 		MLACoreOptions::$mla_option_definitions['default_style']['texts'][] = '&mdash; ' . __( 'Theme', 'media-library-assistant' ) . ' &mdash;';
 
-		$templates = MLAOptions::mla_get_style_templates();
+		$templates = MLATemplate_Support::mla_get_style_templates( 'gallery' );
 		ksort($templates);
 		foreach ($templates as $key => $value ) {
-			if ( 'tag-cloud' == $key ) {
-				continue;
-			}
-
 			MLACoreOptions::$mla_option_definitions['default_style']['options'][] = $key;
 			MLACoreOptions::$mla_option_definitions['default_style']['texts'][] = $key;
 		}
 
-		$templates = MLAOptions::mla_get_markup_templates();
+		$templates = MLATemplate_Support::mla_get_markup_templates( 'gallery' );
 		ksort($templates);
 		foreach ($templates as $key => $value ) {
-			if ( in_array( $key, array( 'tag-cloud', 'tag-cloud-dl', 'tag-cloud-ul' ) ) ) {
-				continue;
-			}
-
 			MLACoreOptions::$mla_option_definitions['default_markup']['options'][] = $key;
 			MLACoreOptions::$mla_option_definitions['default_markup']['texts'][] = $key;
 		}
@@ -2428,283 +2438,276 @@ class MLASettings {
 		$page_values['options_list'] = $options_list;
 
 		/*
-		 * Add style templates; defaults go first
+		 * Add style templates by shortcode; defaults go first
 		 */
-		$default_styles = array( 'default', 'tag-cloud' );
-		$style_options_list = '';
-		$templates = MLAOptions::mla_get_style_templates();
+		$style_sections_list = '';
+		
+		foreach( MLATemplate_Support::$mla_template_definitions['style'] as $shortcode => $definition ) {
+			$templates = MLATemplate_Support::mla_get_style_templates( $definition['slug'] );
+			$style_options_list = '';
 
-		foreach ( $default_styles as $default ) {
-			$name = $default;
-			$value =$templates[$default];
-			if ( ! empty( $value ) ) {
+			foreach ( $definition['default_names'] as $default ) {
+				if ( !array_key_exists( $default, $templates ) ) {
+					continue;
+				}
+				
+				$value =$templates[ $default ];
+				if ( ! empty( $value ) ) {
+					$template_values = array (
+						'help' => __( 'This default template cannot be altered or deleted, but you can copy the styles.', 'media-library-assistant' )
+					);
+					$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-default'], $template_values );
+	
+					$template_values = array (
+						'Name' => __( 'Name', 'media-library-assistant' ),
+						'name_name' => "mla_style_templates_name[{$shortcode}][{$default}]",
+						'name_id' => "mla_style_templates_name_{$shortcode}_{$default}",
+						'readonly' => 'readonly="readonly"',
+						'name_text' => $default,
+						'control_cells' => $control_cells,
+						'Styles' => $definition['label'],
+						'value_name' => "mla_style_templates_value[{$shortcode}][{$default}]",
+						'value_id' => "mla_style_templates_value_{$shortcode}_{$default}",
+						'value_text' => esc_textarea( $value ),
+						'value_help' => $definition['help'],
+					);
+	
+					$style_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-style'], $template_values );
+				} // $value
+			} // foreach default
+
+			foreach ( $templates as $name => $value ) {
+				$slug = sanitize_title( $name );
+	
+				if ( in_array( $name, $definition['default_names'] ) ) {
+					continue; // already handled above
+				}
+	
 				$template_values = array (
-					'help' => __( 'This default template cannot be altered or deleted, but you can copy the styles.', 'media-library-assistant' )
+					'name' => "mla_style_templates_delete[{$shortcode}][{$slug}]",
+					'id' => "mla_style_templates_delete_{$shortcode}_{$slug}",
+					'value' => __( 'Delete this template', 'media-library-assistant' ),
+					'help' => __( 'Check the box to delete this template when you press Update at the bottom of the page.', 'media-library-assistant' )
 				);
-				$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-default'], $template_values );
-
+				$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-delete'], $template_values );
+	
 				$template_values = array (
 					'Name' => __( 'Name', 'media-library-assistant' ),
-					'name_name' => "mla_style_templates_name[{$default}]",
-					'name_id' => "mla_style_templates_name_{$default}",
-					'readonly' => 'readonly="readonly"',
-					'name_text' => $default,
+					'name_name' => "mla_style_templates_name[{$shortcode}][{$slug}]",
+					'name_id' => "mla_style_templates_name_{$shortcode}_{$slug}",
+					'readonly' => '',
+					'name_text' => $slug,
 					'control_cells' => $control_cells,
-					'Styles' => __( 'Styles', 'media-library-assistant' ),
-					'value_name' => "mla_style_templates_value[{$default}]",
-					'value_id' => "mla_style_templates_value_{$default}",
+					'Styles' => $definition['label'],
+					'value_name' => "mla_style_templates_value[{$shortcode}][{$slug}]",
+					'value_id' => "mla_style_templates_value_{$shortcode}_{$slug}",
 					'value_text' => esc_textarea( $value ),
-					'value_help' => __( 'List of substitution parameters, e.g., [+selector+], on Documentation tab.', 'media-library-assistant' )
+					'value_help' => $definition['help'],
 				);
-
+	
+				$style_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-style'], $template_values );
+			} // foreach $templates
+	
+			/*
+			 * Add blank style template for additions
+			 */
+			if ( ! empty( $value ) ) {
+				$template_values = array (
+					'help' => __( 'Fill in a name and styles to add a new template.', 'media-library-assistant' )
+				);
+				$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-default'], $template_values );
+	
+				$template_values = array (
+					'Name' => __( 'Name', 'media-library-assistant' ),
+					'name_name' => "mla_style_templates_name[{$shortcode}][blank]",
+					'name_id' => "mla_style_templates_name_{$shortcode}_blank",
+					'readonly' => '',
+					'name_text' => '',
+					'control_cells' => $control_cells,
+					'Styles' => $definition['label'],
+					'value_name' => "mla_style_templates_value[{$shortcode}][blank]",
+					'value_id' => "mla_style_templates_value_{$shortcode}_blank",
+					'value_text' => '',
+					'value_help' => $definition['help'],
+				);
+	
 				$style_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-style'], $template_values );
 			} // $value
-		} // foreach default
 
-		foreach ( $templates as $name => $value ) {
-			$slug = sanitize_title( $name );
-
-			if ( in_array( $name, $default_styles ) ) {
-				continue; // already handled above
-			}
-
+			/*
+			 * Compose the Styles section for this shortcode
+			 */
 			$template_values = array (
-				'name' => 'mla_style_templates_delete[' . $slug . ']',
-				'id' => 'mla_style_templates_delete_' . $slug,
-				'value' => __( 'Delete this template', 'media-library-assistant' ),
-				'help' => __( 'Check the box to delete this template when you press Update at the bottom of the page.', 'media-library-assistant' )
-			);
-			$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-delete'], $template_values );
-
-			$template_values = array (
-				'Name' => __( 'Name', 'media-library-assistant' ),
-				'name_name' => 'mla_style_templates_name[' . $slug . ']',
-				'name_id' => 'mla_style_templates_name_' . $slug,
-				'readonly' => '',
-				'name_text' => $slug,
-				'control_cells' => $control_cells,
-				'Styles' => __( 'Styles', 'media-library-assistant' ),
-				'value_name' => 'mla_style_templates_value[' . $slug . ']',
-				'value_id' => 'mla_style_templates_value_' . $slug,
-				'value_text' => esc_textarea( $value ),
-				'value_help' => __( 'List of substitution parameters, e.g., [+selector+], on Documentation tab.', 'media-library-assistant' )
+				'shortcode' => $shortcode,
+				'template_type' => 'style',
+				'Go to Top' => __( 'Go to Top', 'media-library-assistant' ),
+				'Go to Bottom' => __( 'Go to Bottom', 'media-library-assistant' ),
+				'Templates' => "[mla_{$shortcode}] " . __( 'Style Templates', 'media-library-assistant' ),
+				'templates_list' => $style_options_list,
 			);
 
-			$style_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-style'], $template_values );
-		} // foreach $templates
-
-		/*
-		 * Add blank style template for additions
-		 */
-		if ( ! empty( $value ) ) {
-			$template_values = array (
-				'help' => __( 'Fill in a name and styles to add a new template.', 'media-library-assistant' )
-			);
-			$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-default'], $template_values );
-
-			$template_values = array (
-				'Name' => __( 'Name', 'media-library-assistant' ),
-				'name_name' => 'mla_style_templates_name[blank]',
-				'name_id' => 'mla_style_templates_name_blank',
-				'readonly' => '',
-				'name_text' => '',
-				'control_cells' => $control_cells,
-				'Styles' => __( 'Styles', 'media-library-assistant' ),
-				'value_name' => 'mla_style_templates_value[blank]',
-				'value_id' => 'mla_style_templates_value_blank',
-				'value_text' => '',
-				'value_help' => __( 'List of substitution parameters, e.g., [+selector+], on Documentation tab.', 'media-library-assistant' )
-			);
-
-			$style_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-style'], $template_values );
-		} // $value
-
-		$page_values['style_options_list'] = $style_options_list;
+			$style_sections_list .= MLAData::mla_parse_template( self::$page_template_array['templates-list'], $template_values );
+		} // $shortcode
+	
+		$page_values['style_sections_list'] = $style_sections_list;
 
 		/*
 		 * Add markup templates; defaults go first
 		 */
-		$default_markups = array( 'default', 'tag-cloud', 'tag-cloud-ul', 'tag-cloud-dl' );
-		$markup_options_list = '';
-		$templates = MLAOptions::mla_get_markup_templates();
+		$markup_sections_list = '';
 
-		foreach ( $default_markups as $default ) {
-			$name = $default;
-			$value =$templates[$default];
+		foreach( MLATemplate_Support::$mla_template_definitions['markup'] as $shortcode => $definition ) {
+			$templates = MLATemplate_Support::mla_get_markup_templates( $definition['slug'] );
+			$markup_options_list = '';
+			
+			$sorted_sections = array();
+			foreach( MLATemplate_Support::$mla_template_definitions['markup'][ $shortcode ]['sections'] as $section_slug => $section_definition ) {
+				$sorted_sections[ $section_definition['order'] ] = $section_definition;
+				$sorted_sections[ $section_definition['order'] ]['slug'] = $section_slug;
+			}
+			ksort( $sorted_sections, SORT_NUMERIC );
+
+			foreach ( $definition['default_names'] as $default ) {
+				if ( !array_key_exists( $default, $templates ) ) {
+					continue;
+				}
+				
+				$value =$templates[ $default ];
+				if ( ! empty( $value ) ) {
+					$sections_list = '';
+					foreach( $sorted_sections as $section_definition ) {
+						$section_slug = $section_definition['slug'];
+						$template_values = array (
+							'Label' => $section_definition['label'],
+							'name' => "mla_markup_templates_sections[{$shortcode}][{$default}][{$section_slug}]",
+							'id' => "mla_markup_templates_name_{$shortcode}_{$default}_{$section_slug}",
+							'rows' => $section_definition['rows'],
+							'readonly' => 'readonly="readonly"',
+							'text' => isset( $value[ $section_slug ] ) ? esc_textarea( $value[ $section_slug ] ) : '',
+							'help' => $section_definition['help'],
+						);
+					
+						$sections_list .= MLAData::mla_parse_template( self::$page_template_array['template-section'], $template_values );
+					} // $section
+	
+					$template_values = array (
+						'help' => __( 'This default template cannot be altered or deleted, but you can copy the markup.', 'media-library-assistant' )
+					);
+					$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-default'], $template_values );
+
+					$template_values = array (
+						'Name' => __( 'Name', 'media-library-assistant' ),
+						'name_name' => "mla_markup_templates_name[{$shortcode}][{$default}]",
+						'name_id' => "mla_markup_templates_name_{$shortcode}_{$default}",
+						'readonly' => 'readonly="readonly"',
+						'name_text' => $default,
+						'control_cells' => $control_cells,
+						'sections_list' => $sections_list,
+					);
+	
+					$markup_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-markup'], $template_values );
+				} // $value
+			} // foreach default
+	
+			foreach ( $templates as $name => $value ) {
+				$slug = sanitize_title( $name );
+	
+				if ( in_array( $name, $definition['default_names'] ) ) {
+					continue; // already handled above
+				}
+
+				if ( ! empty( $value ) ) {
+					$sections_list = '';
+					foreach( $sorted_sections as $section_definition ) {
+						$section_slug = $section_definition['slug'];
+						$template_values = array (
+							'Label' => $section_definition['label'],
+							'name' => "mla_markup_templates_sections[{$shortcode}][{$name}][{$section_slug}]",
+							'id' => "mla_markup_templates_name_{$shortcode}_{$name}_{$section_slug}",
+							'rows' => $section_definition['rows'],
+							'readonly' => '',
+							'text' => isset( $value[ $section_slug ] ) ? esc_textarea( $value[ $section_slug ] ) : '',
+							'help' => $section_definition['help'],
+						);
+					
+						$sections_list .= MLAData::mla_parse_template( self::$page_template_array['template-section'], $template_values );
+					} // $section
+	
+					$template_values = array (
+						'name' => "mla_markup_templates_delete[{$shortcode}][{$slug}]",
+						'id' => "mla_markup_templates_delete_{$shortcode}_{$slug}",
+						'value' => __( 'Delete this template', 'media-library-assistant' ),
+						'help' => __( 'Check the box to delete this template when you press Update at the bottom of the page.', 'media-library-assistant' )
+					);
+					$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-delete'], $template_values );
+
+					$template_values = array (
+						'Name' => __( 'Name', 'media-library-assistant' ),
+						'name_name' => "mla_markup_templates_name[{$shortcode}][{$slug}]",
+						'name_id' => "mla_markup_templates_name_{$shortcode}_{$slug}",
+						'readonly' => '',
+						'name_text' => $slug,
+						'control_cells' => $control_cells,
+						'sections_list' => $sections_list,
+					);
+	
+					$markup_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-markup'], $template_values );
+				} // $value
+			} // foreach $templates
+	
+			/*
+			 * Add blank markup template for additions
+			 */
 			if ( ! empty( $value ) ) {
 				$template_values = array (
-					'help' => __( 'This default template cannot be altered or deleted, but you can copy the markup.', 'media-library-assistant' )
+					'help' => __( 'Fill in a name and markup to add a new template.', 'media-library-assistant' )
 				);
 				$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-default'], $template_values );
-
+	
+				$sections_list = '';
+				foreach( $sorted_sections as $section_definition ) {
+					$section_slug = $section_definition['slug'];
+					$template_values = array (
+						'Label' => $section_definition['label'],
+						'name' => "mla_markup_templates_sections[{$shortcode}][blank][{$section_slug}]",
+						'id' => "mla_markup_templates_name_{$shortcode}_blank_{$section_slug}",
+						'rows' => $section_definition['rows'],
+						'readonly' => '',
+						'text' => '',
+						'help' => $section_definition['help'],
+					);
+				
+					$sections_list .= MLAData::mla_parse_template( self::$page_template_array['template-section'], $template_values );
+				} // $section
+				
 				$template_values = array (
 					'Name' => __( 'Name', 'media-library-assistant' ),
-					'name_name' => "mla_markup_templates_name[{$default}]",
-					'name_id' => "mla_markup_templates_name_{$default}",
-					'readonly' => 'readonly="readonly"',
-					'name_text' => $default,
+					'name_name' => "mla_markup_templates_name[{$shortcode}][blank]",
+					'name_id' => "mla_markup_templates_name_{$shortcode}_blank",
+					'name_text' => '',
 					'control_cells' => $control_cells,
-
-					'Arguments' => __( 'Arguments', 'media-library-assistant' ),
-					'arguments_name' => "mla_markup_templates_arguments[{$default}]",
-					'arguments_id' => "mla_markup_templates_arguments_{$default}",
-					'arguments_text' => isset( $value['arguments'] ) ? esc_textarea( $value['arguments'] ) : '',
-					'arguments_help' => __( 'Default shortcode parameter values.', 'media-library-assistant' ),
-
-					'Open' => __( 'Open', 'media-library-assistant' ),
-					'open_name' => "mla_markup_templates_open[{$default}]",
-					'open_id' => "mla_markup_templates_open_{$default}",
-					'open_text' => isset( $value['open'] ) ? esc_textarea( $value['open'] ) : '',
-					'open_help' => __( 'Markup for the beginning of the gallery. List of parameters, e.g., [+selector+], on Documentation tab.', 'media-library-assistant' ),
-
-					'Row' => __( 'Row', 'media-library-assistant' ),
-					'row_open_name' => "mla_markup_templates_row_open[{$default}]",
-					'row_open_id' => "mla_markup_templates_row_open_{$default}",
-					'row_open_text' => isset( $value['row-open'] ) ? esc_textarea( $value['row-open'] ) : '',
-					'row_open_help' =>  __( 'Markup for the beginning of each row in the gallery.', 'media-library-assistant' ),
-
-					'Item' => __( 'Item', 'media-library-assistant' ),
-					'item_name' => "mla_markup_templates_item[{$default}]",
-					'item_id' => "mla_markup_templates_item_{$default}",
-					'item_text' => isset( $value['item'] ) ? esc_textarea( $value['item'] ) : '',
-					'item_help' =>  __( 'Markup for each item/cell of the gallery.', 'media-library-assistant' ),
-
-					'Close' => __( 'Close', 'media-library-assistant' ),
-					'row_close_name' => "mla_markup_templates_row_close[{$default}]",
-					'row_close_id' => "mla_markup_templates_row_close_{$default}",
-					'row_close_text' => isset( $value['row-close'] ) ? esc_textarea( $value['row-close'] ) : '',
-					'row_close_help' =>  __( 'Markup for the end of each row in the gallery.', 'media-library-assistant' ),
-
-					'close_name' => "mla_markup_templates_close[{$default}]",
-					'close_id' => "mla_markup_templates_close_{$default}",
-					'close_text' => isset( $value['close'] ) ? esc_textarea( $value['close'] ) : '',
-					'close_help' =>  __( 'Markup for the end of the gallery.', 'media-library-assistant' )
+					'sections_list' => $sections_list,
 				);
-
+	
 				$markup_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-markup'], $template_values );
 			} // $value
-		} // foreach default
 
-		foreach ( $templates as $name => $value ) {
-			$slug = sanitize_title( $name );
-
-			if ( in_array( $name, $default_markups ) ) {
-				continue; // already handled above
-			}
-
+			/*
+			 * Compose the Markup section for this shortcode
+			 */
 			$template_values = array (
-				'name' => 'mla_markup_templates_delete[' . $slug . ']',
-				'id' => 'mla_markup_templates_delete_' . $slug,
-				'value' => __( 'Delete this template', 'media-library-assistant' ),
-				'help' => __( 'Check the box to delete this template when you press Update at the bottom of the page.', 'media-library-assistant' )
-			);
-			$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-delete'], $template_values );
-
-			$template_values = array (
-				'Name' => __( 'Name', 'media-library-assistant' ),
-				'name_name' => "mla_markup_templates_name[{$slug}]",
-				'name_id' => "mla_markup_templates_name_{$slug}",
-				'readonly' => '',
-				'name_text' => $slug,
-				'control_cells' => $control_cells,
-
-				'Arguments' => __( 'Arguments', 'media-library-assistant' ),
-				'arguments_name' => "mla_markup_templates_arguments[{$slug}]",
-				'arguments_id' => "mla_markup_templates_arguments_{$slug}",
-				'arguments_text' => isset( $value['arguments'] ) ? esc_textarea( $value['arguments'] ) : '',
-				'arguments_help' => __( 'Default shortcode parameter values.', 'media-library-assistant' ),
-
-				'Open' => __( 'Open', 'media-library-assistant' ),
-				'open_name' => "mla_markup_templates_open[{$slug}]",
-				'open_id' => "mla_markup_templates_open_{$slug}",
-				'open_text' => isset( $value['open'] ) ? esc_textarea( $value['open'] ) : '',
-				'open_help' =>  __( 'Markup for the beginning of the gallery. List of parameters, e.g., [+selector+], on Documentation tab.', 'media-library-assistant' ),
-
-				'Row' => __( 'Row', 'media-library-assistant' ),
-				'row_open_name' => "mla_markup_templates_row_open[{$slug}]",
-				'row_open_id' => "mla_markup_templates_row_open_{$slug}",
-				'row_open_text' => isset( $value['row-open'] ) ? esc_textarea( $value['row-open'] ) : '',
-				'row_open_help' =>  __( 'Markup for the beginning of each row.', 'media-library-assistant' ),
-
-				'Item' => __( 'Item', 'media-library-assistant' ),
-				'item_name' => "mla_markup_templates_item[{$slug}]",
-				'item_id' => "mla_markup_templates_item_{$slug}",
-				'item_text' => isset( $value['item'] ) ? esc_textarea( $value['item'] ) : '',
-				'item_help' =>  __( 'Markup for each item/cell.', 'media-library-assistant' ),
-
-				'Close' => __( 'Close', 'media-library-assistant' ),
-				'row_close_name' => "mla_markup_templates_row_close[{$slug}]",
-				'row_close_id' => "mla_markup_templates_row_close_{$slug}",
-				'row_close_text' => isset( $value['row-close'] ) ? esc_textarea( $value['row-close'] ) : '',
-				'row_close_help' =>  __( 'Markup for the end of each row.', 'media-library-assistant' ),
-
-				'close_name' => "mla_markup_templates_close[{$slug}]",
-				'close_id' => "mla_markup_templates_close_{$slug}",
-				'close_text' => isset( $value['close'] ) ? esc_textarea( $value['close'] ) : '',
-				'close_help' =>  __( 'Markup for the end of the gallery.', 'media-library-assistant' )
+				'shortcode' => $shortcode,
+				'template_type' => 'markup',
+				'Go to Top' => __( 'Go to Top', 'media-library-assistant' ),
+				'Go to Bottom' => __( 'Go to Bottom', 'media-library-assistant' ),
+				'Templates' => "[mla_{$shortcode}] " . __( 'Markup Templates', 'media-library-assistant' ),
+				'templates_list' => $markup_options_list,
 			);
 
-			$markup_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-markup'], $template_values );
-		} // foreach $templates
-
-		/*
-		 * Add blank markup template for additions
-		 */
-		if ( ! empty( $value ) ) {
-			$template_values = array (
-				'help' => __( 'Fill in a name and markup to add a new template.', 'media-library-assistant' )
-			);
-			$control_cells = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-default'], $template_values );
-
-			$template_values = array (
-				'Name' => __( 'Name', 'media-library-assistant' ),
-				'name_name' => 'mla_markup_templates_name[blank]',
-				'name_id' => 'mla_markup_templates_name_blank',
-				'readonly' => '',
-				'name_text' => '',
-				'control_cells' => $control_cells,
-
-				'Arguments' => __( 'Arguments', 'media-library-assistant' ),
-				'arguments_name' => 'mla_markup_templates_arguments[blank]',
-				'arguments_id' => 'mla_markup_templates_arguments_blank',
-				'arguments_text' => '',
-				'arguments_help' => __( 'Default shortcode parameter values.', 'media-library-assistant' ),
-
-				'Open' => __( 'Open', 'media-library-assistant' ),
-				'open_name' => 'mla_markup_templates_open[blank]',
-				'open_id' => 'mla_markup_templates_open_blank',
-				'open_text' => '',
-				'open_help' => __( 'Markup for the beginning of the gallery. List of parameters, e.g., [+selector+], on Documentation tab.', 'media-library-assistant' ),
-
-				'Row' => __( 'Row', 'media-library-assistant' ),
-				'row_open_name' => 'mla_markup_templates_row_open[blank]',
-				'row_open_id' => 'mla_markup_templates_row_open_blank',
-				'row_open_text' => '',
-				'row_open_help' => __( 'Markup for the beginning of each row in the gallery.', 'media-library-assistant' ),
-
-				'Item' => __( 'Item', 'media-library-assistant' ),
-				'item_name' => 'mla_markup_templates_item[blank]',
-				'item_id' => 'mla_markup_templates_item_blank',
-				'item_text' => '',
-				'item_help' => __( 'Markup for each item/cell of the gallery.', 'media-library-assistant' ),
-
-				'Close' => __( 'Close', 'media-library-assistant' ),
-				'row_close_name' => 'mla_markup_templates_row_close[blank]',
-				'row_close_id' => 'mla_markup_templates_row_close_blank',
-				'row_close_text' => '',
-				'row_close_help' => __( 'Markup for the end of each row in the gallery.', 'media-library-assistant' ),
-
-				'close_name' => 'mla_markup_templates_close[blank]',
-				'close_id' => 'mla_markup_templates_close_blank',
-				'close_text' => '',
-				'close_help' => __( 'Markup for the end of the gallery.', 'media-library-assistant' )
-
-			);
-
-			$markup_options_list .= MLAData::mla_parse_template( self::$page_template_array['mla-gallery-markup'], $template_values );
-		} // $value
-
-		$page_values['markup_options_list'] = $markup_options_list;
+			$markup_sections_list .= MLAData::mla_parse_template( self::$page_template_array['templates-list'], $template_values );
+		} // $shortcode
+		
+		$page_values['markup_sections_list'] = $markup_sections_list;
 
 		$page_content['body'] = MLAData::mla_parse_template( self::$page_template_array['mla-gallery-tab'], $page_values );
 		return $page_content;
@@ -3284,7 +3287,7 @@ class MLASettings {
 		$page_values = array(
 			'Support Our Work' => __( 'Support Our Work', 'media-library-assistant' ),
 			'Donate' => __( 'Donate', 'media-library-assistant' ),
-			'version' => 'v' . MLA::CURRENT_MLA_VERSION,
+			'version' => 'v' . MLACore::CURRENT_MLA_VERSION,
 			'development' => $development_version,
 			'messages' => '',
 			'tablist' => self::_compose_settings_tabs( $current_tab_slug ),
@@ -3379,8 +3382,10 @@ class MLASettings {
 
 		/*
 		 * Get the current style contents for comparison
+		 *     $new_names[ shortcode ][ template_name ]
+		 *     $old_templates, $new_templates [ template_name ] - omit shortcode for backwards compatibility
 		 */
-		$old_templates = MLAOptions::mla_get_style_templates();
+		$old_templates = MLATemplate_Support::mla_get_style_templates();
 		$new_templates = array();
 		$new_names = $_REQUEST['mla_style_templates_name'];
 		$new_values = stripslashes_deep( $_REQUEST['mla_style_templates_value'] );
@@ -3389,74 +3394,84 @@ class MLASettings {
 		/*
 		 * Build new style template array, noting changes
 		 */
-		$default_styles = array( 'default', 'tag-cloud' );
 		$templates_changed = false;
-		foreach ( $new_names as $name => $new_name ) {
-			if ( in_array( $name, $default_styles ) ) {
-				continue;
-			}
-
-			if ( array_key_exists( $name, $new_deletes ) ) {
-				/* translators: 1: template type 2: template name */
-				$message_list .= '<br>' . sprintf( _x( 'Deleting %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'Style Template', 'media-library-assistant' ), $name );
-				$templates_changed = true;
-				continue;
-			}
-
-			$new_slug = sanitize_title( $new_name );
-			if ( 'blank' == $name ) {
-				if ( '' == $new_slug ) {
-					continue;
-				} elseif ( 'blank' == $new_slug ) {
-					/* translators: 1: ERROR tag 2: template name 3: template type */
-					$error_list .= '<br>' . sprintf( __( '%1$s: Reserved name "%2$s", new %3$s discarded.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), $new_slug, __( 'Style Template', 'media-library-assistant' ) );
+		foreach ( $new_names as $shortcode => $template_names ) {
+			$definition = MLATemplate_Support::$mla_template_definitions['style'][ $shortcode ];
+			
+			foreach ( $template_names as $name => $new_name ) {
+				if ( in_array( $name, $definition['default_names'] ) ) {
 					continue;
 				}
 
-				if ( array_key_exists( $new_slug, $old_templates ) ) {
-					/* translators: 1: ERROR tag 2: template name 3: template type */
-					$error_list .= '<br>' . sprintf( __( '%1$s: Duplicate name "%2$s", new %3$s discarded.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), $new_slug, __( 'Style Template', 'media-library-assistant' ) );
-					continue;
-				} else {
+				if ( array_key_exists( $shortcode, $new_deletes ) && array_key_exists( $name, $new_deletes[ $shortcode ] ) ) {
 					/* translators: 1: template type 2: template name */
-					$message_list .= '<br>' . sprintf( _x( 'Adding new %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'Style Template', 'media-library-assistant' ), $new_slug );
+					$message_list .= '<br>' . sprintf( _x( 'Deleting %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'Style Template', 'media-library-assistant' ), $name );
 					$templates_changed = true;
+					continue;
 				}
-			} // 'blank' - reserved name
-
-			/*
-			 * Handle name changes, check for duplicates
-			 */
-			if ( '' == $new_slug ) {
-				/* translators: 1: ERROR tag 2: element name 3: old value */
-				$error_list .= '<br>' . sprintf( __( '%1$s: Blank %2$s, reverting to "%3$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'style template name', 'media-library-assistant' ), $name );
-				$new_slug = $name;
-			}
-
-			if ( $new_slug != $name ) {
-				if ( array_key_exists( $new_slug, $old_templates ) ) {
-					/* translators: 1: ERROR tag 2: element name 3: new value 4: old value */
-					$error_list .= '<br>' . sprintf( __( '%1$s: Duplicate new %2$s "%3$s", reverting to "%4$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'style template name', 'media-library-assistant' ), $new_slug, $name );
+	
+				$new_slug = sanitize_title( $new_name );
+				if ( 'blank' == $name ) {
+					if ( '' == $new_slug ) {
+						continue;
+					} elseif ( 'blank' == $new_slug ) {
+						/* translators: 1: ERROR tag 2: template name 3: template type */
+						$error_list .= '<br>' . sprintf( __( '%1$s: Reserved name "%2$s", new %3$s discarded.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), $new_slug, __( 'Style Template', 'media-library-assistant' ) );
+						continue;
+					}
+	
+					if ( array_key_exists( $new_slug, $old_templates ) ) {
+						/* translators: 1: ERROR tag 2: template name 3: template type */
+						$error_list .= '<br>' . sprintf( __( '%1$s: Duplicate name "%2$s", new %3$s discarded.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), $new_slug, __( 'Style Template', 'media-library-assistant' ) );
+						continue;
+					} else {
+						/* translators: 1: template type 2: template name */
+						$message_list .= '<br>' . sprintf( _x( 'Adding new %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'Style Template', 'media-library-assistant' ), $new_slug );
+						$templates_changed = true;
+					}
+				} // 'blank' - reserved name
+	
+				/*
+				 * Handle name changes, check for duplicates
+				 */
+				if ( '' == $new_slug ) {
+					/* translators: 1: ERROR tag 2: element name 3: old value */
+					$error_list .= '<br>' . sprintf( __( '%1$s: Blank %2$s, reverting to "%3$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'style template name', 'media-library-assistant' ), $name );
 					$new_slug = $name;
-				} elseif ( 'blank' != $name ) {
-					/* translators: 1: element name 2: old_value 3: new_value */
-					$message_list .= '<br>' . sprintf( _x( 'Changing %1$s from "%2$s" to "%3$s"', 'message_list', 'media-library-assistant' ), __( 'style template name', 'media-library-assistant' ), $name, $new_slug );
+				}
+	
+				if ( $new_slug != $name ) {
+					if ( array_key_exists( $new_slug, $old_templates ) ) {
+						/* translators: 1: ERROR tag 2: element name 3: new value 4: old value */
+						$error_list .= '<br>' . sprintf( __( '%1$s: Duplicate new %2$s "%3$s", reverting to "%4$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'style template name', 'media-library-assistant' ), $new_slug, $name );
+						$new_slug = $name;
+					} elseif ( 'blank' == $new_slug ) {
+						/* translators: 1: ERROR tag 2: element name 3: new value 4: old value */
+						$error_list .= '<br>' . sprintf( __( '%1$s: Reserved %2$s "%3$s", reverting to "%4$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'style template name', 'media-library-assistant' ), $new_slug, $name );
+						$new_slug = $name;
+					} elseif ( 'blank' != $name ) {
+						/* translators: 1: element name 2: old_value 3: new_value */
+						$message_list .= '<br>' . sprintf( _x( 'Changing %1$s from "%2$s" to "%3$s"', 'message_list', 'media-library-assistant' ), __( 'style template name', 'media-library-assistant' ), $name, $new_slug );
+						$templates_changed = true;
+					}
+				} // name changed
+	
+				if ( ( 'blank' != $name ) && ( $new_values[ $shortcode ][ $name ] != $old_templates[ $name ] ) ) {
+					/* translators: 1: template type 2: template name */
+					$message_list .= '<br>' . sprintf( _x( 'Updating contents of %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'Style Template', 'media-library-assistant' ), $new_slug );
 					$templates_changed = true;
 				}
-			} // name changed
-
-			if ( ( 'blank' != $name ) && ( $new_values[ $name ] != $old_templates[ $name ] ) ) {
-				/* translators: 1: template type 2: template name */
-				$message_list .= '<br>' . sprintf( _x( 'Updating contents of %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'Style Template', 'media-library-assistant' ), $new_slug );
-				$templates_changed = true;
-			}
-
-			$new_templates[ $new_slug ] = $new_values[ $name ];
-		} // foreach $name
+	
+				/*
+				 * Encode shortcode assignment in template content
+				 */
+				$new_templates[ $new_slug ] = sprintf( "<!-- mla_shortcode_slug=\"%1\$s\" -->\r\n%2\$s", $definition['slug'], $new_values[ $shortcode ][ $name ] );
+			} // foreach $name
+		} // each shortcode
 
 		if ( $templates_changed ) {
 			$settings_changed = true;
-			if ( false == MLAOptions::mla_put_style_templates( $new_templates ) ) {
+			if ( false == MLATemplate_Support::mla_put_style_templates( $new_templates ) ) {
 				/* translators: 1: ERROR tag 2: template type */
 				$error_list .= '<br>' . sprintf( __( '%1$s: Update of %2$s failed.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'Style Template', 'media-library-assistant' ) );
 			}
@@ -3465,129 +3480,110 @@ class MLASettings {
 		/*
 		 * Get the current markup contents for comparison
 		 */
-		$old_templates = MLAOptions::mla_get_markup_templates();
-//error_log( __LINE__ . ' _save_gallery_settings $old_templates = ' . var_export( $old_templates, true ), 0 );
+		$old_templates = MLATemplate_Support::mla_get_markup_templates();
 		$new_templates = array();
 		$new_names = $_REQUEST['mla_markup_templates_name'];
-		$new_values['arguments'] = stripslashes_deep( $_REQUEST['mla_markup_templates_arguments'] );
-		$new_values['open'] = stripslashes_deep( $_REQUEST['mla_markup_templates_open'] );
-		$new_values['row-open'] = stripslashes_deep( $_REQUEST['mla_markup_templates_row_open'] );
-		$new_values['item'] = stripslashes_deep( $_REQUEST['mla_markup_templates_item'] );
-		$new_values['row-close'] = stripslashes_deep( $_REQUEST['mla_markup_templates_row_close'] );
-		$new_values['close'] = stripslashes_deep( $_REQUEST['mla_markup_templates_close'] );
 		$new_deletes = isset( $_REQUEST['mla_markup_templates_delete'] ) ? $_REQUEST['mla_markup_templates_delete']: array();
-//error_log( __LINE__ . ' _save_gallery_settings $new_values = ' . var_export( $new_values, true ), 0 );
-
+		$new_values = stripslashes_deep( $_REQUEST['mla_markup_templates_sections'] );
+		
 		/*
 		 * Build new markup template array, noting changes
 		 */
-		$default_markups = array( 'default', 'tag-cloud', 'tag-cloud-ul', 'tag-cloud-dl' );
 		$templates_changed = false;
-		foreach ( $new_names as $name => $new_name ) {
-			if ( in_array( $name, $default_markups ) ) {
-				continue;
-			}
-
-			if ( array_key_exists( $name, $new_deletes ) ) {
-				/* translators: 1: template type 2: template name */
-				$message_list .= '<br>' . sprintf( _x( 'Deleting %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'markup template', 'media-library-assistant' ), $name );
-				$templates_changed = true;
-				continue;
-			}
-
-			$new_slug = sanitize_title( $new_name );
-			if ( 'blank' == $name ) {
-				if ( '' == $new_slug ) {
+		foreach ( $new_names as $shortcode => $template_names ) {
+			$definition = MLATemplate_Support::$mla_template_definitions['markup'][ $shortcode ];
+			
+			foreach ( $template_names as $name => $new_name ) {
+				if ( in_array( $name, $definition['default_names'] ) ) {
 					continue;
 				}
 
-				if ( 'blank' == $new_slug ) {
-					/* translators: 1: ERROR tag 2: template name 3: template type */
-					$error_list .= '<br>' . sprintf( __( '%1$s: Reserved name "%2$s", new %3$s discarded.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), $new_slug, __( 'markup template', 'media-library-assistant' ) );
-					continue;
-				}
-
-				if ( array_key_exists( $new_slug, $old_templates ) ) {
-					/* translators: 1: ERROR tag 2: template name 3: template type */
-					$error_list .= '<br>' . sprintf( __( '%1$s: Duplicate name "%2$s", new %3$s discarded.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), $new_slug, __( 'markup template', 'media-library-assistant' ) );
-					continue;
-				} else {
+				if ( array_key_exists( $shortcode, $new_deletes ) && array_key_exists( $name, $new_deletes[ $shortcode ] ) ) {
 					/* translators: 1: template type 2: template name */
-					$message_list .= '<br>' . sprintf( _x( 'Adding new %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'markup template', 'media-library-assistant' ), $new_slug );
+					$message_list .= '<br>' . sprintf( _x( 'Deleting %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'markup template', 'media-library-assistant' ), $name );
 					$templates_changed = true;
+					continue;
 				}
-			} // 'blank' - reserved name
-
-			/*
-			 * Handle name changes, check for duplicates
-			 */
-			if ( '' == $new_slug ) {
-				/* translators: 1: ERROR tag 2: element name 3: old value */
-				$error_list .= '<br>' . sprintf( __( '%1$s: Blank %2$s, reverting to "%3$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'markup template name', 'media-library-assistant' ), $name );
-				$new_slug = $name;
-			}
-
-			if ( $new_slug != $name ) {
-				if ( array_key_exists( $new_slug, $old_templates ) ) {
-					/* translators: 1: ERROR tag 2: element name 3: new value 4: old value */
-					$error_list .= '<br>' . sprintf( __( '%1$s: Duplicate new %2$s "%3$s", reverting to "%4$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'markup template name', 'media-library-assistant' ), $new_slug, $name );
+	
+				$new_slug = sanitize_title( $new_name );
+				if ( 'blank' == $name ) {
+					if ( '' == $new_slug ) {
+						continue;
+					}
+	
+					if ( 'blank' == $new_slug ) {
+						/* translators: 1: ERROR tag 2: template name 3: template type */
+						$error_list .= '<br>' . sprintf( __( '%1$s: Reserved name "%2$s", new %3$s discarded.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), $new_slug, __( 'markup template', 'media-library-assistant' ) );
+						continue;
+					}
+	
+					if ( array_key_exists( $new_slug, $old_templates ) ) {
+						/* translators: 1: ERROR tag 2: template name 3: template type */
+						$error_list .= '<br>' . sprintf( __( '%1$s: Duplicate name "%2$s", new %3$s discarded.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), $new_slug, __( 'markup template', 'media-library-assistant' ) );
+						continue;
+					} else {
+						/* translators: 1: template type 2: template name */
+						$message_list .= '<br>' . sprintf( _x( 'Adding new %1$s "%2$s".', 'message_list', 'media-library-assistant' ), __( 'markup template', 'media-library-assistant' ), $new_slug );
+						$templates_changed = true;
+					}
+				} // 'blank' - reserved name
+	
+				/*
+				 * Handle name changes, check for duplicates
+				 */
+				if ( '' == $new_slug ) {
+					/* translators: 1: ERROR tag 2: element name 3: old value */
+					$error_list .= '<br>' . sprintf( __( '%1$s: Blank %2$s, reverting to "%3$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'markup template name', 'media-library-assistant' ), $name );
 					$new_slug = $name;
-				} elseif ( 'blank' != $name ) {
-					/* translators: 1: element name 2: old_value 3: new_value */
-					$message_list .= '<br>' . sprintf( _x( 'Changing %1$s from "%2$s" to "%3$s"', 'message_list', 'media-library-assistant' ), __( 'markup template name', 'media-library-assistant' ), $name, $new_slug );
-					$templates_changed = true;
 				}
-			} // name changed
-
-			if ( 'blank' != $name ) {
-				if ( $new_values['arguments'][ $name ] != $old_templates[ $name ]['arguments'] ) {
-					/* translators: 1: template name */
-					$message_list .= '<br>' . sprintf( _x( 'Updating arguments markup for "%1$s".', 'message_list', 'media-library-assistant' ), $new_slug );
-					$templates_changed = true;
+	
+				if ( $new_slug != $name ) {
+					if ( array_key_exists( $new_slug, $old_templates ) ) {
+						/* translators: 1: ERROR tag 2: element name 3: new value 4: old value */
+						$error_list .= '<br>' . sprintf( __( '%1$s: Duplicate new %2$s "%3$s", reverting to "%4$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'markup template name', 'media-library-assistant' ), $new_slug, $name );
+						$new_slug = $name;
+					} elseif ( 'blank' == $new_slug ) {
+						/* translators: 1: ERROR tag 2: element name 3: new value 4: old value */
+						$error_list .= '<br>' . sprintf( __( '%1$s: Reserved %2$s "%3$s", reverting to "%4$s".', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'markup template name', 'media-library-assistant' ), $new_slug, $name );
+						$new_slug = $name;
+					} elseif ( 'blank' != $name ) {
+						/* translators: 1: element name 2: old_value 3: new_value */
+						$message_list .= '<br>' . sprintf( _x( 'Changing %1$s from "%2$s" to "%3$s"', 'message_list', 'media-library-assistant' ), __( 'markup template name', 'media-library-assistant' ), $name, $new_slug );
+						$templates_changed = true;
+					}
+				} // name changed
+	
+				if ( 'blank' != $name ) {
+					foreach ( $new_values[ $shortcode ][ $name ] as $section_name => $section_value ) {
+						$old_value = isset( $old_templates[ $name ][ $section_name ] ) ? $old_templates[ $name ][ $section_name ] : '';
+						if ( $section_value != $old_value ) {
+							/* translators: 1: section name, 2: template name */
+							$message_list .= '<br>' . sprintf( _x( 'Updating %1$s markup for "%2$s".', 'message_list', 'media-library-assistant' ), $section_name, $new_slug );
+							$templates_changed = true;
+						}
+					}
+				} // ! 'blank'
+	
+				/*
+				 * Encode shortcode assignment in template content
+				 */
+				if ( isset( $new_values[ $shortcode ][ $name ]['arguments'] ) ) {
+					$new_values[ $shortcode ][ $name ]['arguments'] = sprintf( "mla_shortcode_slug=\"%1\$s\"\r\n%2\$s", $definition['slug'], $new_values[ $shortcode ][ $name ]['arguments'] );
+				} else {
+					$new_values[ $shortcode ][ $name ]['arguments'] = sprintf( "mla_shortcode_slug=\"%1\$s\"\r\n", $definition['slug'] );
 				}
 
-				if ( $new_values['open'][ $name ] != $old_templates[ $name ]['open'] ) {
-					/* translators: 1: template name */
-					$message_list .= '<br>' . sprintf( _x( 'Updating open markup for "%1$s".', 'message_list', 'media-library-assistant' ), $new_slug );
-					$templates_changed = true;
+				foreach ( $new_values[ $shortcode ][ $name ] as $section_name => $section_value ) {
+					if ( !empty( $section_value ) ) {
+						$new_templates[ $new_slug ][ $section_name ] = $section_value;
+					}
 				}
-
-				if ( $new_values['row-open'][ $name ] != $old_templates[ $name ]['row-open'] ) {
-					/* translators: 1: template name */
-					$message_list .= '<br>' . sprintf( _x( 'Updating row open markup for "%1$s".', 'message_list', 'media-library-assistant' ), $new_slug );
-					$templates_changed = true;
-				}
-
-				if ( $new_values['item'][ $name ] != $old_templates[ $name ]['item'] ) {
-					/* translators: 1: template name */
-					$message_list .= '<br>' . sprintf( _x( 'Updating item markup for "%1$s".', 'message_list', 'media-library-assistant' ), $new_slug );
-					$templates_changed = true;
-				}
-
-				if ( $new_values['row-close'][ $name ] != $old_templates[ $name ]['row-close'] ) {
-					/* translators: 1: template name */
-					$message_list .= '<br>' . sprintf( _x( 'Updating row close markup for "%1$s".', 'message_list', 'media-library-assistant' ), $new_slug );
-					$templates_changed = true;
-				}
-
-				if ( $new_values['close'][ $name ] != $old_templates[ $name ]['close'] ) {
-					/* translators: 1: template name */
-					$message_list .= '<br>' . sprintf( _x( 'Updating close markup for "%1$s".', 'message_list', 'media-library-assistant' ), $new_slug );
-					$templates_changed = true;
-				}
-			} // ! 'blank'
-
-			$new_templates[ $new_slug ]['arguments'] = $new_values['arguments'][ $name ];
-			$new_templates[ $new_slug ]['open'] = $new_values['open'][ $name ];
-			$new_templates[ $new_slug ]['row-open'] = $new_values['row-open'][ $name ];
-			$new_templates[ $new_slug ]['item'] = $new_values['item'][ $name ];
-			$new_templates[ $new_slug ]['row-close'] = $new_values['row-close'][ $name ];
-			$new_templates[ $new_slug ]['close'] = $new_values['close'][ $name ];
-		} // foreach $name
+			} // foreach $name
+		} // foreach $shortcode
 
 		if ( $templates_changed ) {
 			$settings_changed = true;
-			if ( false == MLAOptions::mla_put_markup_templates( $new_templates ) ) {
+			if ( false == MLATemplate_Support::mla_put_markup_templates( $new_templates ) ) {
 				/* translators: 1: ERROR tag 2: template type */
 				$error_list .= '<br>' . sprintf( __( '%1$s: Update of %2$s failed.', 'media-library-assistant' ), __( 'ERROR', 'media-library-assistant' ), __( 'markup template', 'media-library-assistant' ) );
 			}
@@ -3595,10 +3591,10 @@ class MLASettings {
 
 		if ( $settings_changed ) {
 			/* translators: 1: field type */
-			$message = sprintf( __( '%1$s settings saved.', 'media-library-assistant' ), __( 'MLA Gallery', 'media-library-assistant' ) ) . "\r\n";
+			$message = sprintf( __( '%1$s settings saved.', 'media-library-assistant' ), __( 'Shortcodes', 'media-library-assistant' ) ) . "\r\n";
 		} else {
 			/* translators: 1: field type */
-			$message = sprintf( __( '%1$s no changes detected.', 'media-library-assistant' ), __( 'MLA Gallery', 'media-library-assistant' ) ) . "\r\n";
+			$message = sprintf( __( '%1$s no changes detected.', 'media-library-assistant' ), __( 'Shortcodes', 'media-library-assistant' ) ) . "\r\n";
 		}
 
 		$page_content = array(

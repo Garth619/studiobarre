@@ -70,6 +70,7 @@
 <li class="method public "><a href="#mla_get_option" title="mla_get_option :: Return the stored value or default value of a defined MLA option"><span class="description">Return the stored value or default value of a defined MLA option</span><pre>mla_get_option()</pre></a></li>
 <li class="method public "><a href="#mla_initialize_tax_checked_on_top" title='mla_initialize_tax_checked_on_top :: Initialize "tax_checked_on_top" =&gt; "checked" default for all supported taxonomies'><span class="description">Initialize "tax_checked_on_top" =&gt; "checked" default for all supported taxonomies</span><pre>mla_initialize_tax_checked_on_top()</pre></a></li>
 <li class="method public "><a href="#mla_load_template" title="mla_load_template :: Load an HTML template from a file"><span class="description">Load an HTML template from a file</span><pre>mla_load_template()</pre></a></li>
+<li class="method public "><a href="#mla_media_view_settings_filter" title="mla_media_view_settings_filter :: Ensures that MLA media manager enhancements are present when required."><span class="description">Ensures that MLA media manager enhancements are present when required.</span><pre>mla_media_view_settings_filter()</pre></a></li>
 <li class="method public "><a href="#mla_parse_view_specification" title="mla_parse_view_specification :: Analyze a Library View/Post MIME Type specification, returning an array of the placeholders it contains"><span class="description">Analyze a Library View/Post MIME Type specification, returning an array of the placeholders it contains</span><pre>mla_parse_view_specification()</pre></a></li>
 <li class="method public "><a href="#mla_plugins_loaded_action" title="mla_plugins_loaded_action :: Load a plugin text domain and alternate debug file"><span class="description">Load a plugin text domain and alternate debug file</span><pre>mla_plugins_loaded_action()</pre></a></li>
 <li class="method public "><a href="#mla_prepare_view_query" title="mla_prepare_view_query :: Convert a Library View/Post MIME Type specification to WP_Query parameters"><span class="description">Convert a Library View/Post MIME Type specification to WP_Query parameters</span><pre>mla_prepare_view_query()</pre></a></li>
@@ -78,6 +79,7 @@
 settings are being updated or reset."><span class="description">Determine MLA support for a taxonomy, handling the special case where the
 settings are being updated or reset.</span><pre>mla_taxonomy_support()</pre></a></li>
 <li class="method public "><a href="#mla_update_option" title="mla_update_option :: Add or update the stored value of a defined MLA option"><span class="description">Add or update the stored value of a defined MLA option</span><pre>mla_update_option()</pre></a></li>
+<li class="method public "><a href="#mla_wp_enqueue_media_action" title="mla_wp_enqueue_media_action :: Registers and enqueues the mla-beaver-builder-style.css file, when needed."><span class="description">Registers and enqueues the mla-beaver-builder-style.css file, when needed.</span><pre>mla_wp_enqueue_media_action()</pre></a></li>
 <li class="method public "><a href="#mla_wp_redirect_filter" title="mla_wp_redirect_filter :: Filter the redirect location."><span class="description">Filter the redirect location.</span><pre>mla_wp_redirect_filter()</pre></a></li>
 <li class="nav-header private">» Private</li>
 <li class="method private "><a href="#_debug_log" title="_debug_log :: Write a debug message to the appropriate log file"><span class="description">Write a debug message to the appropriate log file</span><pre>_debug_log()</pre></a></li>
@@ -98,6 +100,7 @@ settings are being updated or reset.</span><pre>mla_taxonomy_support()</pre></a>
 <li class="nav-header">
 <i class="icon-custom icon-constant"></i> Constants</li>
 <li class="constant  "><a href="#ADMIN_PAGE_SLUG" title="ADMIN_PAGE_SLUG :: Slug for adding plugin submenu"><span class="description">Slug for adding plugin submenu</span><pre>ADMIN_PAGE_SLUG</pre></a></li>
+<li class="constant  "><a href="#CURRENT_MLA_VERSION" title="CURRENT_MLA_VERSION :: Current version number (moved from class-mla-main.php)"><span class="description">Current version number (moved from class-mla-main.php)</span><pre>CURRENT_MLA_VERSION</pre></a></li>
 <li class="constant  "><a href="#JAVASCRIPT_FILL_COMPAT_ACTION" title='JAVASCRIPT_FILL_COMPAT_ACTION :: Slug for the "fill compat-attachment-fields" action - Add Media and related dialogs'><span class="description">Slug for the "fill compat-attachment-fields" action - Add Media and related dialogs</span><pre>JAVASCRIPT_FILL_COMPAT_ACTION</pre></a></li>
 <li class="constant  "><a href="#JAVASCRIPT_INLINE_EDIT_SLUG" title="JAVASCRIPT_INLINE_EDIT_SLUG :: Slug for localizing and enqueueing JavaScript - MLA List Table"><span class="description">Slug for localizing and enqueueing JavaScript - MLA List Table</span><pre>JAVASCRIPT_INLINE_EDIT_SLUG</pre></a></li>
 <li class="constant  "><a href="#JAVASCRIPT_QUERY_ATTACHMENTS_ACTION" title='JAVASCRIPT_QUERY_ATTACHMENTS_ACTION :: Slug for the "query attachments" action - Add Media and related dialogs'><span class="description">Slug for the "query attachments" action - Add Media and related dialogs</span><pre>JAVASCRIPT_QUERY_ATTACHMENTS_ACTION</pre></a></li>
@@ -111,6 +114,7 @@ settings are being updated or reset.</span><pre>mla_taxonomy_support()</pre></a>
 <li class="constant  "><a href="#MLA_DEBUG_CATEGORY_ANY" title='MLA_DEBUG_CATEGORY_ANY :: Constant to log "any" debug activity'><span class="description">Constant to log "any" debug activity</span><pre>MLA_DEBUG_CATEGORY_ANY</pre></a></li>
 <li class="constant  "><a href="#MLA_DEBUG_CATEGORY_LANGUAGE" title="MLA_DEBUG_CATEGORY_LANGUAGE :: Constant to log WPML/Polylang action/filter activity"><span class="description">Constant to log WPML/Polylang action/filter activity</span><pre>MLA_DEBUG_CATEGORY_LANGUAGE</pre></a></li>
 <li class="constant  "><a href="#MLA_DEBUG_CATEGORY_THUMBNAIL" title="MLA_DEBUG_CATEGORY_THUMBNAIL :: Constant to log Ghostscript/Imagick activity"><span class="description">Constant to log Ghostscript/Imagick activity</span><pre>MLA_DEBUG_CATEGORY_THUMBNAIL</pre></a></li>
+<li class="constant  "><a href="#STYLESHEET_SLUG" title="STYLESHEET_SLUG :: Slug for registering and enqueueing plugin style sheets (moved from class-mla-main.php)"><span class="description">Slug for registering and enqueueing plugin style sheets (moved from class-mla-main.php)</span><pre>STYLESHEET_SLUG</pre></a></li>
 </ul>
 </div>
 <div class="span8">
@@ -413,6 +417,26 @@ where "key" becomes the key part of the array.</p></p>
 <code>string</code><code>array</code><code>false</code><code>NULL</code>string for files that do not contain template divider comments, array for files containing template divider comments, false if file or option does not exist, NULL if file could not be loaded.</div>
 </div></div>
 </div>
+<a name="mla_media_view_settings_filter" id="mla_media_view_settings_filter"></a><div class="element clickable method public mla_media_view_settings_filter" data-toggle="collapse" data-target=".mla_media_view_settings_filter .collapse">
+<h2>Ensures that MLA media manager enhancements are present when required.</h2>
+<pre>mla_media_view_settings_filter(array $settings, object $post) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"><p>Declared public because it is a filter.</p></p>
+<table class="table table-bordered"><tr>
+<th>since</th>
+<td>2.30</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$settings</h4>
+<code>array</code><p>associative array with setting => value pairs</p>
+</div>
+<div class="subelement argument">
+<h4>$post</h4>
+<code>object</code><p>|| NULL current post object, if available</p></div>
+</div></div>
+</div>
 <a name="mla_parse_view_specification" id="mla_parse_view_specification"></a><div class="element clickable method public mla_parse_view_specification" data-toggle="collapse" data-target=".mla_parse_view_specification .collapse">
 <h2>Analyze a Library View/Post MIME Type specification, returning an array of the placeholders it contains</h2>
 <pre>mla_parse_view_specification(string | array $specification) : array</pre>
@@ -537,6 +561,18 @@ settings are being updated or reset.</h2>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>boolean</code>True if the value was changed or false if the update failed</div>
+</div></div>
+</div>
+<a name="mla_wp_enqueue_media_action" id="mla_wp_enqueue_media_action"></a><div class="element clickable method public mla_wp_enqueue_media_action" data-toggle="collapse" data-target=".mla_wp_enqueue_media_action .collapse">
+<h2>Registers and enqueues the mla-beaver-builder-style.css file, when needed.</h2>
+<pre>mla_wp_enqueue_media_action() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"><p>Declared public because it is an action.</p></p>
+<table class="table table-bordered"><tr>
+<th>since</th>
+<td>2.30</td>
+</tr></table>
 </div></div>
 </div>
 <a name="mla_wp_redirect_filter" id="mla_wp_redirect_filter"></a><div class="element clickable method public mla_wp_redirect_filter" data-toggle="collapse" data-target=".mla_wp_redirect_filter .collapse">
@@ -722,6 +758,18 @@ settings are being updated or reset.</h2>
 </tr></table>
 </div></div>
 </div>
+<a name="CURRENT_MLA_VERSION" id="CURRENT_MLA_VERSION"> </a><div class="element clickable constant  CURRENT_MLA_VERSION" data-toggle="collapse" data-target=".CURRENT_MLA_VERSION .collapse">
+<h2>Current version number (moved from class-mla-main.php)</h2>
+<pre>CURRENT_MLA_VERSION : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>since</th>
+<td>2.30</td>
+</tr></table>
+</div></div>
+</div>
 <a name="JAVASCRIPT_FILL_COMPAT_ACTION" id="JAVASCRIPT_FILL_COMPAT_ACTION"> </a><div class="element clickable constant  JAVASCRIPT_FILL_COMPAT_ACTION" data-toggle="collapse" data-target=".JAVASCRIPT_FILL_COMPAT_ACTION .collapse">
 <h2>Slug for the "fill compat-attachment-fields" action - Add Media and related dialogs</h2>
 <pre>JAVASCRIPT_FILL_COMPAT_ACTION : string</pre>
@@ -878,6 +926,18 @@ settings are being updated or reset.</h2>
 </tr></table>
 </div></div>
 </div>
+<a name="STYLESHEET_SLUG" id="STYLESHEET_SLUG"> </a><div class="element clickable constant  STYLESHEET_SLUG" data-toggle="collapse" data-target=".STYLESHEET_SLUG .collapse">
+<h2>Slug for registering and enqueueing plugin style sheets (moved from class-mla-main.php)</h2>
+<pre>STYLESHEET_SLUG : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>since</th>
+<td>2.30</td>
+</tr></table>
+</div></div>
+</div>
 </div>
 </div>
 </div>
@@ -885,7 +945,7 @@ settings are being updated or reset.</h2>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
-            generated on 2016-04-08T17:25:39-07:00.<br></footer></div>
+            generated on 2016-06-05T17:27:59-07:00.<br></footer></div>
 </div>
 </body>
 </html>
