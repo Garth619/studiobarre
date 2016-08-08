@@ -62,11 +62,11 @@ jQuery(document).ready(function() {
            jQuery('.hide').show();
         
         
-					 jQuery('.top_half').click(function(){
+					 jQuery('.read_more').click(function(){
 						 
 
-						 jQuery(this).fadeOut();
-						 jQuery(this).next('.read_more_wrapper').delay(800).slideDown(200);
+						 jQuery(this).toggleClass('open');
+						 jQuery(this).next('.read_more_wrapper').slideToggle(200);
 					
 						});
 					 

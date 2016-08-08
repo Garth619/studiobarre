@@ -551,12 +551,15 @@ div.menu-header {
 ul#menu-menu-1.menu {
 	margin:13px 0 0 0;
 	list-style:none;
-	font-size:13px
+	font-size:13px;
+	
 }
 
-ul#menu-menu-1.menu li {
+ul#menu-menu-1.menu > li {
 	float:left;
 	text-transform: lowercase;
+	position:relative;
+	
 }
 
 ul#menu-menu-1.menu li a {
@@ -566,12 +569,51 @@ ul#menu-menu-1.menu li a {
 }
 
 
-ul#menu-menu-1.menu li a:hover,
-ul#menu-menu-1.menu li.current_page_item a,
-ul#menu-menu-1.menu li.current_page_ancestor a,
-ul#menu-menu-1.menu li.current-menu-ancestor a,
-ul#menu-menu-1.menu li.current-menu-item a,
-ul#menu-menu-1.menu li.current-menu-parent a,
+ul#menu-menu-1.menu li:hover > a  {
+	color:#FFE000;
+	
+}
+
+
+ul#menu-menu-1.menu li ul.sub-menu {
+	background:#444444;
+	list-style: none;
+	margin:0;
+	border-top:1px solid #FEDE33;
+	position:absolute;
+	top:25px;
+	min-width:100px;
+	z-index: 500;
+	padding-bottom: 13px;
+	left:-8px;
+	opacity: 0;
+	visibility: hidden;
+	transition:all .3s ease-in-out;
+}
+
+ul#menu-menu-1.menu li.menu-item-has-children:hover ul.sub-menu {
+	opacity: 1;
+	visibility: visible;
+}
+
+
+ul#menu-menu-1.menu li ul.sub-menu li {
+	
+}
+
+ul#menu-menu-1.menu li ul.sub-menu li a {
+	margin-right:0;
+	display: block;
+	padding:13px 9px 0;
+	
+}
+
+
+
+
+
+ul#menu-menu-1.menu li.current_page_ancestor > a,
+ul#menu-menu-1.menu li.current-menu-item > a,
 ul#menu-menu-1.menu li a:hover {
 	color:#FFE000
 }
@@ -1974,11 +2016,19 @@ body.page-template-page-press #main {
 		 line-height: 1.2;
 	 }
 	 
-	 .testimonial_content .read_more {
+	 .testimonial_content .read_more:before {
 		 color:#FFE000;
 		 font-size:17px;
 		 cursor:pointer;
+		 content:"Read More +";
+		 transition:all .3s ease;
 	 }
+	 
+	 .testimonial_content .read_more.open:before {
+		 content:"Read Less -";
+	 }
+	 
+	 
 	 
 	 .test_bio {
 		 position: relative;

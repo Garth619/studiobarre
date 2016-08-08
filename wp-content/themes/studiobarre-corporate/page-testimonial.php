@@ -53,9 +53,11 @@ get_header(); ?>
 									
 										<p class="first_testimonial"><?php the_sub_field('excerpt');?>...</p>
 										
-										<span class="read_more">Read More +</span>
-									
 									</div><!-- top_half -->
+										
+										<span class="read_more" style="margin:20px 0;display:block;"><!-- Read More + --></span>
+									
+									
 									
 									
 								
