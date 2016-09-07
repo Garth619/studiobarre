@@ -133,6 +133,11 @@
 			<a href="<?php the_permalink(); ?> ">
 				<img src="<?php the_field('image_thumb'); ?>"/>
 			</a>
+			
+			<br/>
+			
+			<?php the_content();?>
+			
 		</div><!-- #post-## -->
 </div><!-- news events -->
 		<?php // comments_template( '', true ); ?>

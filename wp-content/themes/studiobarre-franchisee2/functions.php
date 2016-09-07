@@ -565,3 +565,192 @@ function twentyten_get_gallery_images() {
 
 	return $images;
 }
+
+
+
+// ACF Prcing (carmel valley has the dashboard settings for reference)
+
+
+if(function_exists("register_field_group"))
+{
+	register_field_group(array (
+		'id' => 'acf_promo-prices',
+		'title' => 'Promo Prices',
+		'fields' => array (
+			array (
+				'key' => 'field_57b2ab18d8bd9',
+				'label' => 'Most Popular',
+				'name' => '',
+				'type' => 'tab',
+			),
+			array (
+				'key' => 'field_57b2a82f26b6e',
+				'label' => 'Title',
+				'name' => 'title',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_57b2a7ea26b6c',
+				'label' => 'Promo Prices',
+				'name' => 'promo_prices',
+				'type' => 'repeater',
+				'sub_fields' => array (
+					array (
+						'key' => 'field_57b2a84c26b6f',
+						'label' => 'Description',
+						'name' => 'description',
+						'type' => 'textarea',
+						'instructions' => 'One line of text. To have a second line click "Add Row"',
+						'column_width' => '',
+						'default_value' => '',
+						'placeholder' => '',
+						'maxlength' => '',
+						'rows' => '',
+						'formatting' => 'html',
+					),
+				),
+				'row_min' => '',
+				'row_limit' => '',
+				'layout' => 'row',
+				'button_label' => 'Add Row',
+			),
+			array (
+				'key' => 'field_57b2aa28d514c',
+				'label' => 'Asterisk',
+				'name' => 'asterisk',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_57b2ac1b0d557',
+				'label' => 'Buy Now',
+				'name' => 'buy_now',
+				'type' => 'text',
+				'instructions' => 'Copy and Paste Link',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_57b2ab3fd8bda',
+				'label' => 'New to the Studio',
+				'name' => '',
+				'type' => 'tab',
+			),
+			array (
+				'key' => 'field_57b2aab8d8bd5',
+				'label' => 'Title',
+				'name' => 'title_two',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_57b2aacdd8bd6',
+				'label' => 'Promo Prices',
+				'name' => 'promo_pricestwo',
+				'type' => 'repeater',
+				'sub_fields' => array (
+					array (
+						'key' => 'field_57b2aae2d8bd7',
+						'label' => 'Description',
+						'name' => 'descriptiontwo',
+						'type' => 'textarea',
+						'instructions' => 'One line of text. To have a second line click "Add Row"',
+						'column_width' => '',
+						'default_value' => '',
+						'placeholder' => '',
+						'maxlength' => '',
+						'rows' => '',
+						'formatting' => 'html',
+					),
+				),
+				'row_min' => '',
+				'row_limit' => '',
+				'layout' => 'row',
+				'button_label' => 'Add Row',
+			),
+			array (
+				'key' => 'field_57b2ab0dd8bd8',
+				'label' => 'Asterisk',
+				'name' => 'asterisktwo',
+				'type' => 'text',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_57b2ac459c86c',
+				'label' => 'Buy Now',
+				'name' => 'buy_now_two',
+				'type' => 'text',
+				'instructions' => 'Copy and Paste Link',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+			array (
+				'key' => 'field_57cf8ffca4779',
+				'label' => 'Shop All ',
+				'name' => '',
+				'type' => 'tab',
+			),
+			array (
+				'key' => 'field_57cf8f89816d5',
+				'label' => 'Shop All Class Packages',
+				'name' => 'shop_all_class_packages',
+				'type' => 'text',
+				'instructions' => 'Copy and paste link here',
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'formatting' => 'html',
+				'maxlength' => '',
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'page',
+					'operator' => '==',
+					'value' => '157',
+					'order_no' => 0,
+					'group_no' => 0,
+				),
+			),
+		),
+		'options' => array (
+			'position' => 'acf_after_title',
+			'layout' => 'no_box',
+			'hide_on_screen' => array (
+			),
+		),
+		'menu_order' => 0,
+	));
+}
+

@@ -268,89 +268,7 @@ get_header(); ?>
 			
 			
 			<?php if (is_page( 157 )): ?>
-			
-<!-- 			<h1 class="fran_inner" style="margin-bottom:35px;"><span class="h1_first">pricing</span></h1> -->
-
-			
-			
-			<?php if(get_field('title')):?>
-			
-			
-			<div class="newprices_wrapper">
-				
-				<div class="top_header">
-					
-					<img src="<?php bloginfo('template_directory');?>/images/prices.png"/>
-					
-				</div><!-- top_header -->
-				
-				
-				<div class="newprices_content">
-				
-					 <span class="large_header"><?php the_field('title');?></span>
-					 
-					 
-					 
-					 <?php if(get_field('promo_prices')): ?>
-
-					 		<?php while(has_sub_field('promo_prices')): ?>
-
-					 			 <span class="sub_description"><?php the_sub_field('description'); ?></span>
-
-					 		<?php endwhile; ?>
-					 		
-					 		 <span class="asterik"><?php the_field('asterisk'); ?></span>
-
-					 <?php endif; ?>
-					 
-				</div><!-- newprices_content -->
-				
-				<a href="<?php the_field('buy_now'); ?>" class="buy_now" target="_blank">Buy Now</a>
-				
-			</div><!-- most_popular_wrapper -->
-			
-			
-			<?php endif;?>
-			
-			<?php if(get_field('title_two')):?>
-			
-			
-			<div class="newprices_wrapper">
-				
-				<div class="top_header">
-					
-					<img src="<?php bloginfo('template_directory');?>/images/prices2.png"/>
-					
-				</div><!-- top_header -->
-				
-				<div class="newprices_content">
-				
-					 <span class="large_header"><?php the_field('title_two');?></span>
-					 
-					  <?php if(get_field('promo_pricestwo')): ?>
-
-					 		<?php while(has_sub_field('promo_pricestwo')): ?>
-
-					 			 <span class="sub_description"><?php the_sub_field('descriptiontwo'); ?></span>
-
-					 		<?php endwhile; ?>
-					 		
-					 		 <span class="asterik"><?php the_field('asterisktwo'); ?></span>
-
-					 <?php endif; ?>
-					  
-					 
-					  
-				</div><!-- newprices_content -->
-				
-				<a href="<?php the_field('buy_now_two');?>" class="buy_now" target="_blank">Buy Now</a>
-				
-			</div><!-- most_popular_wrapper -->
-			
-			
-			<?php endif;?>
-			<div class="pricing_col_wrapper">
-			
+			<h1 class="fran_inner" style="margin-bottom:35px;"><span class="h1_first">pricing</span></h1>
 			<div class="pricing_col1">
 				<?php if( get_field('pricing') ): ?>
 					<?php while(has_sub_field('pricing') ): ?>
@@ -368,7 +286,6 @@ get_header(); ?>
 					<?php endwhile; ?>
 			<?php endif;?><!-- pricing -->
 			</div><!-- pricing_col1 -->
-			
 			<div class="pricing_col2">
 				<?php if( get_field('pricing2') ): ?>
 					<?php while(has_sub_field('pricing2') ): ?>
@@ -386,12 +303,6 @@ get_header(); ?>
 					<?php endwhile; ?>
 			<?php endif;?><!-- pricing -->
 			</div><!-- pricing_col2 -->
-			
-			</div><!-- pricing_col_wrapper -->
-			
-			<a href="<?php the_field('shop_all_class_packages');?>" target="_blank" class="bottom_page_button">Shop All Class Packages</a>
-			
-			
 			<?php endif; ?>
 			
 			

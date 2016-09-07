@@ -1,0 +1,2 @@
+[09-Aug-2016 22:11:24 UTC] PHP Fatal error:  Call to undefined function get_header() in /home/studiobarreftp/public_html/wp-content/themes/studiobarre-franchisee2/index.php on line 16
+[31-Aug-2016 21:50:29 UTC] PHP Fatal error:  Call to undefined function get_header() in /home/studiobarreftp/public_html/wp-content/themes/studiobarre-franchisee2/index.php on line 16
